@@ -1,0 +1,4 @@
+# Packer specific direcotries and files
+output-*
+packer_cache
+
