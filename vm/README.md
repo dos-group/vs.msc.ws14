@@ -12,5 +12,5 @@ Mit diesem Tool kann man aus einer Konfiguration VM Images für verschiedene Pla
 
 1. Packer installieren.
 2. Ausführen _packer build ubuntu-node.json_.
-3. Erstelle Image starten/deployen.
+3. Erstellte Image starten/deployen.
 
