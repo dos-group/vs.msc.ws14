@@ -1,0 +1,16 @@
+# Idea IntelliJ files
+.idea/
+sdn-data-process-engine-middleware.iml
+
+# Maven build files
+target/
+
+# Mac OS files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# VIM temporary files
+*~
+*.swp
+*.swo
