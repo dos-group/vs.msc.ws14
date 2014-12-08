@@ -1,4 +1,4 @@
-package de.tuberlin.cit.model;
+package de.tuberlin.cit.model.network;
 
 public class Flow extends UniqueObject {
 
