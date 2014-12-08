@@ -1,66 +1,61 @@
 package de.tuberlin.cit.tcpdaemon;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import org.apache.log4j.Logger;
+
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Server {
-    private int port = 6789;
+public class Server implements Runnable {
+    private Logger logger = Logger.getLogger(this.getClass());
 
-    public static void main(String[] args) {
+    private int port = 6789;
+    private boolean running = false;
+
+    public void run() {
         try {
-            Server server = new Server();
-            server.parseArgs(args);
-            server.execute();
-        } catch (Exception e) {
-            e.printStackTrace();
+            execute();
+        } catch (Exception e){
+            logger.error("Failed running TCP Server.", e);
         }
     }
 
     private void execute() throws IOException {
+        running = true;
         ServerSocket server = new ServerSocket(port);
-        System.out.println("STARTED server on port " + port);
-
-        while (true) {
-            Socket connection = server.accept();
-            System.out.println("CONNECTED to " + connection.getInetAddress().getHostAddress());
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            DataOutputStream writer = new DataOutputStream(connection.getOutputStream());
-
-            String request = reader.readLine();
-
-            writer.writeBytes(request);
-            writer.flush();
-            connection.close();
-        }
-    }
-
-    private void parseArgs(String[] args) {
-        int i = 0;
         try {
-            for (i = 0; i < args.length; i++) {
-                if ("-p".equals(args[i])) {
-                    port = Integer.parseInt(args[++i]);
-                } else {
-                    System.err.println("Unexpected argument: " + args[i]);
-                    printHelp(1);
+            logger.info("STARTED server on port " + port);
+
+            while (running) {
+                Socket connection = server.accept();
+                try {
+                    logger.info("CONNECTED to " + connection.getInetAddress().getHostAddress());
+
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    String request = reader.readLine();
+                    if (request != null) {
+                        PrintWriter writer = new PrintWriter(connection.getOutputStream(), true);
+                        writer.println(request);
+                    }
+                } finally {
+                    connection.close();
                 }
             }
-        } catch (NumberFormatException nfe) {
-            System.err.println("Argument " + args[i] + " should be an integer.");
-            printHelp(1);
-        } catch (IndexOutOfBoundsException iobe) {
-            System.err.println("Argument " + args[--i] + " should be followed by a value.");
-            printHelp(1);
+        } finally {
+            running = false;
+            server.close();
         }
     }
 
-    private void printHelp(int status) {
-        System.out.println("-p      port  (default: 6789");
-        System.exit(status);
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void stop() {
+        this.running = false;
     }
 }

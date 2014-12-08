@@ -1,74 +1,51 @@
 package de.tuberlin.cit.tcpdaemon;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import org.apache.log4j.Logger;
+
+import java.io.*;
 import java.net.Socket;
 import java.util.Random;
 
-public class Client {
+public class Client implements Runnable {
+    private Logger logger = Logger.getLogger(this.getClass());
+
     private String host = "localhost";
     private int port = 6789;
-    private int sleep = 2;
 
-    public static void main(String[] args) {
-        try {
-            Client client = new Client();
-            client.parseArgs(args);
-            client.execute();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void run() {
+       try {
+            execute();
+       } catch (Exception e) {
+           logger.error("Failed running TCP Client.", e);
+       }
     }
 
     private void execute() throws IOException, InterruptedException {
-        while (true) {
-            Socket socket = new Socket(host, port);
-
+        Socket socket = new Socket(host, port);
+        try {
+            PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            DataOutputStream writer = new DataOutputStream(socket.getOutputStream());
 
             String request = Long.toString(new Random().nextLong());
-            System.out.println("TO SERVER: " + request);
-            writer.writeBytes(request + "\n");
+            logger.info("TO SERVER: " + request);
+            writer.println(request);
 
-            String response = reader.readLine();
-            System.out.println("FROM SERVER: " + response + " (" + request.equals(response) + ")");
-            socket.close();
-
-            Thread.sleep(sleep * 1000);
-        }
-    }
-
-    private void parseArgs(String[] args) {
-        int i = 0;
-        try {
-            for (i = 0; i < args.length; i++) {
-                if ("-h".equals(args[i])) {
-                    host = args[++i];
-                } else if ("-p".equals(args[i])) {
-                    port = Integer.parseInt(args[++i]);
-                } else if ("-s".equals(args[i])) {
-                    sleep = Integer.parseInt(args[++i]);
-                } else {
-                    System.err.println("Unexpected argument: " + args[i]);
-                    printHelp(1);
-                }
+            String response = "";
+            String in;
+            while ((in = reader.readLine()) != null) {
+                response += in;
             }
-        } catch (NumberFormatException nfe) {
-            System.err.println("Argument " + args[i] + " should be an integer.");
-            printHelp(1);
-        } catch (IndexOutOfBoundsException iobe) {
-            System.err.println("Argument " + args[--i] + " should be followed by a value.");
-            printHelp(1);
+            logger.info("FROM SERVER: " + response + " (" + request.equals(response) + ")");
+        } finally {
+            socket.close();
         }
     }
 
-    private void printHelp(int status) {
-        System.out.println("-h      host  (default: localhost");
-        System.out.println("-p      port  (default: 6789");
-        System.out.println("-s      sleep (default: 2");
-        System.exit(status);
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
     }
 }
