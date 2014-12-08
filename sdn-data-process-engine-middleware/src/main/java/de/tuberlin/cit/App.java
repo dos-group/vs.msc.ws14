@@ -5,14 +5,7 @@ import org.apache.commons.cli.*;
 
 import org.opendaylight.controller.flowprogrammer.northbound.FlowConfigs;
 import org.opendaylight.controller.forwardingrulesmanager.FlowConfig;
-import org.opendaylight.controller.sal.core.Node;
-import org.opendaylight.controller.topology.northbound.EdgeProperties;
-import org.opendaylight.controller.topology.northbound.Topology;
-import org.opendaylight.tools.client.rest.Config;
-import org.opendaylight.tools.client.rest.FlowprogrammerHelper;
-import org.opendaylight.tools.client.rest.TopologyHelper;
 import org.opendaylight.tools.clientgen.GetResponse;
-import javax.ws.rs.core.MediaType;
 
 
 /**
@@ -23,9 +16,13 @@ public class App
     public static void main(String[] args)
     {
         String odlIP = "127.0.0.1";
+        String odlUser = "admin";
+        String odlPw = "admin";
 
         Options options = new Options();
         options.addOption("a", true, "IP address of controller. Default: 127.0.0.1");
+        options.addOption("u", true, "Opendaylight username (default: 'admin')");
+        options.addOption("p", true, "Opendaylight password (default: 'admin')");
 
         CommandLineParser parser = new BasicParser();
         CommandLine cmd = null;
@@ -36,17 +33,26 @@ public class App
             {
                 odlIP = cmd.getOptionValue("a").toString();
             }
+            if(cmd.hasOption("u"))
+            {
+                odlUser = cmd.getOptionValue("u").toString();
+            }
+            if(cmd.hasOption("p"))
+            {
+                odlPw = cmd.getOptionValue("p").toString();
+            }
         }
         catch (ParseException e)
         {
             e.printStackTrace();
         }
         System.out.println("Using controller @ " + odlIP);
-
+        System.out.println("Using Opendaylight user '" + odlUser + "'");
+        System.out.println("Using password '" + odlPw + "'");
 
         // ---------------------------
         // Sample Flow retrieval
-        FlowClient fc = new FlowClient(odlIP, "admin", "admin");
+        FlowClient fc = new FlowClient(odlIP, odlUser, odlPw);
 
         GetResponse<FlowConfigs> r1 = fc.GetStaticFlowsForContainer("default");
         for (FlowConfig fconfig : r1.getEntity().getFlowConfig()) {
