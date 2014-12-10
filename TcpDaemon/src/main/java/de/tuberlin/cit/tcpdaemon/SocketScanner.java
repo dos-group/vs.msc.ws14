@@ -55,7 +55,7 @@ public class SocketScanner {
                 reader.close();
             }
         } catch (Exception e) {
-            logger.error("Cloud not read hosts from file.", e);
+            logger.error("Cannot read hosts from file " + file + ".", e);
         }
         return hosts;
     }

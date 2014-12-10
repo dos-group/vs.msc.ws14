@@ -20,6 +20,8 @@ public class Main {
         new Thread(server).start();
 
         Client client = new Client();
+        client.setPort(port);
+
         SocketScanner scanner = new SocketScanner();
         List<String> hosts = scanner.getHostsFromFile(file);
 

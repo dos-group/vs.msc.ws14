@@ -13,11 +13,11 @@ public class Client implements Runnable {
     private int port = 6789;
 
     public void run() {
-       try {
+        try {
             execute();
-       } catch (Exception e) {
-           logger.error("Failed running TCP Client.", e);
-       }
+        } catch (Exception e) {
+            logger.error("Cannot connect to " + host, e);
+        }
     }
 
     private void execute() throws IOException, InterruptedException {
