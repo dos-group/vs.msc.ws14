@@ -55,7 +55,7 @@ public class App
         // Sample Flow retrieval
         FlowClient fc = new FlowClient(odlIP, odlUser, odlPw);
 
-        GetResponse<FlowConfigs> r1 = fc.GetStaticFlowsForContainer("default");
+        GetResponse<FlowConfigs> r1 = fc.getStaticFlowsForContainer("default");
         for (FlowConfig fconfig : r1.getEntity().getFlowConfig()) {
             System.out.println("--------- " + fconfig.getName());
         }

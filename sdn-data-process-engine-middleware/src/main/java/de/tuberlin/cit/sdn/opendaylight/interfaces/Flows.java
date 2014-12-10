@@ -12,15 +12,15 @@ import org.opendaylight.tools.clientgen.GetResponse;
 
 public interface Flows {
 
-    void AddFlow(String container, String name, String nodeType, String nodeId, FlowConfig flowConfig);
+    void addFlow(String container, String name, String nodeType, String nodeId, FlowConfig flowConfig);
 
-    void ModifyFlow(String container, String name, String nodeType, String nodeId, FlowConfig flowConfig);
+    void modifyFlow(String container, String name, String nodeType, String nodeId, FlowConfig flowConfig);
 
-    void DeleteFlow(String container, String name, String nodeType, String nodeId);
+    void deleteFlow(String container, String name, String nodeType, String nodeId);
 
-    FlowConfig GetStaticFlow(String container, String nodeType, String nodeId, String name);
+    FlowConfig getStaticFlow(String container, String nodeType, String nodeId, String name);
 
-    GetResponse<FlowConfigs> GetStaticFlowsForContainer(String container);
+    GetResponse<FlowConfigs> getStaticFlowsForContainer(String container);
 
-    GetResponse<FlowConfigs> GetStaticFlows(String container, String nodeType, String nodeId);
+    GetResponse<FlowConfigs> getStaticFlows(String container, String nodeType, String nodeId);
 }

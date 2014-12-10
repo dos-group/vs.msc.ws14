@@ -36,32 +36,32 @@ public class FlowClient implements Flows {
         flowHelper.setConfig(config);
     }
 
-    public void AddFlow(String container, String name, String nodeType, String nodeId, FlowConfig flowConfig)
+    public void addFlow(String container, String name, String nodeType, String nodeId, FlowConfig flowConfig)
     {
         throw new NotImplementedException();
     }
 
-    public void ModifyFlow(String container, String name, String nodeType, String nodeId, FlowConfig flowConfig)
+    public void modifyFlow(String container, String name, String nodeType, String nodeId, FlowConfig flowConfig)
     {
         throw new NotImplementedException();
     }
 
-    public void DeleteFlow(String container, String name, String nodeType, String nodeId)
+    public void deleteFlow(String container, String name, String nodeType, String nodeId)
     {
         throw new NotImplementedException();
     }
 
-    public FlowConfig GetStaticFlow(String container, String nodeType, String nodeId, String name)
+    public FlowConfig getStaticFlow(String container, String nodeType, String nodeId, String name)
     {
         throw new NotImplementedException();
     }
 
-    public GetResponse<FlowConfigs> GetStaticFlowsForContainer(String container)
+    public GetResponse<FlowConfigs> getStaticFlowsForContainer(String container)
     {
         return flowHelper.getStaticFlows(container);
     }
 
-    public GetResponse<FlowConfigs> GetStaticFlows(String container, String nodeType, String nodeId)
+    public GetResponse<FlowConfigs> getStaticFlows(String container, String nodeType, String nodeId)
     {
         throw new NotImplementedException();
     }
