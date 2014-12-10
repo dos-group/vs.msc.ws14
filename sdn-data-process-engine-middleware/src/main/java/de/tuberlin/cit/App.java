@@ -19,6 +19,7 @@ public class App
         String odlUser = "admin";
         String odlPw = "admin";
 
+        System.out.println("Hallo");
         Options options = new Options();
         options.addOption("a", true, "IP address of controller. Default: 127.0.0.1");
         options.addOption("u", true, "Opendaylight username (default: 'admin')");
