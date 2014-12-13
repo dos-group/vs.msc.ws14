@@ -15,6 +15,7 @@ import org.opendaylight.tools.client.rest.StatisticsHelper;
 import org.opendaylight.tools.client.rest.TopologyHelper;
 
 import javax.swing.*;
+import javax.ws.rs.core.MediaType;
 import java.awt.*;
 import java.util.List;
 
@@ -31,6 +32,8 @@ public class Visualization {
         config.setUsername(username);
         config.setPassword(password);
         config.setAdminUrl("http://" + ip + ":8080");
+        // mandatory - json somehow doesn't work
+        config.setMediaType(MediaType.APPLICATION_XML_TYPE);
 
         flowHelper = new FlowprogrammerHelper();
         flowHelper.setConfig(config);
@@ -44,9 +47,6 @@ public class Visualization {
 
     public Graph<Node, Edge> getTopologyGraph() {
         Graph<Node, Edge> graph = new SparseMultigraph<>();
-        // TODO JsonMappingException - corrupt versions?
-        flowHelper.getStaticFlows("default").getEntity();
-        statHelper.getFlowStatistics("default").getEntity();
         Topology topology = topoHelper.getTopology("default").getEntity();
 
         List<EdgeProperties> properties = topology.getEdgeProperties();
