@@ -1,6 +1,6 @@
 package de.tuberlin.cit;
 
-import edu.uci.ics.jung.algorithms.layout.CircleLayout;
+import edu.uci.ics.jung.algorithms.layout.ISOMLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
@@ -86,16 +86,17 @@ public class Visualization {
         Visualization visualization = new Visualization(username, password, ip); //We create our graph in here
         Graph<String, String> graph = visualization.getNetworkGraph();
 
-        Layout<String, String> layout = new CircleLayout(graph);
-        layout.setSize(new Dimension(300,300));
+        Layout<String, String> layout = new ISOMLayout<>(graph);
+
+        layout.setSize(new Dimension(600,600));
         BasicVisualizationServer<String,String> vv = new BasicVisualizationServer<>(layout);
-        vv.setPreferredSize(new Dimension(350,350));
+        vv.setPreferredSize(new Dimension(700,700));
 
         Transformer<String,Paint> vertexPaint = i -> Color.GREEN;
 
         vv.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
         vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
-        vv.getRenderer().getVertexLabelRenderer().setPosition(Renderer.VertexLabel.Position.AUTO);
+        vv.getRenderer().getVertexLabelRenderer().setPosition(Renderer.VertexLabel.Position.N);
 
         JFrame frame = new JFrame("Simple Graph View 2");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
