@@ -2,7 +2,6 @@ package de.tuberlin.cit;
 
 import de.tuberlin.cit.sdn.opendaylight.FlowClient;
 import org.apache.commons.cli.*;
-
 import org.opendaylight.controller.flowprogrammer.northbound.FlowConfigs;
 import org.opendaylight.controller.forwardingrulesmanager.FlowConfig;
 import org.opendaylight.tools.clientgen.GetResponse;
@@ -19,7 +18,6 @@ public class App
         String odlUser = "admin";
         String odlPw = "admin";
 
-        System.out.println("Hallo");
         Options options = new Options();
         options.addOption("a", true, "IP address of controller. Default: 127.0.0.1");
         options.addOption("u", true, "Opendaylight username (default: 'admin')");
@@ -27,24 +25,18 @@ public class App
 
         CommandLineParser parser = new BasicParser();
         CommandLine cmd = null;
-        try
-        {
+        try {
             cmd = parser.parse(options, args);
-            if(cmd.hasOption("a"))
-            {
+            if (cmd.hasOption("a")) {
                 odlIP = cmd.getOptionValue("a").toString();
             }
-            if(cmd.hasOption("u"))
-            {
+            if (cmd.hasOption("u")) {
                 odlUser = cmd.getOptionValue("u").toString();
             }
-            if(cmd.hasOption("p"))
-            {
+            if (cmd.hasOption("p")) {
                 odlPw = cmd.getOptionValue("p").toString();
             }
-        }
-        catch (ParseException e)
-        {
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         System.out.println("Using controller @ " + odlIP);
@@ -54,6 +46,18 @@ public class App
         // ---------------------------
         // Sample Flow retrieval
         FlowClient fc = new FlowClient(odlIP, odlUser, odlPw);
+
+
+        /* Simple Flow
+        FlowConfig flowConfig = new FlowConfig();
+        flowConfig.setInstallInHw("true");
+        flowConfig.setEtherType(EtherType.IPv4.toString());
+        ArrayList<String> actions = new ArrayList<>();
+        actions.add(FlowAction.DROP.toString());
+        flowConfig.setActions(actions);
+
+        fc.addFlow("default", "flow3", "OF", "00:00:00:00:00:00:00:03", flowConfig);
+        */
 
         GetResponse<FlowConfigs> r1 = fc.getStaticFlowsForContainer("default");
         for (FlowConfig fconfig : r1.getEntity().getFlowConfig()) {
