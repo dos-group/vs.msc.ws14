@@ -7,59 +7,7 @@
     <version>1.0-SNAPSHOT</version>
     <name>sdn-data-process-engine-middleware</name>
 
-    <repositories>
-        <!-- OpenDayLight Released artifact -->
-        <repository>
-            <id>org.opendaylight.controller.release</id>
-            <name>org.opendaylight.controller.release</name>
-            <url>http://nexus.opendaylight.org/content/repositories/opendaylight.release/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <updatePolicy>never</updatePolicy>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
-        <!-- OpenDayLight Snapshot artifact -->
-        <repository>
-            <id>org.opendaylight.controller.snapshot</id>
-            <name>org.opendaylight.controller.snapshot</name>
-            <url>http://nexus.opendaylight.org/content/repositories/opendaylight.snapshot/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </repository>
-    </repositories>
-
     <dependencies>
-        <!-- OpenDayLight -->
-        <dependency>
-            <groupId>org.opendaylight.controller</groupId>
-            <artifactId>northbound.client</artifactId>
-            <classifier>full-java-client</classifier>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
-        <!-- local -->
-        <dependency>
-            <groupId>org.opendaylight.tools</groupId>
-            <artifactId>rest.client</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/rest.client-0.1.0-SNAPSHOT.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>org.opendaylight.tools</groupId>
-            <artifactId>rest.clientgen</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/rest.clientgen-0.1.0-SNAPSHOT.jar</systemPath>
-        </dependency>
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -91,6 +39,17 @@
             <artifactId>jackson-jaxrs-json-provider</artifactId>
             <version>2.4.4</version>
         </dependency>
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>1.18.3</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.flexjson</groupId>
+            <artifactId>flexjson</artifactId>
+            <version>2.0</version>
+        </dependency>
+
 
         <!-- JUNG dependencies -->
         <dependency>
