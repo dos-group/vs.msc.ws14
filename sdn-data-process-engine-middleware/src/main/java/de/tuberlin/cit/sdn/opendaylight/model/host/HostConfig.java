@@ -7,6 +7,6 @@ public class HostConfig {
     public String nodeConnectorType;
     public String nodeConnectorId;
     public String vlan;
-    public String staticHost;
+    public boolean staticHost;
     public String networkAddress;
 }
