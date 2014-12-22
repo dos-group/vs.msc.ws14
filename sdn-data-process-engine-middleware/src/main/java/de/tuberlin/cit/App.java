@@ -1,12 +1,10 @@
 package de.tuberlin.cit;
 
-import de.tuberlin.cit.sdn.opendaylight.client.FlowProgrammerClient;
-import de.tuberlin.cit.sdn.opendaylight.client.HostTrackerClient;
-import de.tuberlin.cit.sdn.opendaylight.client.SwitchManagerClient;
-import de.tuberlin.cit.sdn.opendaylight.client.TopologyClient;
+import de.tuberlin.cit.sdn.opendaylight.client.*;
 import de.tuberlin.cit.sdn.opendaylight.model.flow.Flows;
 import de.tuberlin.cit.sdn.opendaylight.model.host.Hosts;
 import de.tuberlin.cit.sdn.opendaylight.model.node.Nodes;
+import de.tuberlin.cit.sdn.opendaylight.model.statistic.PortStatistics;
 import de.tuberlin.cit.sdn.opendaylight.model.topology.Topology;
 
 public class App {
@@ -24,5 +22,8 @@ public class App {
 
         FlowProgrammerClient flowClient = new FlowProgrammerClient();
         Flows flows = flowClient.getFlows();
+
+        StatisticsClient statClient = new StatisticsClient();
+        PortStatistics portStatistics = statClient.getPortStatistics();
     }
 }
