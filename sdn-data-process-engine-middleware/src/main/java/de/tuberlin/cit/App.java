@@ -4,6 +4,7 @@ import de.tuberlin.cit.sdn.opendaylight.client.*;
 import de.tuberlin.cit.sdn.opendaylight.model.flow.Flows;
 import de.tuberlin.cit.sdn.opendaylight.model.host.Hosts;
 import de.tuberlin.cit.sdn.opendaylight.model.node.Nodes;
+import de.tuberlin.cit.sdn.opendaylight.model.statistic.FlowStatistics;
 import de.tuberlin.cit.sdn.opendaylight.model.statistic.PortStatistics;
 import de.tuberlin.cit.sdn.opendaylight.model.topology.Topology;
 
@@ -25,5 +26,6 @@ public class App {
 
         StatisticsClient statClient = new StatisticsClient();
         PortStatistics portStatistics = statClient.getPortStatistics();
+        FlowStatistics flowStatistics = statClient.getFlowStatistics();
     }
 }

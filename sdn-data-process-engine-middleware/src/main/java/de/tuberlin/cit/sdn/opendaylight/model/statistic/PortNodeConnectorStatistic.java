@@ -3,9 +3,7 @@ package de.tuberlin.cit.sdn.opendaylight.model.statistic;
 import de.tuberlin.cit.sdn.opendaylight.model.node.NodeConnector;
 
 public class PortNodeConnectorStatistic {
-    
     public NodeConnector nodeConnector;
-
     public int receivePackets;
     public int transmitPackets;
     public int receiveBytes;
