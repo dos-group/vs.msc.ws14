@@ -13,7 +13,7 @@ def customNet():
 
     """
     Creates a custom network.
-    Type: Fat Tree, 10 hosts, 3 switch levels
+    Type: Fat Tree, 10 hosts, 3 switch levels; s2,s3 interconnect
     """
 
     """ Insert your controller IP here """
@@ -66,6 +66,7 @@ def customNet():
     net.addLink(s7, s6, **linkopts)
     net.addLink(s7, s5, **linkopts)
     net.addLink(s7, s5, **linkopts)
+    net.addLink(s3, s2, **linkopts)
 
     info('*** Starting network\n')
     net.start()
