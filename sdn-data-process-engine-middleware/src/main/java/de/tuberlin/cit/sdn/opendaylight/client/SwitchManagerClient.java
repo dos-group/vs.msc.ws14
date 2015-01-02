@@ -1,8 +1,17 @@
 package de.tuberlin.cit.sdn.opendaylight.client;
 
+import de.tuberlin.cit.sdn.opendaylight.model.OdlSettings;
 import de.tuberlin.cit.sdn.opendaylight.model.node.Nodes;
 
 public class SwitchManagerClient extends AbstractClient {
+
+    public SwitchManagerClient(OdlSettings _settings) {
+        super(_settings);
+    }
+
+    public SwitchManagerClient() {
+        super();
+    }
 
     @Override
     public String getBaseUrl() {

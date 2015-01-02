@@ -1,5 +1,6 @@
 package de.tuberlin.cit.sdn.opendaylight.client;
 
+import de.tuberlin.cit.sdn.opendaylight.model.OdlSettings;
 import de.tuberlin.cit.sdn.opendaylight.model.node.Node;
 import de.tuberlin.cit.sdn.opendaylight.model.statistic.FlowNodeStatistic;
 import de.tuberlin.cit.sdn.opendaylight.model.statistic.FlowStatistics;
@@ -7,6 +8,14 @@ import de.tuberlin.cit.sdn.opendaylight.model.statistic.PortNodeStatistic;
 import de.tuberlin.cit.sdn.opendaylight.model.statistic.PortStatistics;
 
 public class StatisticsClient extends AbstractClient {
+
+    public StatisticsClient(OdlSettings _settings) {
+        super(_settings);
+    }
+
+    public StatisticsClient() {
+        super();
+    }
 
     @Override
     public String getBaseUrl() {

@@ -1,8 +1,17 @@
 package de.tuberlin.cit.sdn.opendaylight.client;
 
+import de.tuberlin.cit.sdn.opendaylight.model.OdlSettings;
 import de.tuberlin.cit.sdn.opendaylight.model.host.Hosts;
 
 public class HostTrackerClient extends AbstractClient {
+
+    public HostTrackerClient(OdlSettings _settings) {
+        super(_settings);
+    }
+
+    public HostTrackerClient() {
+        super();
+    }
 
     @Override
     public String getBaseUrl() {

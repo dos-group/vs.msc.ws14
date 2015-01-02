@@ -3,24 +3,28 @@ package de.tuberlin.cit.sdn.opendaylight.client;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
+import de.tuberlin.cit.sdn.opendaylight.model.OdlSettings;
 
 import javax.ws.rs.core.MediaType;
 
 abstract class AbstractClient {
-    private String url = "http://localhost:8080";
-    private String user = "admin";
-    private String password = "admin";
+    OdlSettings odls = null;
 
     private Client client = Client.create();
 
+    public AbstractClient(OdlSettings _settings) {
+        odls = _settings;
+        client.addFilter(new HTTPBasicAuthFilter(odls.GetUsername(), odls.GetPassword()));
+    }
     public AbstractClient() {
-        client.addFilter(new HTTPBasicAuthFilter(user, password));
+        odls = new OdlSettings();
+        client.addFilter(new HTTPBasicAuthFilter(odls.GetUsername(), odls.GetPassword()));
     }
 
     public abstract String getBaseUrl();
 
     public WebResource.Builder resource(String path) {
-        return client.resource(url + getBaseUrl() + path)
+        return client.resource(odls.GetUrl() + getBaseUrl() + path)
                 .accept(MediaType.APPLICATION_JSON_TYPE)
                 .type(MediaType.APPLICATION_JSON_TYPE);
     }

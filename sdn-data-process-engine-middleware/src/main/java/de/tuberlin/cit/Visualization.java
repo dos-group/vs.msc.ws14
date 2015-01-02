@@ -1,8 +1,10 @@
 package de.tuberlin.cit;
 
+import de.tuberlin.cit.sdn.opendaylight.Utils;
 import de.tuberlin.cit.sdn.opendaylight.client.HostTrackerClient;
 import de.tuberlin.cit.sdn.opendaylight.client.SwitchManagerClient;
 import de.tuberlin.cit.sdn.opendaylight.client.TopologyClient;
+import de.tuberlin.cit.sdn.opendaylight.model.OdlSettings;
 import de.tuberlin.cit.sdn.opendaylight.model.host.HostConfig;
 import de.tuberlin.cit.sdn.opendaylight.model.node.NodeConnector;
 import de.tuberlin.cit.sdn.opendaylight.model.node.NodeProperty;
@@ -26,7 +28,11 @@ public class Visualization {
     private TopologyClient topologyClient;
     private HostTrackerClient hostClient;
 
-
+    public Visualization(OdlSettings odlSettings) {
+        switchClient = new SwitchManagerClient(odlSettings);
+        topologyClient = new TopologyClient(odlSettings);
+        hostClient = new HostTrackerClient(odlSettings);
+    }
     public Visualization() {
         switchClient = new SwitchManagerClient();
         topologyClient = new TopologyClient();
@@ -64,7 +70,8 @@ public class Visualization {
     }
 
     public static void main(String[] args) {
-        Visualization visualization = new Visualization(); //We create our graph in here
+
+        Visualization visualization = new Visualization(Utils.GetInstance().ReadSettings(args)); //We create our graph in here
         Graph<String, String> graph = visualization.getNetworkGraph();
 
         Layout<String, String> layout = new ISOMLayout<>(graph);

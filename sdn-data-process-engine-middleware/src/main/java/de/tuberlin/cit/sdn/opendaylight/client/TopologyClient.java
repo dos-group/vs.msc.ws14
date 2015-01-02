@@ -1,8 +1,18 @@
 package de.tuberlin.cit.sdn.opendaylight.client;
 
+import de.tuberlin.cit.sdn.opendaylight.model.OdlSettings;
 import de.tuberlin.cit.sdn.opendaylight.model.topology.Topology;
 
 public class TopologyClient extends AbstractClient {
+
+    public TopologyClient(OdlSettings _settings) {
+        super(_settings);
+    }
+
+    public TopologyClient() {
+        super();
+    }
+
     @Override
     public String getBaseUrl() {
         return "/controller/nb/v2/topology/";

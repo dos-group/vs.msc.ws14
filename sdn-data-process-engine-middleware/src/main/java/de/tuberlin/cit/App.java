@@ -1,30 +1,36 @@
 package de.tuberlin.cit;
 
+import de.tuberlin.cit.sdn.opendaylight.Utils;
 import de.tuberlin.cit.sdn.opendaylight.client.*;
+import de.tuberlin.cit.sdn.opendaylight.model.OdlSettings;
 import de.tuberlin.cit.sdn.opendaylight.model.flow.Flows;
 import de.tuberlin.cit.sdn.opendaylight.model.host.Hosts;
 import de.tuberlin.cit.sdn.opendaylight.model.node.Nodes;
 import de.tuberlin.cit.sdn.opendaylight.model.statistic.FlowStatistics;
 import de.tuberlin.cit.sdn.opendaylight.model.statistic.PortStatistics;
 import de.tuberlin.cit.sdn.opendaylight.model.topology.Topology;
+import org.apache.commons.cli.*;
 
 public class App {
 
     public static void main(String[] args) {
-        SwitchManagerClient switchClient = new SwitchManagerClient();
+
+        OdlSettings odlSettings = Utils.GetInstance().ReadSettings(args);
+
+        SwitchManagerClient switchClient = new SwitchManagerClient(odlSettings);
         Nodes nodes = switchClient.getNodes();
 
-        TopologyClient topoClient = new TopologyClient();
+        TopologyClient topoClient = new TopologyClient(odlSettings);
         Topology topology = topoClient.getTopology();
 
-        HostTrackerClient hostClient = new HostTrackerClient();
+        HostTrackerClient hostClient = new HostTrackerClient(odlSettings);
         Hosts activeHosts = hostClient.getActiveHosts();
         Hosts inactiveHosts = hostClient.getInactiveHosts();
 
-        FlowProgrammerClient flowClient = new FlowProgrammerClient();
+        FlowProgrammerClient flowClient = new FlowProgrammerClient(odlSettings);
         Flows flows = flowClient.getFlows();
 
-        StatisticsClient statClient = new StatisticsClient();
+        StatisticsClient statClient = new StatisticsClient(odlSettings);
         PortStatistics portStatistics = statClient.getPortStatistics();
         FlowStatistics flowStatistics = statClient.getFlowStatistics();
     }
