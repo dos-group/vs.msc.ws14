@@ -5,8 +5,8 @@ import de.tuberlin.cit.sdn.opendaylight.model.node.Nodes;
 
 public class SwitchManagerClient extends AbstractClient {
 
-    public SwitchManagerClient(OdlSettings _settings) {
-        super(_settings);
+    public SwitchManagerClient(OdlSettings settings) {
+        super(settings);
     }
 
     public SwitchManagerClient() {

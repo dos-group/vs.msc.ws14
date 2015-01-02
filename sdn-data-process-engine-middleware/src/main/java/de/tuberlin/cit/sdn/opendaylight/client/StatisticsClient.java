@@ -9,8 +9,8 @@ import de.tuberlin.cit.sdn.opendaylight.model.statistic.PortStatistics;
 
 public class StatisticsClient extends AbstractClient {
 
-    public StatisticsClient(OdlSettings _settings) {
-        super(_settings);
+    public StatisticsClient(OdlSettings settings) {
+        super(settings);
     }
 
     public StatisticsClient() {

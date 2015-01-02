@@ -5,8 +5,8 @@ import de.tuberlin.cit.sdn.opendaylight.model.host.Hosts;
 
 public class HostTrackerClient extends AbstractClient {
 
-    public HostTrackerClient(OdlSettings _settings) {
-        super(_settings);
+    public HostTrackerClient(OdlSettings settings) {
+        super(settings);
     }
 
     public HostTrackerClient() {
