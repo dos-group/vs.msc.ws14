@@ -1,68 +1,31 @@
 package de.tuberlin.cit;
 
-import de.tuberlin.cit.sdn.opendaylight.FlowClient;
-import org.apache.commons.cli.*;
-import org.opendaylight.controller.flowprogrammer.northbound.FlowConfigs;
-import org.opendaylight.controller.forwardingrulesmanager.FlowConfig;
-import org.opendaylight.tools.clientgen.GetResponse;
+import de.tuberlin.cit.sdn.opendaylight.client.*;
+import de.tuberlin.cit.sdn.opendaylight.model.flow.Flows;
+import de.tuberlin.cit.sdn.opendaylight.model.host.Hosts;
+import de.tuberlin.cit.sdn.opendaylight.model.node.Nodes;
+import de.tuberlin.cit.sdn.opendaylight.model.statistic.FlowStatistics;
+import de.tuberlin.cit.sdn.opendaylight.model.statistic.PortStatistics;
+import de.tuberlin.cit.sdn.opendaylight.model.topology.Topology;
 
+public class App {
 
-/**
- * Main Class a.k.a. Entry Point.
- */
-public class App
-{
-    public static void main(String[] args)
-    {
-        String odlIP = "127.0.0.1";
-        String odlUser = "admin";
-        String odlPw = "admin";
+    public static void main(String[] args) {
+        SwitchManagerClient switchClient = new SwitchManagerClient();
+        Nodes nodes = switchClient.getNodes();
 
-        Options options = new Options();
-        options.addOption("a", true, "IP address of controller. Default: 127.0.0.1");
-        options.addOption("u", true, "Opendaylight username (default: 'admin')");
-        options.addOption("p", true, "Opendaylight password (default: 'admin')");
+        TopologyClient topoClient = new TopologyClient();
+        Topology topology = topoClient.getTopology();
 
-        CommandLineParser parser = new BasicParser();
-        CommandLine cmd = null;
-        try {
-            cmd = parser.parse(options, args);
-            if (cmd.hasOption("a")) {
-                odlIP = cmd.getOptionValue("a").toString();
-            }
-            if (cmd.hasOption("u")) {
-                odlUser = cmd.getOptionValue("u").toString();
-            }
-            if (cmd.hasOption("p")) {
-                odlPw = cmd.getOptionValue("p").toString();
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        System.out.println("Using controller @ " + odlIP);
-        System.out.println("Using Opendaylight user '" + odlUser + "'");
-        System.out.println("Using password '" + odlPw + "'");
+        HostTrackerClient hostClient = new HostTrackerClient();
+        Hosts activeHosts = hostClient.getActiveHosts();
+        Hosts inactiveHosts = hostClient.getInactiveHosts();
 
-        // ---------------------------
-        // Sample Flow retrieval
-        FlowClient fc = new FlowClient(odlIP, odlUser, odlPw);
+        FlowProgrammerClient flowClient = new FlowProgrammerClient();
+        Flows flows = flowClient.getFlows();
 
-
-        /* Simple Flow
-        FlowConfig flowConfig = new FlowConfig();
-        flowConfig.setInstallInHw("true");
-        flowConfig.setEtherType(EtherType.IPv4.toString());
-        ArrayList<String> actions = new ArrayList<>();
-        actions.add(FlowAction.DROP.toString());
-        flowConfig.setActions(actions);
-
-        fc.addFlow("default", "flow3", "OF", "00:00:00:00:00:00:00:03", flowConfig);
-        */
-
-        GetResponse<FlowConfigs> r1 = fc.getStaticFlowsForContainer("default");
-        for (FlowConfig fconfig : r1.getEntity().getFlowConfig()) {
-            System.out.println("--------- " + fconfig.getName());
-        }
-        // ---------------------------
+        StatisticsClient statClient = new StatisticsClient();
+        PortStatistics portStatistics = statClient.getPortStatistics();
+        FlowStatistics flowStatistics = statClient.getFlowStatistics();
     }
 }

@@ -1,5 +1,12 @@
 package de.tuberlin.cit;
 
+import de.tuberlin.cit.sdn.opendaylight.client.HostTrackerClient;
+import de.tuberlin.cit.sdn.opendaylight.client.SwitchManagerClient;
+import de.tuberlin.cit.sdn.opendaylight.client.TopologyClient;
+import de.tuberlin.cit.sdn.opendaylight.model.host.HostConfig;
+import de.tuberlin.cit.sdn.opendaylight.model.node.NodeConnector;
+import de.tuberlin.cit.sdn.opendaylight.model.node.NodeProperty;
+import de.tuberlin.cit.sdn.opendaylight.model.topology.EdgeProperty;
 import edu.uci.ics.jung.algorithms.layout.ISOMLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.Graph;
@@ -8,70 +15,48 @@ import edu.uci.ics.jung.visualization.BasicVisualizationServer;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.renderers.Renderer;
 import org.apache.commons.collections15.Transformer;
-import org.opendaylight.controller.hosttracker.northbound.HostConfig;
-import org.opendaylight.controller.hosttracker.northbound.Hosts;
-import org.opendaylight.controller.sal.core.Edge;
-import org.opendaylight.controller.topology.northbound.EdgeProperties;
-import org.opendaylight.controller.topology.northbound.Topology;
-import org.opendaylight.tools.client.rest.*;
 
 import javax.swing.*;
-import javax.ws.rs.core.MediaType;
 import java.awt.*;
-import java.util.Collection;
 import java.util.List;
 
 public class Visualization {
 
-    private Config config = new Config();
-    private FlowprogrammerHelper flowHelper = new FlowprogrammerHelper();
-    private StatisticsHelper statHelper = new StatisticsHelper();
-    private TopologyHelper topoHelper = new TopologyHelper();
-    private HosttrackerHelper hostHelper = new HosttrackerHelper();
+    private SwitchManagerClient switchClient;
+    private TopologyClient topologyClient;
+    private HostTrackerClient hostClient;
 
 
-    public Visualization(String username, String password, String ip) {
-        config = new Config();
-        config.setUsername(username);
-        config.setPassword(password);
-        config.setAdminUrl("http://" + ip + ":8080");
-        // mandatory - json somehow doesn't work
-        config.setMediaType(MediaType.APPLICATION_XML_TYPE);
-
-        flowHelper.setConfig(config);
-        statHelper.setConfig(config);
-        topoHelper.setConfig(config);
-        hostHelper.setConfig(config);
+    public Visualization() {
+        switchClient = new SwitchManagerClient();
+        topologyClient = new TopologyClient();
+        hostClient = new HostTrackerClient();
     }
 
     public Graph<String, String> getNetworkGraph() {
         Graph<String, String> graph = new UndirectedSparseGraph<>();
 
-        // in ODL - node == switch
-        // switch - switch relationship
-        Topology topology = topoHelper.getTopology("default").getEntity();
-        List<EdgeProperties> properties = topology.getEdgeProperties();
-        if (properties != null) {
-            for (EdgeProperties p : properties) {
-                Edge edge = p.getEdge();
-                String tail = edge.getTailNodeConnector().getNodeConnectorNode().getNodeIDString();
-                String head = edge.getHeadNodeConnector().getNodeConnectorNode().getNodeIDString();
-                graph.addVertex(head);
-                graph.addVertex(tail);
-                graph.addEdge(head + tail, head, tail);
+        List<NodeProperty> nodes = switchClient.getNodes().nodeProperties;
+        if (nodes != null) {
+            for (NodeProperty n : nodes) {
+                graph.addVertex(n.node.id);
             }
         }
 
-        // host - switch relationships
-        Hosts hosts = hostHelper.getActiveHosts("default").getEntity();
-        Collection<HostConfig> hostConfigs = hosts.getHostConfig();
-        if (hostConfigs != null) {
-            for (HostConfig hc : hostConfigs) {
-                String sw = hc.getNodeId();
-                String ip = hc.getNetworkAddress();
-                graph.addVertex(sw);
-                graph.addVertex(ip);
-                graph.addEdge(ip + sw, ip, sw);
+        List<HostConfig> hosts = hostClient.getActiveHosts().hostConfig;
+        if (hosts != null) {
+            for (HostConfig h : hosts) {
+                graph.addVertex(h.networkAddress);
+                graph.addEdge(h.networkAddress + h.nodeId, h.networkAddress, h.nodeId);
+            }
+        }
+
+        List<EdgeProperty> edges = topologyClient.getTopology().edgeProperties;
+        if (edges != null) {
+            for (EdgeProperty e : edges) {
+                NodeConnector tail = e.edge.tailNodeConnector;
+                NodeConnector head = e.edge.headNodeConnector;
+                graph.addEdge(tail.node.id + head.node.id, tail.node.id, head.node.id);
             }
         }
 
@@ -79,20 +64,16 @@ public class Visualization {
     }
 
     public static void main(String[] args) {
-        String ip = "127.0.0.1";
-        String username = "admin";
-        String password = "admin";
-
-        Visualization visualization = new Visualization(username, password, ip); //We create our graph in here
+        Visualization visualization = new Visualization(); //We create our graph in here
         Graph<String, String> graph = visualization.getNetworkGraph();
 
         Layout<String, String> layout = new ISOMLayout<>(graph);
 
-        layout.setSize(new Dimension(600,600));
-        BasicVisualizationServer<String,String> vv = new BasicVisualizationServer<>(layout);
-        vv.setPreferredSize(new Dimension(700,700));
+        layout.setSize(new Dimension(600, 600));
+        BasicVisualizationServer<String, String> vv = new BasicVisualizationServer<>(layout);
+        vv.setPreferredSize(new Dimension(700, 700));
 
-        Transformer<String,Paint> vertexPaint = i -> Color.GREEN;
+        Transformer<String, Paint> vertexPaint = i -> Color.GREEN;
 
         vv.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
         vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
