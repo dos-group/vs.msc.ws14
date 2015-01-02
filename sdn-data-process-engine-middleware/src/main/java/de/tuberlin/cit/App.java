@@ -1,6 +1,6 @@
 package de.tuberlin.cit;
 
-import de.tuberlin.cit.sdn.opendaylight.Utils;
+import de.tuberlin.cit.sdn.Utils;
 import de.tuberlin.cit.sdn.opendaylight.client.*;
 import de.tuberlin.cit.sdn.opendaylight.model.OdlSettings;
 import de.tuberlin.cit.sdn.opendaylight.model.flow.Flows;
@@ -9,13 +9,12 @@ import de.tuberlin.cit.sdn.opendaylight.model.node.Nodes;
 import de.tuberlin.cit.sdn.opendaylight.model.statistic.FlowStatistics;
 import de.tuberlin.cit.sdn.opendaylight.model.statistic.PortStatistics;
 import de.tuberlin.cit.sdn.opendaylight.model.topology.Topology;
-import org.apache.commons.cli.*;
 
 public class App {
 
     public static void main(String[] args) {
 
-        OdlSettings odlSettings = Utils.GetInstance().ReadSettings(args);
+        OdlSettings odlSettings = Utils.getInstance().readSettings(args);
 
         SwitchManagerClient switchClient = new SwitchManagerClient(odlSettings);
         Nodes nodes = switchClient.getNodes();

@@ -1,4 +1,4 @@
-package de.tuberlin.cit.sdn.opendaylight;
+package de.tuberlin.cit.sdn;
 
 import de.tuberlin.cit.sdn.opendaylight.model.OdlSettings;
 import org.apache.commons.cli.*;
@@ -12,7 +12,7 @@ public class Utils {
 
     private static Utils _instance = null;
 
-    public static Utils GetInstance(){
+    public static Utils getInstance(){
         if(_instance == null)
             _instance = new Utils();
         return _instance;
@@ -21,7 +21,7 @@ public class Utils {
     private Utils() {
     }
 
-    public OdlSettings ReadSettings(String[] args) {
+    public OdlSettings readSettings(String[] args) {
         Options options = new Options();
         options.addOption("ip", true, "IP address of controller. Default: 127.0.0.1");
         options.addOption("u", true, "Opendaylight username (default: 'admin')");

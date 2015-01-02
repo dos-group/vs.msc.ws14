@@ -20,19 +20,19 @@ public class OdlSettings {
     public OdlSettings() {
     }
 
-    public String GetUsername(){
+    public String getUsername(){
         return user;
     }
 
-    public String GetPassword(){
+    public String getPassword(){
         return password;
     }
 
-    public String GetIp(){
+    public String getIp(){
         return ip;
     }
 
-    public String GetPort(){
+    public String getPort(){
         return port;
     }
 

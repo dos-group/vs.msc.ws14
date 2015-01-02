@@ -1,6 +1,6 @@
 package de.tuberlin.cit;
 
-import de.tuberlin.cit.sdn.opendaylight.Utils;
+import de.tuberlin.cit.sdn.Utils;
 import de.tuberlin.cit.sdn.opendaylight.client.HostTrackerClient;
 import de.tuberlin.cit.sdn.opendaylight.client.SwitchManagerClient;
 import de.tuberlin.cit.sdn.opendaylight.client.TopologyClient;
@@ -71,7 +71,7 @@ public class Visualization {
 
     public static void main(String[] args) {
 
-        Visualization visualization = new Visualization(Utils.GetInstance().ReadSettings(args)); //We create our graph in here
+        Visualization visualization = new Visualization(Utils.getInstance().readSettings(args)); //We create our graph in here
         Graph<String, String> graph = visualization.getNetworkGraph();
 
         Layout<String, String> layout = new ISOMLayout<>(graph);

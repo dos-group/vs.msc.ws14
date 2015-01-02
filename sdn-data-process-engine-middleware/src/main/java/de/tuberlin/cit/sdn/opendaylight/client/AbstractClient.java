@@ -14,11 +14,11 @@ abstract class AbstractClient {
 
     public AbstractClient(OdlSettings _settings) {
         odls = _settings;
-        client.addFilter(new HTTPBasicAuthFilter(odls.GetUsername(), odls.GetPassword()));
+        client.addFilter(new HTTPBasicAuthFilter(odls.getUsername(), odls.getPassword()));
     }
     public AbstractClient() {
         odls = new OdlSettings();
-        client.addFilter(new HTTPBasicAuthFilter(odls.GetUsername(), odls.GetPassword()));
+        client.addFilter(new HTTPBasicAuthFilter(odls.getUsername(), odls.getPassword()));
     }
 
     public abstract String getBaseUrl();
