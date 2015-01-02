@@ -10,11 +10,11 @@ public class OdlSettings {
     private String password = "admin";
     private String port = "8080";
 
-    public OdlSettings(String _ip, String _user, String _password, String _port) {
-        ip = _ip;
-        port = _port;
-        user = _user;
-        password = _password;
+    public OdlSettings(String ip, String user, String password, String port) {
+        this.ip = ip;
+        this.port = port;
+        this.user = user;
+        this.password = password;
     }
 
     public OdlSettings() {

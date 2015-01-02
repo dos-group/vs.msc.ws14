@@ -10,12 +10,12 @@ import org.apache.commons.cli.*;
  */
 public class Utils {
 
-    private static Utils _instance = null;
+    private static Utils instance = null;
 
     public static Utils GetInstance(){
-        if(_instance == null)
-            _instance = new Utils();
-        return _instance;
+        if(instance == null)
+            instance = new Utils();
+        return instance;
     }
 
     private Utils() {
@@ -54,13 +54,13 @@ public class Utils {
             e.printStackTrace();
         }
 
-        OdlSettings _settings = new OdlSettings(odlIP, odlUser, odlPw, odlPort);
+        OdlSettings settings = new OdlSettings(odlIP, odlUser, odlPw, odlPort);
 
         System.out.println("Using controller @ " + odlIP);
         System.out.println("With port port " + odlPort);
         System.out.println("Using Opendaylight user '" + odlUser + "'");
         System.out.println("With password '" + odlPw + "'");
 
-        return _settings;
+        return settings;
     }
 }

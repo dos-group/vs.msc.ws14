@@ -12,8 +12,8 @@ abstract class AbstractClient {
 
     private Client client = Client.create();
 
-    public AbstractClient(OdlSettings _settings) {
-        odls = _settings;
+    public AbstractClient(OdlSettings settings) {
+        odls = settings;
         client.addFilter(new HTTPBasicAuthFilter(odls.GetUsername(), odls.GetPassword()));
     }
     public AbstractClient() {

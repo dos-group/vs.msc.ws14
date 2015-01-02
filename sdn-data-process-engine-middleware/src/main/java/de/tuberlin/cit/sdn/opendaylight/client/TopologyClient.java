@@ -5,8 +5,8 @@ import de.tuberlin.cit.sdn.opendaylight.model.topology.Topology;
 
 public class TopologyClient extends AbstractClient {
 
-    public TopologyClient(OdlSettings _settings) {
-        super(_settings);
+    public TopologyClient(OdlSettings settings) {
+        super(settings);
     }
 
     public TopologyClient() {
