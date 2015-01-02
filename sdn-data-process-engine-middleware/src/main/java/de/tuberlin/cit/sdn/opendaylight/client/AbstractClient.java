@@ -24,7 +24,7 @@ abstract class AbstractClient {
     public abstract String getBaseUrl();
 
     public WebResource.Builder resource(String path) {
-        return client.resource(odls.GetUrl() + getBaseUrl() + path)
+        return client.resource(odls.getUrl() + getBaseUrl() + path)
                 .accept(MediaType.APPLICATION_JSON_TYPE)
                 .type(MediaType.APPLICATION_JSON_TYPE);
     }
