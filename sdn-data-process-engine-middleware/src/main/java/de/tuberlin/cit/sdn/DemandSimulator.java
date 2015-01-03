@@ -5,6 +5,8 @@ import de.tuberlin.cit.sdn.model.Hostdemand;
 import de.tuberlin.cit.sdn.opendaylight.client.HostTrackerClient;
 import de.tuberlin.cit.sdn.opendaylight.model.OdlSettings;
 import de.tuberlin.cit.sdn.opendaylight.model.host.HostConfig;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,6 +28,8 @@ public class DemandSimulator implements Runnable {
 
     @Override
     public void run() {
+
+        Logger logger = LogManager.getLogger("SDNMiddlewareLogger");
 
         //initial wait to avoid rest call interference
         try {
@@ -60,13 +64,13 @@ public class DemandSimulator implements Runnable {
                     randomDemands.add(new Hostdemand(fromHost, toHosts));
                 }
                 Demands.getInstance().stepForward(randomDemands);
-                System.out.println("Random demands created");
+                logger.info("Random demands created");
 
                 for(Hostdemand hd : randomDemands){
-                    System.out.println("---New future hostdemand:---");
-                    System.out.println("From: " + hd.getOriginHost().networkAddress);
+                    logger.info("---New future hostdemand:---");
+                    logger.info("From: " + hd.getOriginHost().networkAddress);
                     for(HostConfig hc : hd.getTargetHosts()){
-                        System.out.println("- To: " + hc.networkAddress);
+                        logger.info("- To: " + hc.networkAddress);
                     }
                 }
             }
