@@ -1,6 +1,5 @@
 package de.tuberlin.cit;
 
-import de.tuberlin.cit.sdn.Utils;
 import de.tuberlin.cit.sdn.opendaylight.client.HostTrackerClient;
 import de.tuberlin.cit.sdn.opendaylight.client.SwitchManagerClient;
 import de.tuberlin.cit.sdn.opendaylight.client.TopologyClient;
