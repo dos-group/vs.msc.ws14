@@ -324,52 +324,53 @@ public class Scheduler implements InstanceListener, SlotAvailablilityListener {
 			Iterator<Instance> locations = requestedLocations == null ? null : requestedLocations.iterator();
 			
 			Instance instanceToUse = null;
+			Locality locality = Locality.UNCONSTRAINED;
 
 			try {
 				Hostservice hs = (Hostservice) Naming.lookup("//localhost/HostSvc");
 				instanceToUse = hs.getExecutionHost();
-				LOG.debug("Using instance " + instanceToUse.getInstanceConnectionInfo().getInetAdress());
+
+				if (locations != null && locations.hasNext()) {
+					// we have a locality preference
+
+					while (locations.hasNext()) {
+						Instance location = locations.next();
+
+						if (location != null && this.instancesWithAvailableResources.remove(location)) {
+							instanceToUse = location;
+							locality = Locality.LOCAL;
+
+							if (LOG.isDebugEnabled()) {
+								LOG.debug("Local assignment: " + vertex.getSimpleName() + " --> " + location);
+							}
+
+							break;
+						}
+					}
+
+					if (instanceToUse == null) {
+						//instanceToUse = this.instancesWithAvailableResources.poll();
+						instanceToUse = hs.getExecutionHost();
+						locality = Locality.NON_LOCAL;
+						if (LOG.isDebugEnabled()) {
+							LOG.debug("Non-local assignment: " + vertex.getSimpleName() + " --> " + instanceToUse);
+						}
+					}
+				}
+				else {
+					//instanceToUse = this.instancesWithAvailableResources.poll();
+					instanceToUse = hs.getExecutionHost();
+					if (LOG.isDebugEnabled()) {
+						LOG.debug("Unconstrained assignment: " + vertex.getSimpleName() + " --> " + instanceToUse);
+					}
+				}
 			}
 			catch (Exception e) {
-				System.out.println ("RMI HostService exception: " + e);
+				System.out.println("RMI HostService exception: " + e);
 			}
 
-			Locality locality = Locality.UNCONSTRAINED;
+			LOG.debug("Using instance " + instanceToUse.getInstanceConnectionInfo().getInetAdress());
 
-			/*
-			if (locations != null && locations.hasNext()) {
-				// we have a locality preference
-				
-				while (locations.hasNext()) {
-					Instance location = locations.next();
-					
-					if (location != null && this.instancesWithAvailableResources.remove(location)) {
-						instanceToUse = location;
-						locality = Locality.LOCAL;
-						
-						if (LOG.isDebugEnabled()) {
-							LOG.debug("Local assignment: " + vertex.getSimpleName() + " --> " + location);
-						}
-						
-						break;
-					}
-				}
-				
-				if (instanceToUse == null) {
-					instanceToUse = this.instancesWithAvailableResources.poll();
-					locality = Locality.NON_LOCAL;
-					if (LOG.isDebugEnabled()) {
-						LOG.debug("Non-local assignment: " + vertex.getSimpleName() + " --> " + instanceToUse);
-					}
-				}
-			}
-			else {
-				instanceToUse = this.instancesWithAvailableResources.poll();
-				if (LOG.isDebugEnabled()) {
-					LOG.debug("Unconstrained assignment: " + vertex.getSimpleName() + " --> " + instanceToUse);
-				}
-			}
-			*/
 			try {
 				AllocatedSlot slot = instanceToUse.allocateSlot(vertex.getJobId());
 				
