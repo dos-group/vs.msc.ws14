@@ -18,6 +18,7 @@
 
 package org.apache.flink.runtime.jobmanager.scheduler;
 
+import java.rmi.Naming;
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.HashSet;
@@ -36,6 +37,7 @@ import org.apache.flink.runtime.instance.Instance;
 import org.apache.flink.runtime.instance.InstanceDiedException;
 import org.apache.flink.runtime.instance.InstanceListener;
 import org.apache.flink.util.ExceptionUtils;
+import de.tuberlin.cit.services.interfaces.Hostservice;
 
 /**
  * The scheduler is responsible for distributing the ready-to-run tasks and assigning them to instances and
@@ -322,8 +324,19 @@ public class Scheduler implements InstanceListener, SlotAvailablilityListener {
 			Iterator<Instance> locations = requestedLocations == null ? null : requestedLocations.iterator();
 			
 			Instance instanceToUse = null;
+
+			try {
+				Hostservice hs = (Hostservice) Naming.lookup("//localhost/HostSvc");
+				instanceToUse = hs.getExecutionHost();
+				LOG.debug("Using instance " + instanceToUse.getInstanceConnectionInfo().getInetAdress());
+			}
+			catch (Exception e) {
+				System.out.println ("RMI HostService exception: " + e);
+			}
+
 			Locality locality = Locality.UNCONSTRAINED;
-			
+
+			/*
 			if (locations != null && locations.hasNext()) {
 				// we have a locality preference
 				
@@ -356,7 +369,7 @@ public class Scheduler implements InstanceListener, SlotAvailablilityListener {
 					LOG.debug("Unconstrained assignment: " + vertex.getSimpleName() + " --> " + instanceToUse);
 				}
 			}
-			
+			*/
 			try {
 				AllocatedSlot slot = instanceToUse.allocateSlot(vertex.getJobId());
 				

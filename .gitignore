@@ -14,3 +14,4 @@
 # Maven
 log/
 target/
+flink-0-7-custom/flink-runtime/src/main/resources/.version.properties
