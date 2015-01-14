@@ -8,23 +8,22 @@ import de.tuberlin.cit.sdn.opendaylight.model.OdlSettings;
 import javax.ws.rs.core.MediaType;
 
 abstract class AbstractClient {
-    OdlSettings odls = null;
-
-    private Client client = Client.create();
+    private OdlSettings settings;
+    private Client client;
 
     public AbstractClient(OdlSettings settings) {
-        odls = settings;
-        client.addFilter(new HTTPBasicAuthFilter(odls.getUsername(), odls.getPassword()));
+        this.settings = settings;
+        client = Client.create();
+        client.addFilter(new HTTPBasicAuthFilter(settings.getUsername(), settings.getPassword()));
     }
     public AbstractClient() {
-        odls = new OdlSettings();
-        client.addFilter(new HTTPBasicAuthFilter(odls.getUsername(), odls.getPassword()));
+        this(new OdlSettings());
     }
 
     public abstract String getBaseUrl();
 
     public WebResource.Builder resource(String path) {
-        return client.resource(odls.getUrl() + getBaseUrl() + path)
+        return client.resource(settings.getUrl() + getBaseUrl() + path)
                 .accept(MediaType.APPLICATION_JSON_TYPE)
                 .type(MediaType.APPLICATION_JSON_TYPE);
     }
