@@ -79,7 +79,12 @@ public class Visualization {
         BasicVisualizationServer<String, String> vv = new BasicVisualizationServer<>(layout);
         vv.setPreferredSize(new Dimension(700, 700));
 
-        Transformer<String, Paint> vertexPaint = i -> Color.GREEN;
+        Transformer<String, Paint> vertexPaint = new Transformer<String, Paint>() {
+            @Override
+            public Paint transform(String s) {
+                return Color.GREEN;
+            }
+        };
 
         vv.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
         vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
