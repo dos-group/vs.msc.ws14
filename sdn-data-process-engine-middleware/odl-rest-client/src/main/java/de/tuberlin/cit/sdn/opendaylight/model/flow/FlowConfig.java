@@ -9,7 +9,9 @@ public class FlowConfig {
     public Node node;
     public Integer ingressPort;
     public Integer priority;
+    // when the entry should be removed regardless of activity
     public Integer hardTimeout;
+    // when the entry should be removed due to a lack of activity
     public Integer idleTimeout;
     public String cookie;
 

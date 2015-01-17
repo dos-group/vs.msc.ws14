@@ -16,7 +16,5 @@ public class PortNodeConnectorStatistic {
     public int receiveOverRunError;
     public int receiveCrcError;
     public int collisionCount;
-
-    // latenz + bandbreite
 }
 
