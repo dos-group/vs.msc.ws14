@@ -3,8 +3,8 @@ package de.tuberlin.cit.graph;
 import de.tuberlin.cit.graph.model.Host;
 import de.tuberlin.cit.graph.model.NetworkDevice;
 import de.tuberlin.cit.graph.model.NetworkEdge;
+import de.tuberlin.cit.sdn.opendaylight.model.Property;
 import de.tuberlin.cit.sdn.opendaylight.model.host.HostConfig;
-import de.tuberlin.cit.sdn.opendaylight.model.topology.Edge;
 import de.tuberlin.cit.sdn.opendaylight.model.topology.EdgeProperty;
 
 import java.util.ArrayList;
@@ -12,12 +12,13 @@ import java.util.List;
 
 public class NetworkFactory {
 
-    public NetworkEdge createNetworkEdge(Edge edge) {
+    public NetworkEdge createNetworkEdge(EdgeProperty e) {
         NetworkEdge networkEdge = new NetworkEdge();
-        networkEdge.setTailVertex(new NetworkDevice(edge.tailNodeConnector.node.id));
-        networkEdge.setTailPort(Integer.parseInt(edge.tailNodeConnector.id));
-        networkEdge.setHeadVertex(new NetworkDevice(edge.headNodeConnector.node.id));
-        networkEdge.setHeadPort(Integer.parseInt(edge.headNodeConnector.id));
+        networkEdge.setTailVertex(new NetworkDevice(e.edge.tailNodeConnector.node.id));
+        networkEdge.setTailPort(Integer.parseInt(e.edge.tailNodeConnector.id));
+        networkEdge.setHeadVertex(new NetworkDevice(e.edge.headNodeConnector.node.id));
+        networkEdge.setHeadPort(Integer.parseInt(e.edge.headNodeConnector.id));
+        networkEdge.setBandwidth(e.getBandwidth());
         return networkEdge;
     }
 
@@ -47,7 +48,7 @@ public class NetworkFactory {
         List<NetworkEdge> list = new ArrayList<>();
         if (edgeProperties != null) {
             for (EdgeProperty e : edgeProperties) {
-                list.add(createNetworkEdge(e.edge));
+                list.add(createNetworkEdge(e));
             }
         }
         if (hostConfigs != null) {
