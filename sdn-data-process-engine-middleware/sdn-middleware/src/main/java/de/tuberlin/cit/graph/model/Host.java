@@ -7,4 +7,12 @@ public class Host extends NetworkVertex {
     public Host(String id) {
         super(id);
     }
+
+    public String getMacAddress() {
+        return macAddress;
+    }
+
+    public void setMacAddress(String macAddress) {
+        this.macAddress = macAddress;
+    }
 }

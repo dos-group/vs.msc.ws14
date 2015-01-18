@@ -2,7 +2,6 @@ package de.tuberlin.cit.graph;
 
 import de.tuberlin.cit.graph.model.NetworkEdge;
 import de.tuberlin.cit.graph.model.NetworkVertex;
-import de.tuberlin.cit.graph.model.StaticGraphUtils;
 import edu.uci.ics.jung.algorithms.shortestpath.DijkstraShortestPath;
 import edu.uci.ics.jung.graph.DirectedSparseMultigraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
@@ -11,24 +10,24 @@ import org.apache.commons.collections15.Transformer;
 import java.util.List;
 
 public class PhysicalNetwork {
-    private PhysicalNetwork instance;
+    private static PhysicalNetwork instance;
 
     private DirectedSparseMultigraph graph;
 
     private PhysicalNetwork() {
     }
 
-    public PhysicalNetwork getInstance() {
+    public static PhysicalNetwork getInstance() {
         if (instance == null) {
-            this.instance = new PhysicalNetwork();
+            instance = new PhysicalNetwork();
         }
-        return this.instance;
+        return instance;
     }
 
     public void createOrUpdateGraph(final List<NetworkEdge> edges) {
         final DirectedSparseMultigraph<NetworkVertex, NetworkEdge> directedGraph = new DirectedSparseMultigraph();
         for (NetworkEdge edge : edges) {
-            directedGraph.addEdge(edge, edge.getHeadVertex(), edge.getTailVertex(), EdgeType.DIRECTED);
+            directedGraph.addEdge(edge, edge.getTailVertex(), edge.getHeadVertex(), EdgeType.DIRECTED);
         }
         this.graph = directedGraph;
     }
@@ -39,4 +38,7 @@ public class PhysicalNetwork {
         return alg.getDistance(node1,node2);
     }
 
+    public DirectedSparseMultigraph getGraph() {
+        return graph;
+    }
 }

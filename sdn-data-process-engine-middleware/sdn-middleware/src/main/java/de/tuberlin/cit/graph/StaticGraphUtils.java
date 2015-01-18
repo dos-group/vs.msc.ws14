@@ -1,6 +1,7 @@
-package de.tuberlin.cit.graph.model;
+package de.tuberlin.cit.graph;
 
 
+import de.tuberlin.cit.graph.model.NetworkEdge;
 import org.apache.commons.collections15.Transformer;
 
 public class StaticGraphUtils {

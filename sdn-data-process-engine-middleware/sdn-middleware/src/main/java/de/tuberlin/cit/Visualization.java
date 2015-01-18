@@ -1,19 +1,19 @@
 package de.tuberlin.cit;
 
+import de.tuberlin.cit.graph.NetworkFactory;
+import de.tuberlin.cit.graph.PhysicalNetwork;
+import de.tuberlin.cit.graph.model.NetworkEdge;
+import de.tuberlin.cit.graph.model.NetworkVertex;
 import de.tuberlin.cit.sdn.opendaylight.client.HostTrackerClient;
 import de.tuberlin.cit.sdn.opendaylight.client.SwitchManagerClient;
 import de.tuberlin.cit.sdn.opendaylight.client.TopologyClient;
 import de.tuberlin.cit.sdn.opendaylight.model.OdlSettings;
 import de.tuberlin.cit.sdn.opendaylight.model.host.HostConfig;
-import de.tuberlin.cit.sdn.opendaylight.model.node.NodeConnector;
-import de.tuberlin.cit.sdn.opendaylight.model.node.NodeProperty;
 import de.tuberlin.cit.sdn.opendaylight.model.topology.EdgeProperty;
 import edu.uci.ics.jung.algorithms.layout.ISOMLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.Graph;
-import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import edu.uci.ics.jung.visualization.BasicVisualizationServer;
-import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.renderers.Renderer;
 import org.apache.commons.collections15.Transformer;
 
@@ -27,6 +27,9 @@ public class Visualization {
     private TopologyClient topologyClient;
     private HostTrackerClient hostClient;
 
+    private NetworkFactory networkFactory = new NetworkFactory();
+    private PhysicalNetwork network = PhysicalNetwork.getInstance();
+
     public Visualization(OdlSettings odlSettings) {
         switchClient = new SwitchManagerClient(odlSettings);
         topologyClient = new TopologyClient(odlSettings);
@@ -38,57 +41,48 @@ public class Visualization {
         hostClient = new HostTrackerClient();
     }
 
-    public Graph<String, String> getNetworkGraph() {
-        Graph<String, String> graph = new UndirectedSparseGraph<>();
-
-        List<NodeProperty> nodes = switchClient.getNodes().nodeProperties;
-        if (nodes != null) {
-            for (NodeProperty n : nodes) {
-                graph.addVertex(n.node.id);
-            }
-        }
-
-        List<HostConfig> hosts = hostClient.getActiveHosts().hostConfig;
-        if (hosts != null) {
-            for (HostConfig h : hosts) {
-                graph.addVertex(h.networkAddress);
-                graph.addEdge(h.networkAddress + h.nodeId, h.networkAddress, h.nodeId);
-            }
-        }
-
-        List<EdgeProperty> edges = topologyClient.getTopology().edgeProperties;
-        if (edges != null) {
-            for (EdgeProperty e : edges) {
-                NodeConnector tail = e.edge.tailNodeConnector;
-                NodeConnector head = e.edge.headNodeConnector;
-                graph.addEdge(tail.node.id + head.node.id, tail.node.id, head.node.id);
-            }
-        }
-
-        return graph;
+    public static void main(String[] args) {
+        Visualization visualization = new Visualization(Utils.getInstance().readSettings(args)); //We create our graph in here
+        visualization.run();
     }
 
-    public static void main(String[] args) {
+    private void run() {
+        List<EdgeProperty> edgeProperties = topologyClient.getTopology().edgeProperties;
+        List<HostConfig> hostConfigs = hostClient.getActiveHosts().hostConfig;
+        network.createOrUpdateGraph(networkFactory.createNetworkEdges(edgeProperties, hostConfigs));
 
-        Visualization visualization = new Visualization(Utils.getInstance().readSettings(args)); //We create our graph in here
-        Graph<String, String> graph = visualization.getNetworkGraph();
+        Graph<NetworkVertex, NetworkEdge> graph = network.getGraph();
 
-        Layout<String, String> layout = new ISOMLayout<>(graph);
+        Layout<NetworkVertex, NetworkEdge> layout = new ISOMLayout<>(graph);
 
         layout.setSize(new Dimension(600, 600));
-        BasicVisualizationServer<String, String> vv = new BasicVisualizationServer<>(layout);
+        BasicVisualizationServer<NetworkVertex, NetworkEdge> vv = new BasicVisualizationServer<>(layout);
         vv.setPreferredSize(new Dimension(700, 700));
 
-        Transformer<String, Paint> vertexPaint = new Transformer<String, Paint>() {
+        Transformer<NetworkVertex, Paint> vertexPaint = new Transformer<NetworkVertex, Paint>() {
             @Override
-            public Paint transform(String s) {
+            public Paint transform(NetworkVertex v) {
                 return Color.GREEN;
             }
         };
-
         vv.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
-        vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
-        vv.getRenderer().getVertexLabelRenderer().setPosition(Renderer.VertexLabel.Position.N);
+
+        Transformer<NetworkVertex, String> vertexLabel = new Transformer<NetworkVertex, String>() {
+            @Override
+            public String transform(NetworkVertex v) {
+                return v.getId();
+            }
+        };
+        vv.getRenderContext().setVertexLabelTransformer(vertexLabel);
+        vv.getRenderer().getVertexLabelRenderer().setPosition(Renderer.VertexLabel.Position.AUTO);
+
+        Transformer<NetworkEdge, String> edgeLabel = new Transformer<NetworkEdge, String>() {
+            @Override
+            public String transform(NetworkEdge networkEdge) {
+                return networkEdge.getTailPort() + "->" + networkEdge.getHeadPort();
+            }
+        };
+        vv.getRenderContext().setEdgeLabelTransformer(edgeLabel);
 
         JFrame frame = new JFrame("Simple Graph View 2");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

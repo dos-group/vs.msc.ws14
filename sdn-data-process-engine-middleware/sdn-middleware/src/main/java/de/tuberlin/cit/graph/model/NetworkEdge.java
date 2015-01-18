@@ -1,12 +1,14 @@
 package de.tuberlin.cit.graph.model;
 
-public class NetworkEdge extends GraphElement {
+public class NetworkEdge {
 
     private NetworkVertex tailVertex;
+    private int tailPort;
     private NetworkVertex headVertex;
-    private int hostPort = 0;
+    private int headPort;
     private long latency = 0;
     private long bandwidth = 0;
+    private long usedBandwidth = 0;
 
     public long getUsedBandwidth() {
         return usedBandwidth;
@@ -16,14 +18,20 @@ public class NetworkEdge extends GraphElement {
         this.usedBandwidth = usedBandwidth;
     }
 
-    private long usedBandwidth = 0;
-
     public NetworkVertex getTailVertex() {
         return tailVertex;
     }
 
     public void setTailVertex(NetworkVertex tailVertex) {
         this.tailVertex = tailVertex;
+    }
+
+    public int getTailPort() {
+        return tailPort;
+    }
+
+    public void setTailPort(int tailPort) {
+        this.tailPort = tailPort;
     }
 
     public NetworkVertex getHeadVertex() {
@@ -34,12 +42,12 @@ public class NetworkEdge extends GraphElement {
         this.headVertex = headVertex;
     }
 
-    public int getHostPort() {
-        return hostPort;
+    public int getHeadPort() {
+        return headPort;
     }
 
-    public void setHostPort(int hostPort) {
-        this.hostPort = hostPort;
+    public void setHeadPort(int headPort) {
+        this.headPort = headPort;
     }
 
     public long getLatency() {
@@ -62,7 +70,25 @@ public class NetworkEdge extends GraphElement {
         return (dataSize * (bandwidth - usedBandwidth) + latency);
     }
 
-    public NetworkEdge(String id) {
-        super(id);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        NetworkEdge that = (NetworkEdge) o;
+
+        if (!headVertex.equals(that.headVertex)) return false;
+        if (!tailVertex.equals(that.tailVertex)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + tailVertex.hashCode();
+        result = 31 * result + headVertex.hashCode();
+        return result;
     }
 }
