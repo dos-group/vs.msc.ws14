@@ -67,18 +67,17 @@ public class NetworkEdge {
     }
 
     /**
-     *
      * @param dataSize size of the data to transport.
      * @return edge weight based on the time to transport the data set.
      */
-    public long calculateWeight(Long dataSize){
+    public long calculateWeight(Long dataSize) {
         return (dataSize * (bandwidth - usedBandwidth) + latency);
     }
 
     /**
      * @return simple weight.
      */
-    public long calculateWeight(){
+    public long calculateWeight() {
         return bandwidth;
     }
 

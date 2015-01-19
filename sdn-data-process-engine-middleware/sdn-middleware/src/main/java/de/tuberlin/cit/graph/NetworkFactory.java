@@ -3,7 +3,6 @@ package de.tuberlin.cit.graph;
 import de.tuberlin.cit.graph.model.Host;
 import de.tuberlin.cit.graph.model.NetworkDevice;
 import de.tuberlin.cit.graph.model.NetworkEdge;
-import de.tuberlin.cit.sdn.opendaylight.model.Property;
 import de.tuberlin.cit.sdn.opendaylight.model.host.HostConfig;
 import de.tuberlin.cit.sdn.opendaylight.model.topology.EdgeProperty;
 
