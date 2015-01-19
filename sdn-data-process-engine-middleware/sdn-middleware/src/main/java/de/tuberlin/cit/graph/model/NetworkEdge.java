@@ -18,36 +18,38 @@ public class NetworkEdge {
         this.usedBandwidth = usedBandwidth;
     }
 
-    public NetworkVertex getTailVertex() {
-        return tailVertex;
+    public void setTail(NetworkVertex v, int port) {
+        tailVertex = v;
+        tailPort = port;
     }
 
-    public void setTailVertex(NetworkVertex tailVertex) {
-        this.tailVertex = tailVertex;
+    public void setTail(NetworkVertex v, String port) {
+        setTail(v, Integer.parseInt(port));
+    }
+
+    public NetworkVertex getTailVertex() {
+        return tailVertex;
     }
 
     public int getTailPort() {
         return tailPort;
     }
 
-    public void setTailPort(int tailPort) {
-        this.tailPort = tailPort;
+    public void setHead(NetworkVertex v, int port) {
+        headVertex = v;
+        headPort = port;
+    }
+
+    public void setHead(NetworkVertex v, String port) {
+        setHead(v, Integer.parseInt(port));
     }
 
     public NetworkVertex getHeadVertex() {
         return headVertex;
     }
 
-    public void setHeadVertex(NetworkVertex headVertex) {
-        this.headVertex = headVertex;
-    }
-
     public int getHeadPort() {
         return headPort;
-    }
-
-    public void setHeadPort(int headPort) {
-        this.headPort = headPort;
     }
 
     public long getLatency() {

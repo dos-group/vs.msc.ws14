@@ -13,10 +13,8 @@ public class NetworkFactory {
 
     public NetworkEdge createNetworkEdge(EdgeProperty e) {
         NetworkEdge networkEdge = new NetworkEdge();
-        networkEdge.setTailVertex(new NetworkDevice(e.edge.tailNodeConnector.node.id));
-        networkEdge.setTailPort(Integer.parseInt(e.edge.tailNodeConnector.id));
-        networkEdge.setHeadVertex(new NetworkDevice(e.edge.headNodeConnector.node.id));
-        networkEdge.setHeadPort(Integer.parseInt(e.edge.headNodeConnector.id));
+        networkEdge.setTail(new NetworkDevice(e.edge.tailNodeConnector.node.id), e.edge.tailNodeConnector.id);
+        networkEdge.setHead(new NetworkDevice(e.edge.headNodeConnector.node.id), e.edge.headNodeConnector.id);
         networkEdge.setBandwidth(e.getBandwidth());
         return networkEdge;
     }
@@ -24,21 +22,17 @@ public class NetworkFactory {
     public NetworkEdge createNetworkEdge(HostConfig hostConfig, boolean isHostHead) {
         NetworkEdge networkEdge = new NetworkEdge();
         if (isHostHead) {
-            networkEdge.setTailVertex(new NetworkDevice(hostConfig.nodeId));
-            networkEdge.setTailPort(Integer.parseInt(hostConfig.nodeConnectorId));
+            networkEdge.setTail(new NetworkDevice(hostConfig.nodeId), hostConfig.nodeConnectorId);
 
             Host host = new Host(hostConfig.networkAddress);
             host.setMacAddress(hostConfig.dataLayerAddress);
-            networkEdge.setHeadVertex(host);
-            networkEdge.setHeadPort(0);
+            networkEdge.setHead(host, 0);
         } else {
             Host host = new Host(hostConfig.networkAddress);
             host.setMacAddress(hostConfig.dataLayerAddress);
-            networkEdge.setTailVertex(host);
-            networkEdge.setTailPort(0);
+            networkEdge.setTail(host, 0);
 
-            networkEdge.setHeadVertex(new NetworkDevice(hostConfig.nodeId));
-            networkEdge.setHeadPort(Integer.parseInt(hostConfig.nodeConnectorId));
+            networkEdge.setHead(new NetworkDevice(hostConfig.nodeId), hostConfig.nodeConnectorId);
         }
         return networkEdge;
     }
