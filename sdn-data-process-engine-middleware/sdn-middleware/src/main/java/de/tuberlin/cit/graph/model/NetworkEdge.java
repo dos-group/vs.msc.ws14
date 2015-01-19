@@ -7,7 +7,7 @@ public class NetworkEdge {
     private NetworkVertex headVertex;
     private int headPort;
     private long latency = 0;
-    private long bandwidth = 0;
+    private long bandwidth = 1;
     private long usedBandwidth = 0;
 
     public long getUsedBandwidth() {
@@ -66,8 +66,20 @@ public class NetworkEdge {
         this.bandwidth = bandwidth;
     }
 
-    public long calculateWeight(long dataSize){
+    /**
+     *
+     * @param dataSize size of the data to transport.
+     * @return edge weight based on the time to transport the data set.
+     */
+    public long calculateWeight(Long dataSize){
         return (dataSize * (bandwidth - usedBandwidth) + latency);
+    }
+
+    /**
+     * @return simple weight.
+     */
+    public long calculateWeight(){
+        return bandwidth;
     }
 
     @Override
