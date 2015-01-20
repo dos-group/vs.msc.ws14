@@ -13,4 +13,12 @@ public class StaticGraphUtils {
             }
         };
     }
+
+    public static Transformer<NetworkEdge, Long> createSimpleTransporter() {
+        return new Transformer<NetworkEdge, Long>() {
+            public Long transform(NetworkEdge link) {
+                return link.calculateWeight();
+            }
+        };
+    }
 }
