@@ -2,12 +2,13 @@ package de.tuberlin.cit.graph.model;
 
 public class NetworkEdge {
 
+    private static final long DEFAULT_DATA_SIZE = 512 * 1000000;
     private NetworkVertex tailVertex;
     private int tailPort;
     private NetworkVertex headVertex;
     private int headPort;
     private long latency = 0;
-    private long bandwidth = 1;
+    private long bandwidth = 100;
     private long usedBandwidth = 0;
 
     public long getUsedBandwidth() {
@@ -73,14 +74,14 @@ public class NetworkEdge {
      * @return edge weight based on the time to transport the data set.
      */
     public long calculateWeight(Long dataSize) {
-        return (dataSize * (bandwidth - usedBandwidth) + latency);
+        return (dataSize / (bandwidth - usedBandwidth) + latency);
     }
 
     /**
      * @return simple weight.
      */
     public long calculateWeight() {
-        return bandwidth;
+        return DEFAULT_DATA_SIZE / bandwidth;
     }
 
     @Override

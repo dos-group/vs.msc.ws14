@@ -8,7 +8,7 @@ import de.tuberlin.cit.sdn.opendaylight.model.node.Node;
 
 public class FlowProgrammerClient extends AbstractClient {
 
-    public FlowProgrammerClient(OdlSettings settings){
+    public FlowProgrammerClient(OdlSettings settings) {
         super(settings);
     }
 

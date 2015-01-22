@@ -16,7 +16,6 @@ public class HostGroupCollectionTest {
 
     DirectedSparseMultigraph<NetworkVertex, NetworkEdge> graph = new DirectedSparseMultigraph();
 
-
     @Before
     public void prepareGraph() {
         NetworkDevice s1 = new NetworkDevice("s1");
@@ -46,7 +45,7 @@ public class HostGroupCollectionTest {
         edge4.setHead(s3, 0);
         edge4.setTail(h4, 0);
         NetworkEdge edge5 = new NetworkEdge();
-        edge5.setHead(s2, 0);
+        edge5.setHead(s3, 0);
         edge5.setTail(h5, 0);
         NetworkEdge edge6 = new NetworkEdge();
         edge6.setHead(s2, 0);
@@ -64,20 +63,20 @@ public class HostGroupCollectionTest {
         NetworkEdge edge10 = new NetworkEdge();
         edge10.setHead(s2, 0);
         edge10.setTail(h1, 0);
-        edge10.setBandwidth(Long.MAX_VALUE);
+        edge10.setBandwidth(10000);
         NetworkEdge edge10b = new NetworkEdge();
         edge10b.setHead(h1, 0);
         edge10b.setTail(s2, 0);
-        edge10b.setBandwidth(Long.MAX_VALUE);
+        edge10b.setBandwidth(10000);
 
         NetworkEdge edge11 = new NetworkEdge();
         edge11.setHead(s1, 0);
         edge11.setTail(s4, 0);
-        edge11.setBandwidth(1000000);
+        edge11.setBandwidth(5000);
         NetworkEdge edge11b = new NetworkEdge();
         edge11b.setHead(s4, 0);
         edge11b.setTail(s1, 0);
-        edge11b.setBandwidth(1000000);
+        edge11b.setBandwidth(5000);
 
         NetworkEdge edge12 = new NetworkEdge();
         edge12.setHead(s1, 0);
@@ -164,7 +163,6 @@ public class HostGroupCollectionTest {
         for (Host host : hostGroupCollection.getHosts()) {
             if ("h1".equals(host.getId()) || "h2".equals(host.getId()) || "h3".equals(host.getId()) || "h5".equals(host.getId())) {
                 host.setFree(false);
-                break;
             }
         }
         Host nextBestHost = hostGroupCollection.findNextBestHost();
@@ -180,7 +178,6 @@ public class HostGroupCollectionTest {
             if ("h1".equals(host.getId()) || "h2".equals(host.getId()) || "h3".equals(host.getId()) || "h5".equals(host.getId())
                     || "h6".equals(host.getId()) || "h7".equals(host.getId())) {
                 host.setFree(false);
-                break;
             }
         }
         Host nextBestHost = hostGroupCollection.findNextBestHost();

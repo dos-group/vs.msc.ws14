@@ -24,25 +24,27 @@ public class OdlSettings {
     public OdlSettings() {
     }
 
-    public String getUsername(){
+    public String getUsername() {
         return user;
     }
 
-    public String getPassword(){
+    public String getPassword() {
         return password;
     }
 
-    public String getIp(){
+    public String getIp() {
         return ip;
     }
 
-    public String getPort(){
+    public String getPort() {
         return port;
     }
 
-    public String getUrl(){
+    public String getUrl() {
         return "http://" + ip + ":" + port;
     }
 
-    public int getToggleTime() { return toggleTime; }
+    public int getToggleTime() {
+        return toggleTime;
+    }
 }

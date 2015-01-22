@@ -2,7 +2,6 @@ package de.tuberlin.cit.graph;
 
 import de.tuberlin.cit.graph.model.*;
 import edu.uci.ics.jung.graph.DirectedSparseMultigraph;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.*;
 
@@ -64,17 +63,89 @@ public class HostGroupCollection {
      * @return Next best <code>Host</code>.
      */
     public synchronized Host findNextBestHost() {
-        Host nextHost = null;
-        if (this.getFreeHosts().size() < 1) { // no free hosts
+        Host nextHost;
+        if (this.hosts.size() < 1 || this.getFreeHosts().size() < 1) { // no free hosts
             nextHost = null;
         } else {
-            throw new NotImplementedException();
+            if (this.getFreeHosts().size() == this.hosts.size()) { // all hosts are free
+                HostGroup biggestHostGroup = getBiggestHostGroup();
+                nextHost = biggestHostGroup.getFreeHost();
+            } else {
+                nextHost = findFreeHostFromWorkingHostGroup(); // some of working groups have free hosts
+                if (nextHost == null) { // all working  host groups are full
+                    HostGroup workingHostGroup = findWorkingHostGroup();
+                    HostGroup nextHostGroup = findNextHostGroup(workingHostGroup);
+                    nextHost = nextHostGroup.getFreeHost();
+                }
+            }
+
         }
 
         if (nextHost != null) { // block the host
             nextHost.setFree(false);
         }
         return nextHost;
+    }
+
+    private HostGroup findNextHostGroup(HostGroup workingHostGroup) {
+        HostGroup nextHostGroup = null;
+        int workingGroupNetworkDeviceIndex = getNetworkDeviceIndex(workingHostGroup);
+
+        long minWeight = Long.MAX_VALUE;
+        NetworkDevice networkDeviceOfTheNextHostGroup;
+        HostGroup potentialNextHostGroup;
+        for (int i = 0; i < this.networkDevicesDistances.length; i++) {
+            networkDeviceOfTheNextHostGroup = this.networkDevices.get(i);
+            potentialNextHostGroup = getHostGroupByNetworkDevice(networkDeviceOfTheNextHostGroup);
+            if (i != workingGroupNetworkDeviceIndex && potentialNextHostGroup.hasFreeHosts()
+                    && this.networkDevicesDistances[workingGroupNetworkDeviceIndex][i] < minWeight) {
+                nextHostGroup = potentialNextHostGroup;
+            }
+        }
+        return nextHostGroup;
+    }
+
+    private HostGroup getHostGroupByNetworkDevice(NetworkDevice networkDeviceOfTheNextHostGroup) {
+        HostGroup hostGroup = null;
+        for (HostGroup group : this.hostGroups) {
+            if (group.getNetworkDevice().getId().equals(networkDeviceOfTheNextHostGroup.getId())) {
+                hostGroup = group;
+                break;
+            }
+        }
+        return hostGroup;
+    }
+
+    private int getNetworkDeviceIndex(HostGroup workingHostGroup) {
+        int networkDeviceIndex = -1;
+        for (int i = 0; i < this.networkDevices.size(); i++) {
+            if (this.networkDevices.get(i).getId().equals(workingHostGroup.getId())) {
+                networkDeviceIndex = i;
+                break;
+            }
+        }
+        return networkDeviceIndex;
+    }
+
+    private HostGroup findWorkingHostGroup() {
+        HostGroup workingHostGroup = null;
+        for (HostGroup hostGroup : hostGroups) {
+            if (hostGroup.isBusy()) {
+                workingHostGroup = hostGroup;
+                break;
+            }
+        }
+        return workingHostGroup;
+    }
+
+    private Host findFreeHostFromWorkingHostGroup() {
+        Host freeHost = null;
+        for (HostGroup hostGroup : this.hostGroups) {
+            if (hostGroup.numberOfFreeHosts() < hostGroup.getHosts().size()) {
+                freeHost = hostGroup.getFreeHost();
+            }
+        }
+        return freeHost;
     }
 
     /**
@@ -93,14 +164,16 @@ public class HostGroupCollection {
         }
     }
 
-    private Map<HostGroup, Integer> currentOccupation() {
-        Map<HostGroup, Integer> currentOccupation = new HashMap<>();
-        int freeHosts;
+    private HostGroup getBiggestHostGroup() {
+        HostGroup biggestHostGroup = null;
+        int maxGroupSize = Integer.MIN_VALUE;
         for (HostGroup hostGroup : this.hostGroups) {
-            freeHosts = hostGroup.numberOfFreeHosts();
-            currentOccupation.put(hostGroup, freeHosts);
+            if (hostGroup.getHosts().size() > maxGroupSize) {
+                biggestHostGroup = hostGroup;
+                maxGroupSize = hostGroup.getHosts().size();
+            }
         }
-        return currentOccupation;
+        return biggestHostGroup;
     }
 
     public Set<Host> getFreeHosts() {

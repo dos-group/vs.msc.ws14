@@ -48,6 +48,21 @@ public class HostGroup {
         return n;
     }
 
+    public NetworkDevice getNetworkDevice() {
+        return networkDevice;
+    }
+
+    public Host getFreeHost() {
+        Host freeHost = null;
+        for (Host host : this.hosts) {
+            if (host.isFree()) {
+                freeHost = host;
+                break;
+            }
+        }
+        return freeHost;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -63,5 +78,14 @@ public class HostGroup {
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+
+    public boolean isBusy() {
+        for (Host host : this.hosts) {
+            if (host.isFree()) {
+                return false;
+            }
+        }
+        return true;
     }
 }
