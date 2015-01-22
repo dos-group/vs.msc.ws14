@@ -16,11 +16,11 @@ public class Hostdemand {
         this.from = from;
     }
 
-    public HostConfig getOriginHost(){
+    public HostConfig getOriginHost() {
         return from;
     }
 
-    public List<HostConfig> getTargetHosts(){
+    public List<HostConfig> getTargetHosts() {
         return to;
     }
 }

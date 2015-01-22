@@ -8,9 +8,6 @@ import de.tuberlin.cit.sdn.opendaylight.model.node.Nodes;
 import de.tuberlin.cit.sdn.opendaylight.model.statistic.FlowStatistics;
 import de.tuberlin.cit.sdn.opendaylight.model.statistic.PortStatistics;
 import de.tuberlin.cit.sdn.opendaylight.model.topology.Topology;
-import de.tuberlin.cit.services.ServiceHost;
-
-import java.rmi.Naming;
 
 public class App {
 

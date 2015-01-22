@@ -10,13 +10,13 @@ import org.apache.flink.runtime.instance.Instance;
 import org.apache.flink.runtime.instance.InstanceConnectionInfo;
 import org.apache.flink.runtime.instance.InstanceID;
 
-import java.net.*;
-import java.rmi.*;
-import java.rmi.server.*;
+import java.net.InetAddress;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 public class ServiceHost extends UnicastRemoteObject implements Hostservice {
 
-    public ServiceHost () throws RemoteException {
+    public ServiceHost() throws RemoteException {
 
     }
 
@@ -38,7 +38,7 @@ public class ServiceHost extends UnicastRemoteObject implements Hostservice {
         long jvmHeap = 1024;
         long managedMem = 1024;
 
-        HardwareDescription hwd = new HardwareDescription(cpuCores,physMem,jvmHeap,managedMem);
+        HardwareDescription hwd = new HardwareDescription(cpuCores, physMem, jvmHeap, managedMem);
 
         InstanceID iId = new InstanceID();
         int slots = 1;

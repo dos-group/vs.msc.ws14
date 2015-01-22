@@ -14,7 +14,7 @@ import java.rmi.Naming;
 
 /**
  * Created by Nico on 02.01.2015.
- *
+ * <p>
  * Contains various helper methods.
  */
 public class Utils {
@@ -22,8 +22,8 @@ public class Utils {
     Logger logger = LogManager.getLogger("SDNMiddlewareLogger");
     private static Utils instance = null;
 
-    public static Utils getInstance(){
-        if(instance == null)
+    public static Utils getInstance() {
+        if (instance == null)
             instance = new Utils();
         return instance;
     }
@@ -31,7 +31,7 @@ public class Utils {
     private Utils() {
     }
 
-    public void startRMIServer(){
+    public void startRMIServer() {
         try {
             java.rmi.registry.LocateRegistry.createRegistry(1099);
             logger.debug("RMI registry ready.");
@@ -61,32 +61,31 @@ public class Utils {
         Level logLevel = Level.INFO;
 
         CommandLineParser parser = new BasicParser();
-        try
-        {
+        try {
             CommandLine cmd = parser.parse(options, args);
-            if(cmd.hasOption("ip")) {
+            if (cmd.hasOption("ip")) {
                 odlIP = cmd.getOptionValue("ip").toString();
             }
-            if(cmd.hasOption("u")) {
+            if (cmd.hasOption("u")) {
                 odlUser = cmd.getOptionValue("u").toString();
             }
-            if(cmd.hasOption("pw")) {
+            if (cmd.hasOption("pw")) {
                 odlPw = cmd.getOptionValue("pw").toString();
             }
-            if(cmd.hasOption("p")) {
+            if (cmd.hasOption("p")) {
                 odlPort = cmd.getOptionValue("p").toString();
             }
-            if(cmd.hasOption("d")) {
-                if(cmd.getOptionValue("d").toString().toLowerCase().contains("true"))
+            if (cmd.hasOption("d")) {
+                if (cmd.getOptionValue("d").toString().toLowerCase().contains("true"))
                     demandDemo = true;
                 else
                     demandDemo = false;
             }
-            if(cmd.hasOption("t")) {
+            if (cmd.hasOption("t")) {
                 demandToggleTime = Integer.parseInt(cmd.getOptionValue("t").toString());
             }
-            if(cmd.hasOption("l")){
-                switch(cmd.getOptionValue("l").toString().toLowerCase()){
+            if (cmd.hasOption("l")) {
+                switch (cmd.getOptionValue("l").toString().toLowerCase()) {
                     case "all":
                         logLevel = Level.ALL;
                         break;
@@ -120,8 +119,7 @@ public class Utils {
                         break;
                 }
             }
-        }
-        catch (ParseException e) {
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
@@ -140,7 +138,7 @@ public class Utils {
         if (demandDemo)
             logger.info("Demand toggle time: " + demandToggleTime);
 
-        if(demandDemo){
+        if (demandDemo) {
             Thread thread = new Thread(new DemandSimulator(settings));
             thread.start();
         }

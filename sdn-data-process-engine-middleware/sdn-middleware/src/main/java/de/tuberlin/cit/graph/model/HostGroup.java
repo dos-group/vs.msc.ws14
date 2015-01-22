@@ -25,28 +25,6 @@ public class HostGroup {
         return hosts;
     }
 
-    public synchronized Set<Host> occupyNHosts(int n) {
-        Set<Host> freeHosts = new HashSet<>();
-        if (n > this.numberOfFreeHosts()) {
-            throw new RuntimeException("HostGroup " + this.id + " does not have enough free hosts.");
-        } else {
-            // find free hosts
-            for (Host host : this.hosts) {
-                if (host.isFree()) {
-                    freeHosts.add(host);
-                    if (freeHosts.size() == n) {
-                        break;
-                    }
-                }
-            }
-        }
-        // occupy free hosts
-        for (Host host : freeHosts) {
-            host.setFree(false);
-        }
-        return freeHosts;
-    }
-
     public void addHost(Host host) {
         this.hosts.add(host);
     }

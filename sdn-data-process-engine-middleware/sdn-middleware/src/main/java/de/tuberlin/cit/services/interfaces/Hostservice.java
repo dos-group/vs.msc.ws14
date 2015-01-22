@@ -6,9 +6,10 @@ package de.tuberlin.cit.services.interfaces;
 
 import org.apache.flink.runtime.instance.Instance;
 
-import java.rmi.*;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 
-public interface Hostservice extends Remote{
+public interface Hostservice extends Remote {
 
     public Instance getExecutionHost() throws RemoteException;
 

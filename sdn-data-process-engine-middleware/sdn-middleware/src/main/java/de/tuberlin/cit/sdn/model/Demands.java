@@ -14,55 +14,55 @@ public class Demands {
     private Demands() {
     }
 
-    public static Demands getInstance(){
-        if(instance == null)
+    public static Demands getInstance() {
+        if (instance == null)
             instance = new Demands();
         return instance;
     }
 
-    public void stepForward(){
+    public void stepForward() {
         this.currentDemand = this.futureDemand;
         this.futureDemand = null;
     }
 
-    public void stepForward(List<Hostdemand> newFutureDemand){
+    public void stepForward(List<Hostdemand> newFutureDemand) {
         this.currentDemand = this.futureDemand;
         this.futureDemand = newFutureDemand;
     }
 
-    public boolean hasFutureDemand(){
+    public boolean hasFutureDemand() {
         return this.futureDemand == null ? true : false;
     }
 
-    public boolean hasCurrentDemand(){
+    public boolean hasCurrentDemand() {
         return this.currentDemand == null ? true : false;
     }
 
-    public List<Hostdemand> getCurrentDemand(){
+    public List<Hostdemand> getCurrentDemand() {
         return this.currentDemand;
     }
 
-    public void setCurrentDemand(List<Hostdemand> currentDemand){
+    public void setCurrentDemand(List<Hostdemand> currentDemand) {
         this.currentDemand = currentDemand;
     }
 
-    public List<Hostdemand> getFutureDemand(){
+    public List<Hostdemand> getFutureDemand() {
         return this.futureDemand;
     }
 
-    public void setFutureDemand(List<Hostdemand> futureDemand){
+    public void setFutureDemand(List<Hostdemand> futureDemand) {
         this.futureDemand = futureDemand;
     }
 
-    public void clearCurrentDemand(){
+    public void clearCurrentDemand() {
         this.currentDemand = null;
     }
 
-    public void clearFutureDemand(){
+    public void clearFutureDemand() {
         this.futureDemand = null;
     }
 
-    public void clearAllDemands(){
+    public void clearAllDemands() {
         this.futureDemand = null;
         this.currentDemand = null;
     }

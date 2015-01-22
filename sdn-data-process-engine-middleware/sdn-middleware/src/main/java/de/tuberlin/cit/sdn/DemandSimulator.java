@@ -15,7 +15,7 @@ import java.util.Random;
 
 /**
  * Created by Nico on 02.01.2015.
- *
+ * <p>
  * simulates host demand
  */
 public class DemandSimulator implements Runnable {
@@ -54,7 +54,7 @@ public class DemandSimulator implements Runnable {
                     Collections.shuffle(hosts);
                     List<HostConfig> toHosts = new ArrayList<HostConfig>();
 
-                    for(int i = 0; i<= randomizer.nextInt(hosts.size()); i++)
+                    for (int i = 0; i <= randomizer.nextInt(hosts.size()); i++)
                         toHosts.add(hosts.get(i));
 
                     for (HostConfig hc : toHosts) {
@@ -66,10 +66,10 @@ public class DemandSimulator implements Runnable {
                 Demands.getInstance().stepForward(randomDemands);
                 logger.info("Random demands created");
 
-                for(Hostdemand hd : randomDemands){
+                for (Hostdemand hd : randomDemands) {
                     logger.info("---New future hostdemand:---");
                     logger.info("From: " + hd.getOriginHost().networkAddress);
-                    for(HostConfig hc : hd.getTargetHosts()){
+                    for (HostConfig hc : hd.getTargetHosts()) {
                         logger.info("- To: " + hc.networkAddress);
                     }
                 }

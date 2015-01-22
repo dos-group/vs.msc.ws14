@@ -35,6 +35,7 @@ public class Visualization {
         topologyClient = new TopologyClient(odlSettings);
         hostClient = new HostTrackerClient(odlSettings);
     }
+
     public Visualization() {
         switchClient = new SwitchManagerClient();
         topologyClient = new TopologyClient();
