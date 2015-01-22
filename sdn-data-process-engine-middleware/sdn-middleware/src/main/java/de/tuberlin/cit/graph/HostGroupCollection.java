@@ -1,6 +1,7 @@
 package de.tuberlin.cit.graph;
 
 import de.tuberlin.cit.graph.model.*;
+import edu.uci.ics.jung.graph.DirectedSparseMultigraph;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.*;
@@ -9,7 +10,8 @@ public class HostGroupCollection {
 
     private Set<HostGroup> hostGroups;
     private Set<Host> hosts;
-    private long[][] distanceMatrix;
+    private List<NetworkDevice> networkDevices;
+    private long[][] networkDevicesDistances;
 
     private HostGroupCollection() {
     }
@@ -17,15 +19,21 @@ public class HostGroupCollection {
     /**
      * Standard constructor to create a host group collection.
      *
-     * @param nodes          Set of network vertices.
-     * @param connections    Set of network edges.
-     * @param distanceMatrix Shortest distances between the vertices.
+     * @param graph Network graph.
      */
-    public HostGroupCollection(List<NetworkVertex> nodes, List<NetworkEdge> connections, long[][] distanceMatrix) {
+    public HostGroupCollection(DirectedSparseMultigraph graph) {
+        Collection<NetworkVertex> nodes = graph.getVertices();
+        Collection<NetworkEdge> connections = graph.getEdges();
+
         this.hostGroups = new HashSet<>();
         this.hosts = new HashSet<>();
-        this.distanceMatrix = distanceMatrix;
+        this.networkDevices = new ArrayList<>();
 
+        fillWithData(nodes, connections);
+        calculateNetworkDevicesDistances(graph);
+    }
+
+    private void fillWithData(Collection<NetworkVertex> nodes, Collection<NetworkEdge> connections) {
         // add all hosts and host groups
         HostGroup hostGroup;
         Host host;
@@ -34,6 +42,7 @@ public class HostGroupCollection {
             if (node instanceof NetworkDevice) {
                 networkDevice = (NetworkDevice) node;
                 hostGroup = new HostGroup(networkDevice);
+                this.networkDevices.add(networkDevice);
                 for (NetworkEdge connection : connections) { // go through all connections
                     if (connection.getHeadVertex().equals(networkDevice)) { // find connected nodes
                         NetworkVertex tail = connection.getTailVertex();
@@ -47,13 +56,46 @@ public class HostGroupCollection {
                 this.hostGroups.add(hostGroup);
             }
         }
+    }
 
+    /**
+     * @return Next best <code>Host</code>.
+     */
+    public Host findNextBestHost() {
+        Host nextHost = null;
+        if (this.numberOfFreeHosts() < 1) { // no free hosts
+            nextHost = null;
+        } else {
+            throw new NotImplementedException();
+        }
+
+        if (nextHost != null) { // block host for the flink job
+            nextHost.setFree(false);
+        }
+        return nextHost;
+    }
+
+    /**
+     * @param hostId Id of the Host to unblock.
+     */
+    public void releaseHost(String hostId) {
+        Host hostToRelease = null;
+        for (Host host : this.hosts) {
+            if (host.getId().equals(hostId)) {
+                hostToRelease = host;
+                break;
+            }
+        }
+        if (hostToRelease != null) { // unblock host
+            hostToRelease.setFree(true);
+        }
     }
 
     /**
      * @param numberOfHostsForJob Number of hosts that are needed for job.
      * @return Set of hosts which can be used for the job. Returns <code>null</code> if not enough free nodes.
      */
+    @Deprecated
     public synchronized Set<Host> getBestHosts(int numberOfHostsForJob) {
         Set<Host> hosts = null;
         int freeHosts = numberOfFreeHosts();
@@ -66,6 +108,7 @@ public class HostGroupCollection {
         }
         return hosts;
     }
+
 
     private Set<Host> findBestHosts(int n) {
         Set<Host> hosts = null;
@@ -134,5 +177,10 @@ public class HostGroupCollection {
             }
         }
         return freeHosts;
+    }
+
+    private void calculateNetworkDevicesDistances(DirectedSparseMultigraph graph) {
+        DistanceCalculator calculator = new DistanceCalculator(graph);
+        this.networkDevicesDistances = calculator.calculateDistanceMatrix(networkDevices);
     }
 }

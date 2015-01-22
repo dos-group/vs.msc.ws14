@@ -1,6 +1,5 @@
 package de.tuberlin.cit.graph;
 
-import de.tuberlin.cit.graph.StaticGraphUtils;
 import de.tuberlin.cit.graph.model.NetworkEdge;
 import de.tuberlin.cit.graph.model.NetworkVertex;
 import edu.uci.ics.jung.algorithms.shortestpath.DijkstraShortestPath;
@@ -14,10 +13,10 @@ public class DistanceCalculator {
     private DirectedSparseMultigraph graph;
 
     public DistanceCalculator(DirectedSparseMultigraph graph) {
-        this.graph=graph;
+        this.graph = graph;
     }
 
-    public long[][] calculateDistanceMatrix(final List<NetworkVertex> vertices) {
+    public long[][] calculateDistanceMatrix(final List<? extends NetworkVertex> vertices) {
         int numberOfVertices = vertices.size();
         long[][] distances = new long[numberOfVertices][numberOfVertices];
         for (int indexVertexFrom = 0; indexVertexFrom < vertices.size(); indexVertexFrom++) {
@@ -25,7 +24,7 @@ public class DistanceCalculator {
                 if (vertices.get(indexVertexFrom).equals(vertices.get(indexVertexTo))) {
                     distances[indexVertexFrom][indexVertexTo] = 0;
                 } else {
-                    Number distance = getDistanceOfTheShortestPath(vertices.get(indexVertexFrom), vertices.get(indexVertexTo), 1);
+                    Number distance = getDistanceOfTheShortestPath(vertices.get(indexVertexFrom), vertices.get(indexVertexTo));
                     distances[indexVertexFrom][indexVertexTo] = distance.longValue();
                 }
             }
@@ -33,7 +32,7 @@ public class DistanceCalculator {
         return distances;
     }
 
-    private Number getDistanceOfTheShortestPath(final NetworkVertex node1, final NetworkVertex node2, long sizeOfDataToTransport) {
+    private Number getDistanceOfTheShortestPath(final NetworkVertex node1, final NetworkVertex node2) {
         Transformer transformer = StaticGraphUtils.createSimpleTransporter();
         DijkstraShortestPath<NetworkVertex, NetworkEdge> alg = new DijkstraShortestPath(this.graph, transformer);
         return alg.getDistance(node1, node2);
