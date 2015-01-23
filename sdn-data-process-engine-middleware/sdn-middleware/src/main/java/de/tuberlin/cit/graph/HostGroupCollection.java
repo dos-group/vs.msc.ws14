@@ -12,7 +12,7 @@ public class HostGroupCollection {
 
     private List<NetworkDevice> networkDevices;
 
-    private long[][] networkDevicesDistances;
+    private DistanceMatrix distanceMatrix;
 
     private HostGroupCollection() {
     }
@@ -87,16 +87,12 @@ public class HostGroupCollection {
 
     private HostGroup findNextHostGroup(HostGroup workingHostGroup) {
         HostGroup nextHostGroup = null;
-        int workingGroupNetworkDeviceIndex = getNetworkDeviceIndex(workingHostGroup);
-
         long minWeight = Long.MAX_VALUE;
-        NetworkDevice networkDeviceOfTheNextHostGroup;
-        HostGroup potentialNextHostGroup;
-        for (int i = 0; i < this.networkDevicesDistances.length; i++) {
-            networkDeviceOfTheNextHostGroup = this.networkDevices.get(i);
-            potentialNextHostGroup = getHostGroupByNetworkDevice(networkDeviceOfTheNextHostGroup);
-            if (i != workingGroupNetworkDeviceIndex && potentialNextHostGroup.hasFreeHosts()) {
-                long distance = networkDevicesDistances[workingGroupNetworkDeviceIndex][i];
+
+        for(HostGroup potentialNextHostGroup : hostGroups) {
+            if (!potentialNextHostGroup.equals(workingHostGroup)
+                    && potentialNextHostGroup.hasFreeHosts()) {
+                long distance = distanceMatrix.getDistance(workingHostGroup.getId(), potentialNextHostGroup.getId());
                 if (distance > 0 && distance < minWeight) {
                     // select closest group
                     minWeight = distance;
@@ -105,28 +101,6 @@ public class HostGroupCollection {
             }
         }
         return nextHostGroup;
-    }
-
-    private HostGroup getHostGroupByNetworkDevice(NetworkDevice networkDeviceOfTheNextHostGroup) {
-        HostGroup hostGroup = null;
-        for (HostGroup group : this.hostGroups) {
-            if (group.getNetworkDevice().getId().equals(networkDeviceOfTheNextHostGroup.getId())) {
-                hostGroup = group;
-                break;
-            }
-        }
-        return hostGroup;
-    }
-
-    private int getNetworkDeviceIndex(HostGroup workingHostGroup) {
-        int networkDeviceIndex = -1;
-        for (int i = 0; i < this.networkDevices.size(); i++) {
-            if (this.networkDevices.get(i).getId().equals(workingHostGroup.getId())) {
-                networkDeviceIndex = i;
-                break;
-            }
-        }
-        return networkDeviceIndex;
     }
 
     private HostGroup findWorkingHostGroup() {
@@ -190,7 +164,7 @@ public class HostGroupCollection {
 
     private void calculateNetworkDevicesDistances(DirectedSparseMultigraph graph) {
         DistanceCalculator calculator = new DistanceCalculator(graph);
-        this.networkDevicesDistances = calculator.calculateDistanceMatrix(networkDevices);
+        this.distanceMatrix = calculator.calculateDistanceMatrixX(networkDevices);
     }
 
     public Set<HostGroup> getHostGroups() {
@@ -203,9 +177,5 @@ public class HostGroupCollection {
 
     public List<NetworkDevice> getNetworkDevices() {
         return networkDevices;
-    }
-
-    public long[][] getNetworkDevicesDistances() {
-        return networkDevicesDistances;
     }
 }

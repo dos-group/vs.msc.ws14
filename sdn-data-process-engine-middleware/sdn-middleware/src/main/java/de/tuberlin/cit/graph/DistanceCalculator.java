@@ -16,25 +16,17 @@ public class DistanceCalculator {
         this.graph = graph;
     }
 
-    public long[][] calculateDistanceMatrix(final List<? extends NetworkVertex> vertices) {
-        int numberOfVertices = vertices.size();
-        long[][] distances = new long[numberOfVertices][numberOfVertices];
-        for (int indexVertexFrom = 0; indexVertexFrom < vertices.size(); indexVertexFrom++) {
-            for (int indexVertexTo = 0; indexVertexTo < vertices.size(); indexVertexTo++) {
-                if (vertices.get(indexVertexFrom).equals(vertices.get(indexVertexTo))) {
-                    distances[indexVertexFrom][indexVertexTo] = 0;
-                } else {
-                    Number distance = getDistanceOfTheShortestPath(vertices.get(indexVertexFrom), vertices.get(indexVertexTo));
-                    if (distance != null) {
-                        distances[indexVertexFrom][indexVertexTo] = distance.longValue();
-                    } else {
-                        // there is no connection between the vertices
-                        distances[indexVertexFrom][indexVertexTo] = 0;
-                    }
+    public DistanceMatrix calculateDistanceMatrixX(final List<? extends NetworkVertex> vertices) {
+        DistanceMatrix matrix = new DistanceMatrix();
+        for (NetworkVertex from : vertices) {
+            for (NetworkVertex to : vertices) {
+                if (!from.equals(to)) {
+                    Number distance = getDistanceOfTheShortestPath(from, to);
+                    matrix.putDistance(from.getId(), to.getId(), distance);
                 }
             }
         }
-        return distances;
+        return matrix;
     }
 
     private Number getDistanceOfTheShortestPath(final NetworkVertex node1, final NetworkVertex node2) {
@@ -43,3 +35,4 @@ public class DistanceCalculator {
         return alg.getDistance(node1, node2);
     }
 }
+

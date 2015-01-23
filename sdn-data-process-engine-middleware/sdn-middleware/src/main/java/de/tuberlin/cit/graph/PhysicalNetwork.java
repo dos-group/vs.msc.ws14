@@ -27,11 +27,6 @@ public class PhysicalNetwork {
 
     public void createOrUpdateGraph(final List<NetworkEdge> edges) {
         this.graph = createGraph(edges);
-        List<NetworkVertex> vertices = new ArrayList<>();
-        for (NetworkEdge edge : edges) {
-            vertices.add(edge.getHeadVertex());
-            vertices.add(edge.getTailVertex());
-        }
         this.hostGroups = new HostGroupCollection(graph);
     }
 

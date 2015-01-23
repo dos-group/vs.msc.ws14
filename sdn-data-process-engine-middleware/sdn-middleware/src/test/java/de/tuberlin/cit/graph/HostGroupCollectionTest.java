@@ -80,7 +80,6 @@ public class HostGroupCollectionTest {
         assertEquals(8, hostGroupCollection.getHosts().size());
         assertEquals(4, hostGroupCollection.getHostGroups().size());
         assertEquals(4, hostGroupCollection.getNetworkDevices().size());
-        assertEquals(4, hostGroupCollection.getNetworkDevicesDistances().length);
     }
 
     @Test
