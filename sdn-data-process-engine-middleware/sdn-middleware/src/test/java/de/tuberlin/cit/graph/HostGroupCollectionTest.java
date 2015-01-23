@@ -10,9 +10,6 @@ import org.apache.commons.lang.ArrayUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.Assert.*;
 
 public class HostGroupCollectionTest {
@@ -35,49 +32,42 @@ public class HostGroupCollectionTest {
         Host h7 = new Host("h7");
         Host h8 = new Host("h8");
 
-        List<NetworkEdge> edges = new ArrayList<>();
+        addNetworkEdge(h1, s1);
+        addNetworkEdge(h2, s1);
+        addNetworkEdge(h3, s1);
 
-        edges.add(newNetworkEdge(h1, s1));
-        edges.add(newNetworkEdge(h2, s1));
-        edges.add(newNetworkEdge(h3, s1));
-        edges.add(newNetworkEdge(h5, s1));
+        addNetworkEdge(h4, s3);
+        addNetworkEdge(h5, s3);
 
-        edges.add(newNetworkEdge(h4, s3));
-        edges.add(newNetworkEdge(h5, s3));
+        addNetworkEdge(h6, s2);
+        addNetworkEdge(h7, s2);
 
-        edges.add(newNetworkEdge(h6, s2));
-        edges.add(newNetworkEdge(h7, s2));
+        addNetworkEdge(h8, s4);
 
-        edges.add(newNetworkEdge(h8, s4));
+        addNetworkEdge(s2, s1, 10000);
+        addNetworkEdge(s1, s2, 10000);
 
-        edges.add(newNetworkEdge(s2, s1, 10000));
-        edges.add(newNetworkEdge(s1, s2, 10000));
+        addNetworkEdge(s4, s1, 5000);
+        addNetworkEdge(s1, s4, 5000);
 
-        edges.add(newNetworkEdge(s4, s1, 5000));
-        edges.add(newNetworkEdge(s1, s4, 5000));
+        addNetworkEdge(s3, s1);
+        addNetworkEdge(s1, s3);
 
-        edges.add(newNetworkEdge(s3, s1));
-        edges.add(newNetworkEdge(s1, s3));
-
-        edges.add(newNetworkEdge(s3, s4));
-        edges.add(newNetworkEdge(s4, s3));
-
-        for (NetworkEdge e : edges) {
-            graph.addEdge(e, e.getTailVertex(), e.getHeadVertex(), EdgeType.DIRECTED);
-        }
+        addNetworkEdge(s3, s4);
+        addNetworkEdge(s4, s3);
     }
 
-    private NetworkEdge newNetworkEdge(NetworkVertex tail, NetworkVertex head) {
+    private NetworkEdge addNetworkEdge(NetworkVertex tail, NetworkVertex head) {
         NetworkEdge edge = new NetworkEdge();
         edge.setTail(tail, 0);
         edge.setHead(head, 0);
+
+        graph.addEdge(edge, edge.getTailVertex(), edge.getHeadVertex(), EdgeType.DIRECTED);
         return edge;
     }
 
-    private NetworkEdge newNetworkEdge(NetworkVertex tail, NetworkVertex head, long bandwidth) {
-        NetworkEdge edge = new NetworkEdge();
-        edge.setTail(tail, 0);
-        edge.setHead(head, 0);
+    private NetworkEdge addNetworkEdge(NetworkVertex tail, NetworkVertex head, long bandwidth) {
+        NetworkEdge edge = addNetworkEdge(tail, head);
         edge.setBandwidth(bandwidth);
         return edge;
     }
@@ -123,27 +113,27 @@ public class HostGroupCollectionTest {
         }
         Host nextBestHost = hostGroupCollection.findNextBestHost();
         // should be in the biggest host group
-        assertTrue(ArrayUtils.contains(new String[]{"h1", "h3", "h5"}, nextBestHost.getId()));
+        assertTrue(ArrayUtils.contains(new String[]{"h1", "h3"}, nextBestHost.getId()));
     }
 
     @Test
     public void findNextBestHost_WhenAllHostsInOneGroupAreBusy_Test() {
         hostGroupCollection = new HostGroupCollection(graph);
-        // set host 1,2,3 and 5 in use
+        // set host 1,2,3 use
         for (Host host : hostGroupCollection.getHosts()) {
-            if ("h1".equals(host.getId()) || "h2".equals(host.getId()) || "h3".equals(host.getId()) || "h5".equals(host.getId())) {
+            if ("h1".equals(host.getId()) || "h2".equals(host.getId()) || "h3".equals(host.getId()) ) {
                 host.setFree(false);
             }
         }
         Host nextBestHost = hostGroupCollection.findNextBestHost();
         // should be in the closest group
-        assertTrue(ArrayUtils.contains(new String[]{"h6", "h7"}, nextBestHost.getId()));
+        assertTrue(nextBestHost.getId(), ArrayUtils.contains(new String[]{"h6", "h7"}, nextBestHost.getId()));
     }
 
     @Test
     public void findNextBestHost_WhenAllHostsInOneGroupAreBusyAndTheClosestGroupIsBusy_Test() {
         hostGroupCollection = new HostGroupCollection(graph);
-        // set host 1,2,3 and 5 in use
+        // set host 1,2,3,5,6,7 in use
         for (Host host : hostGroupCollection.getHosts()) {
             if ("h1".equals(host.getId()) || "h2".equals(host.getId()) || "h3".equals(host.getId()) || "h5".equals(host.getId())
                     || "h6".equals(host.getId()) || "h7".equals(host.getId())) {
@@ -152,7 +142,7 @@ public class HostGroupCollectionTest {
         }
         Host nextBestHost = hostGroupCollection.findNextBestHost();
         // should be in the closest group which has some free nodes
-        assertEquals("h8", nextBestHost.getId());
+        assertEquals("h4", nextBestHost.getId());
     }
 
     @Test

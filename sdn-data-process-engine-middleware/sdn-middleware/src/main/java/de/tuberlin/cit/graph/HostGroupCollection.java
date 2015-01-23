@@ -95,9 +95,13 @@ public class HostGroupCollection {
         for (int i = 0; i < this.networkDevicesDistances.length; i++) {
             networkDeviceOfTheNextHostGroup = this.networkDevices.get(i);
             potentialNextHostGroup = getHostGroupByNetworkDevice(networkDeviceOfTheNextHostGroup);
-            if (i != workingGroupNetworkDeviceIndex && potentialNextHostGroup.hasFreeHosts()
-                    && this.networkDevicesDistances[workingGroupNetworkDeviceIndex][i] < minWeight) {
-                nextHostGroup = potentialNextHostGroup;
+            if (i != workingGroupNetworkDeviceIndex && potentialNextHostGroup.hasFreeHosts()) {
+                long distance = networkDevicesDistances[workingGroupNetworkDeviceIndex][i];
+                if (distance > 0 && distance < minWeight) {
+                    // select closest group
+                    minWeight = distance;
+                    nextHostGroup = potentialNextHostGroup;
+                }
             }
         }
         return nextHostGroup;

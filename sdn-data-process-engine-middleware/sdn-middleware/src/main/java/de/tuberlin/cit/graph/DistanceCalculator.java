@@ -26,10 +26,10 @@ public class DistanceCalculator {
                 } else {
                     Number distance = getDistanceOfTheShortestPath(vertices.get(indexVertexFrom), vertices.get(indexVertexTo));
                     if (distance != null) {
-                        // the vertexes can be reached
                         distances[indexVertexFrom][indexVertexTo] = distance.longValue();
                     } else {
-                        // TODO: vertexes in the graph cannot reach each other
+                        // there is no connection between the vertices
+                        distances[indexVertexFrom][indexVertexTo] = 0;
                     }
                 }
             }
