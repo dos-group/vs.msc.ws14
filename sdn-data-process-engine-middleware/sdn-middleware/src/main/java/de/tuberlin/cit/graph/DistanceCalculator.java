@@ -25,7 +25,12 @@ public class DistanceCalculator {
                     distances[indexVertexFrom][indexVertexTo] = 0;
                 } else {
                     Number distance = getDistanceOfTheShortestPath(vertices.get(indexVertexFrom), vertices.get(indexVertexTo));
-                    distances[indexVertexFrom][indexVertexTo] = distance.longValue();
+                    if (distance != null) {
+                        // the vertexes can be reached
+                        distances[indexVertexFrom][indexVertexTo] = distance.longValue();
+                    } else {
+                        // TODO: vertexes in the graph cannot reach each other
+                    }
                 }
             }
         }
