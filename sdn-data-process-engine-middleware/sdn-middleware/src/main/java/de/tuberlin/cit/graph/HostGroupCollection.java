@@ -73,7 +73,9 @@ public class HostGroupCollection {
                 if (nextHost == null) { // all working  host groups are full
                     HostGroup workingHostGroup = findWorkingHostGroup();
                     HostGroup nextHostGroup = findNextHostGroup(workingHostGroup);
-                    nextHost = nextHostGroup.getFreeHost();
+                    if (nextHostGroup != null) {
+                        nextHost = nextHostGroup.getFreeHost();
+                    }
                 }
             }
 
