@@ -23,18 +23,17 @@ public class HostGroupCollection {
      * @param graph Network graph.
      */
     public HostGroupCollection(DirectedSparseMultigraph graph) {
-        Collection<NetworkVertex> nodes = graph.getVertices();
-        Collection<NetworkEdge> connections = graph.getEdges();
-
         this.hostGroups = new HashSet<>();
         this.hosts = new HashSet<>();
         this.networkDevices = new ArrayList<>();
 
-        fillWithData(nodes, connections);
+        fillWithData(graph);
         calculateNetworkDevicesDistances(graph);
     }
 
-    private void fillWithData(Collection<NetworkVertex> nodes, Collection<NetworkEdge> connections) {
+    private void fillWithData(DirectedSparseMultigraph graph) {
+        Collection<NetworkVertex> nodes = graph.getVertices();
+
         // add all hosts and host groups
         HostGroup hostGroup;
         Host host;
@@ -44,14 +43,13 @@ public class HostGroupCollection {
                 networkDevice = (NetworkDevice) node;
                 hostGroup = new HostGroup(networkDevice);
                 this.networkDevices.add(networkDevice);
-                for (NetworkEdge connection : connections) { // go through all connections
-                    if (connection.getHeadVertex().equals(networkDevice)) { // find connected nodes
-                        NetworkVertex tail = connection.getTailVertex();
-                        if (tail instanceof Host) { // add host to the group
-                            host = (Host) tail;
-                            hostGroup.addHost(host);
-                            this.hosts.add(host);
-                        }
+                Collection<NetworkEdge> connections = graph.getInEdges(networkDevice);
+                for (NetworkEdge connection : connections) { // go through ingoing connections
+                    NetworkVertex tail = connection.getTailVertex();
+                    if (tail instanceof Host) { // add host to the group
+                        host = (Host) tail;
+                        hostGroup.addHost(host);
+                        this.hosts.add(host);
                     }
                 }
                 this.hostGroups.add(hostGroup);
