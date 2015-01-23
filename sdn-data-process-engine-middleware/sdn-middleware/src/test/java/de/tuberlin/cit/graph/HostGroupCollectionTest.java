@@ -10,6 +10,9 @@ import org.apache.commons.lang.ArrayUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class HostGroupCollectionTest {
@@ -32,84 +35,51 @@ public class HostGroupCollectionTest {
         Host h7 = new Host("h7");
         Host h8 = new Host("h8");
 
-        NetworkEdge edge1 = new NetworkEdge();
-        edge1.setHead(s1, 0);
-        edge1.setTail(h1, 0);
-        NetworkEdge edge2 = new NetworkEdge();
-        edge2.setHead(s1, 0);
-        edge2.setTail(h2, 0);
-        NetworkEdge edge3 = new NetworkEdge();
-        edge3.setHead(s1, 0);
-        edge3.setTail(h3, 0);
-        NetworkEdge edge4 = new NetworkEdge();
-        edge4.setHead(s3, 0);
-        edge4.setTail(h4, 0);
-        NetworkEdge edge5 = new NetworkEdge();
-        edge5.setHead(s3, 0);
-        edge5.setTail(h5, 0);
-        NetworkEdge edge6 = new NetworkEdge();
-        edge6.setHead(s2, 0);
-        edge6.setTail(h6, 0);
-        NetworkEdge edge7 = new NetworkEdge();
-        edge7.setHead(s2, 0);
-        edge7.setTail(h7, 0);
-        NetworkEdge edge8 = new NetworkEdge();
-        edge8.setHead(s4, 0);
-        edge8.setTail(h8, 0);
-        NetworkEdge edge9 = new NetworkEdge();
-        edge9.setHead(s1, 0);
-        edge9.setTail(h5, 0);
+        List<NetworkEdge> edges = new ArrayList<>();
 
-        NetworkEdge edge10 = new NetworkEdge();
-        edge10.setHead(s2, 0);
-        edge10.setTail(h1, 0);
-        edge10.setBandwidth(10000);
-        NetworkEdge edge10b = new NetworkEdge();
-        edge10b.setHead(h1, 0);
-        edge10b.setTail(s2, 0);
-        edge10b.setBandwidth(10000);
+        edges.add(newNetworkEdge(h1, s1));
+        edges.add(newNetworkEdge(h2, s1));
+        edges.add(newNetworkEdge(h3, s1));
+        edges.add(newNetworkEdge(h5, s1));
 
-        NetworkEdge edge11 = new NetworkEdge();
-        edge11.setHead(s1, 0);
-        edge11.setTail(s4, 0);
-        edge11.setBandwidth(5000);
-        NetworkEdge edge11b = new NetworkEdge();
-        edge11b.setHead(s4, 0);
-        edge11b.setTail(s1, 0);
-        edge11b.setBandwidth(5000);
+        edges.add(newNetworkEdge(h4, s3));
+        edges.add(newNetworkEdge(h5, s3));
 
-        NetworkEdge edge12 = new NetworkEdge();
-        edge12.setHead(s1, 0);
-        edge12.setTail(s3, 0);
-        NetworkEdge edge12b = new NetworkEdge();
-        edge12b.setHead(s3, 0);
-        edge12b.setTail(s1, 0);
+        edges.add(newNetworkEdge(h6, s2));
+        edges.add(newNetworkEdge(h7, s2));
 
+        edges.add(newNetworkEdge(h8, s4));
 
-        NetworkEdge edge13 = new NetworkEdge();
-        edge13.setHead(s3, 0);
-        edge13.setTail(s4, 0);
-        NetworkEdge edge13b = new NetworkEdge();
-        edge13b.setHead(s4, 0);
-        edge13b.setTail(s3, 0);
+        edges.add(newNetworkEdge(s2, s1, 10000));
+        edges.add(newNetworkEdge(s1, s2, 10000));
 
-        graph.addEdge(edge1, s1, h1, EdgeType.DIRECTED);
-        graph.addEdge(edge2, s1, h2, EdgeType.DIRECTED);
-        graph.addEdge(edge3, s1, h3, EdgeType.DIRECTED);
-        graph.addEdge(edge4, s3, h4, EdgeType.DIRECTED);
-        graph.addEdge(edge5, s3, h5, EdgeType.DIRECTED);
-        graph.addEdge(edge6, s2, h6, EdgeType.DIRECTED);
-        graph.addEdge(edge7, s2, h7, EdgeType.DIRECTED);
-        graph.addEdge(edge8, s4, h8, EdgeType.DIRECTED);
-        graph.addEdge(edge9, s1, h5, EdgeType.DIRECTED);
-        graph.addEdge(edge10, s2, s1, EdgeType.DIRECTED);
-        graph.addEdge(edge10b, s1, s2, EdgeType.DIRECTED);
-        graph.addEdge(edge11, s1, s4, EdgeType.DIRECTED);
-        graph.addEdge(edge11b, s4, s1, EdgeType.DIRECTED);
-        graph.addEdge(edge12, s1, s3, EdgeType.DIRECTED);
-        graph.addEdge(edge12b, s3, s1, EdgeType.DIRECTED);
-        graph.addEdge(edge13, s3, s4, EdgeType.DIRECTED);
-        graph.addEdge(edge13b, s4, s3, EdgeType.DIRECTED);
+        edges.add(newNetworkEdge(s4, s1, 5000));
+        edges.add(newNetworkEdge(s1, s4, 5000));
+
+        edges.add(newNetworkEdge(s3, s1));
+        edges.add(newNetworkEdge(s1, s3));
+
+        edges.add(newNetworkEdge(s3, s4));
+        edges.add(newNetworkEdge(s4, s3));
+
+        for (NetworkEdge e : edges) {
+            graph.addEdge(e, e.getTailVertex(), e.getHeadVertex(), EdgeType.DIRECTED);
+        }
+    }
+
+    private NetworkEdge newNetworkEdge(NetworkVertex tail, NetworkVertex head) {
+        NetworkEdge edge = new NetworkEdge();
+        edge.setTail(tail, 0);
+        edge.setHead(head, 0);
+        return edge;
+    }
+
+    private NetworkEdge newNetworkEdge(NetworkVertex tail, NetworkVertex head, long bandwidth) {
+        NetworkEdge edge = new NetworkEdge();
+        edge.setTail(tail, 0);
+        edge.setHead(head, 0);
+        edge.setBandwidth(bandwidth);
+        return edge;
     }
 
     HostGroupCollection hostGroupCollection;
