@@ -1,7 +1,7 @@
 package de.tuberlin.cit;
 
 import de.tuberlin.cit.sdn.opendaylight.model.OdlSettings;
-import de.tuberlin.cit.services.ServiceHost;
+import de.tuberlin.cit.services.SdnServices;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -34,7 +34,7 @@ public class Utils {
         try {
             java.rmi.registry.LocateRegistry.createRegistry(1099);
             logger.debug("RMI registry ready.");
-            Naming.rebind("HostSvc", new ServiceHost());
+            Naming.rebind("SdnCoupler", new SdnServices());
             logger.debug("RMI server ready.");
         } catch (Exception e) {
             e.printStackTrace();
