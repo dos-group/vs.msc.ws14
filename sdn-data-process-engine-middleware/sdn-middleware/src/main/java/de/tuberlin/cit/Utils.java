@@ -1,6 +1,5 @@
 package de.tuberlin.cit;
 
-import de.tuberlin.cit.sdn.DemandSimulator;
 import de.tuberlin.cit.sdn.opendaylight.model.OdlSettings;
 import de.tuberlin.cit.services.ServiceHost;
 import org.apache.commons.cli.*;
@@ -48,16 +47,12 @@ public class Utils {
         options.addOption("u", true, "Opendaylight username (default: 'admin')");
         options.addOption("pw", true, "Opendaylight password (default: 'admin')");
         options.addOption("p", true, "Opendaylight port (default: 8080)");
-        options.addOption("d", true, "Demanddemo mode");
-        options.addOption("t", true, "Demanddemo toggle time (ms)");
         options.addOption("l", true, "Log level");
 
         String odlIP = "127.0.0.1";
         String odlUser = "admin";
         String odlPw = "admin";
         String odlPort = "8080";
-        boolean demandDemo = false;
-        int demandToggleTime = 5000;
         Level logLevel = Level.INFO;
 
         CommandLineParser parser = new BasicParser();
@@ -74,15 +69,6 @@ public class Utils {
             }
             if (cmd.hasOption("p")) {
                 odlPort = cmd.getOptionValue("p").toString();
-            }
-            if (cmd.hasOption("d")) {
-                if (cmd.getOptionValue("d").toString().toLowerCase().contains("true"))
-                    demandDemo = true;
-                else
-                    demandDemo = false;
-            }
-            if (cmd.hasOption("t")) {
-                demandToggleTime = Integer.parseInt(cmd.getOptionValue("t").toString());
             }
             if (cmd.hasOption("l")) {
                 switch (cmd.getOptionValue("l").toString().toLowerCase()) {
@@ -127,21 +113,13 @@ public class Utils {
         conf.getLoggerConfig("SDNMiddlewareLogger").setLevel(logLevel);
         ctx.updateLoggers(conf);
 
-        OdlSettings settings = new OdlSettings(odlIP, odlUser, odlPw, odlPort, demandDemo, demandToggleTime);
+        OdlSettings settings = new OdlSettings(odlIP, odlUser, odlPw, odlPort);
 
         logger.info("Log level: " + logLevel.toString());
         logger.info("Using controller @ " + odlIP);
         logger.info("With port port " + odlPort);
         logger.info("Using Opendaylight user '" + odlUser + "'");
         logger.info("With password '" + odlPw + "'");
-        logger.info("Demand demo mode: " + demandDemo);
-        if (demandDemo)
-            logger.info("Demand toggle time: " + demandToggleTime);
-
-        if (demandDemo) {
-            Thread thread = new Thread(new DemandSimulator(settings));
-            thread.start();
-        }
 
         return settings;
     }

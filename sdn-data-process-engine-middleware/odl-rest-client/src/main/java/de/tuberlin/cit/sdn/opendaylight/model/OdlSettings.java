@@ -9,16 +9,12 @@ public class OdlSettings {
     private String user = "admin";
     private String password = "admin";
     private String port = "8080";
-    private boolean demandDemo = false;
-    private int toggleTime = 5000;
 
-    public OdlSettings(String ip, String user, String password, String port, boolean demandDemo, int toggleTime) {
+    public OdlSettings(String ip, String user, String password, String port) {
         this.ip = ip;
         this.port = port;
         this.user = user;
         this.password = password;
-        this.demandDemo = demandDemo;
-        this.toggleTime = toggleTime;
     }
 
     public OdlSettings() {
@@ -42,9 +38,5 @@ public class OdlSettings {
 
     public String getUrl() {
         return "http://" + ip + ":" + port;
-    }
-
-    public int getToggleTime() {
-        return toggleTime;
     }
 }
