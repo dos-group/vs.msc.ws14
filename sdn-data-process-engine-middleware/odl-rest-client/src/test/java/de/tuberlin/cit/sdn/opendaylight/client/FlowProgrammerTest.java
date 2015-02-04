@@ -15,7 +15,7 @@ public class FlowProgrammerTest extends BaseTest {
     }
 
     @Test
-    private void getFlows() {
+    public void getFlows() {
         flowClient.getFlows();
     }
 }
