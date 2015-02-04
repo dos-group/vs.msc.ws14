@@ -7,7 +7,7 @@ public class StatisticsTest {
     StatisticsClient statisticsClient;
 
     @Before
-    private void init() {
+    public void init() {
         statisticsClient = new StatisticsClient();
     }
 

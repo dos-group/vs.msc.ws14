@@ -7,7 +7,7 @@ public class FlowProgrammerTest {
     FlowProgrammerClient flowClient;
 
     @Before
-    private void init() {
+    public void init() {
         flowClient = new FlowProgrammerClient();
     }
 

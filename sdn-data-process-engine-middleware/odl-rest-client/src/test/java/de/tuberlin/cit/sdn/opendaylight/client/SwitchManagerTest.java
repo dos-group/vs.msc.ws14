@@ -7,7 +7,7 @@ public class SwitchManagerTest {
     private SwitchManagerClient switchClient;
 
     @Before
-    private void init() {
+    public void init() {
         switchClient = new SwitchManagerClient();
     }
 

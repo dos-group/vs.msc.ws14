@@ -7,7 +7,7 @@ public class HostTrackerTest {
     HostTrackerClient hostClient;
 
     @Before
-    private void init() {
+    public void init() {
         hostClient = new HostTrackerClient();
     }
 

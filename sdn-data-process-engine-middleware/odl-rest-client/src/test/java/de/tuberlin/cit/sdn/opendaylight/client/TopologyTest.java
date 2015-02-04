@@ -7,7 +7,7 @@ public class TopologyTest {
     private TopologyClient topologyClient;
 
     @Before
-    private void init() {
+    public void init() {
         topologyClient = new TopologyClient();
     }
 
