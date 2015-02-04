@@ -3,12 +3,15 @@ package de.tuberlin.cit.sdn.opendaylight.client;
 import org.junit.Before;
 import org.junit.Test;
 
-public class HostTrackerTest {
+import java.io.IOException;
+
+public class HostTrackerTest extends BaseTest {
     HostTrackerClient hostClient;
 
     @Before
-    public void init() {
-        hostClient = new HostTrackerClient();
+    public void init() throws IOException {
+        super.init();
+        hostClient = new HostTrackerClient(settings);
     }
 
     @Test

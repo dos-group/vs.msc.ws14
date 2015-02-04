@@ -3,12 +3,15 @@ package de.tuberlin.cit.sdn.opendaylight.client;
 import org.junit.Before;
 import org.junit.Test;
 
-public class FlowProgrammerTest {
+import java.io.IOException;
+
+public class FlowProgrammerTest extends BaseTest {
     FlowProgrammerClient flowClient;
 
     @Before
-    public void init() {
-        flowClient = new FlowProgrammerClient();
+    public void init() throws IOException {
+        super.init();
+        flowClient = new FlowProgrammerClient(settings);
     }
 
     @Test
