@@ -16,8 +16,6 @@ public interface SdnCoupler extends Remote {
 
     public boolean canConnect() throws RemoteException;
 
-    public void sendExecutionGraph(ExecutionGraph eg) throws RemoteException;
-
     public void markInstanceAsInUse(String host) throws RemoteException;
 
     public void markInstanceAsUnused(String host) throws RemoteException;

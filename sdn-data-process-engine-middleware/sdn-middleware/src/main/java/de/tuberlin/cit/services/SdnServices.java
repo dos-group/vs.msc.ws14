@@ -47,13 +47,6 @@ public class SdnServices extends UnicastRemoteObject implements SdnCoupler {
         return true;
     }
 
-    @Override
-    public void sendExecutionGraph(ExecutionGraph eg) throws RemoteException {
-        logger.debug("sendExecutionGraph() called");
-        logger.debug("Received execution graph: " + eg.toString());
-
-    }
-
     /**
      *
      * @param host hosts ip address
@@ -61,7 +54,7 @@ public class SdnServices extends UnicastRemoteObject implements SdnCoupler {
      */
     @Override
     public void markInstanceAsInUse(String host) throws RemoteException {
-        logger.debug("getExecutionHost() called");
+        logger.debug("markInstanceAsInUse() called");
     }
 
     /**
@@ -71,6 +64,6 @@ public class SdnServices extends UnicastRemoteObject implements SdnCoupler {
      */
     @Override
     public void markInstanceAsUnused(String host) throws RemoteException {
-        logger.debug("getExecutionHost() called");
+        logger.debug("markInstanceAsUnused() called");
     }
 }
