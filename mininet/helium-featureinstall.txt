@@ -1,0 +1,1 @@
+feature:install odl-base-all odl-aaa-authn odl-restconf odl-nsf-all odl-adsal-northbound odl-mdsal-apidocs odl-l2switch-switch odl-dlux-core odl-openflowplugin-flow-services-ui odl-ovsdb-all odl-snmp4sdn-all
