@@ -1,20 +1,13 @@
-package de.tuberlin.cit.services;
+package de.tuberlin.cit.sdn.services;
 
 /**
  * Created by Nico on 07.01.2015.
  */
 
-import de.tuberlin.cit.graph.HostGroupCollection;
-import de.tuberlin.cit.services.interfaces.SdnCoupler;
-import org.apache.flink.runtime.executiongraph.ExecutionGraph;
-import org.apache.flink.runtime.instance.HardwareDescription;
-import org.apache.flink.runtime.instance.Instance;
-import org.apache.flink.runtime.instance.InstanceConnectionInfo;
-import org.apache.flink.runtime.instance.InstanceID;
+import de.tuberlin.cit.sdn.services.interfaces.SdnCoupler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.net.InetAddress;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 

@@ -1,11 +1,8 @@
-package de.tuberlin.cit.services.interfaces;
+package de.tuberlin.cit.sdn.services.interfaces;
 
 /**
  * Created by Nico on 07.01.2015.
  */
-
-import org.apache.flink.runtime.executiongraph.ExecutionGraph;
-import org.apache.flink.runtime.instance.Instance;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

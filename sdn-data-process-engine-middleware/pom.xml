@@ -10,6 +10,7 @@
     <modules>
         <module>odl-rest-client</module>
         <module>sdn-middleware</module>
+        <module>rmi-server</module>
     </modules>
 
     <dependencies>

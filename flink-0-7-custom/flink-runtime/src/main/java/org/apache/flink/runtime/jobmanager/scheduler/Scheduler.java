@@ -37,7 +37,7 @@ import org.apache.flink.runtime.instance.Instance;
 import org.apache.flink.runtime.instance.InstanceDiedException;
 import org.apache.flink.runtime.instance.InstanceListener;
 import org.apache.flink.util.ExceptionUtils;
-import de.tuberlin.cit.services.interfaces.SdnCoupler;
+import de.tuberlin.cit.sdn.services.interfaces.SdnCoupler;
 
 /**
  * The scheduler is responsible for distributing the ready-to-run tasks and assigning them to instances and

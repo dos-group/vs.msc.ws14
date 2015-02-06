@@ -15,8 +15,6 @@ public class App {
 
         OdlSettings odlSettings = Utils.getInstance().readSettings(args);
 
-        Utils.getInstance().startRMIServer();
-
         SwitchManagerClient switchClient = new SwitchManagerClient(odlSettings);
         Nodes nodes = switchClient.getNodes();
 

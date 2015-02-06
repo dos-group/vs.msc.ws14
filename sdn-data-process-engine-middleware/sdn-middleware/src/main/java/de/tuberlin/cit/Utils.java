@@ -1,15 +1,12 @@
 package de.tuberlin.cit;
 
 import de.tuberlin.cit.sdn.opendaylight.model.OdlSettings;
-import de.tuberlin.cit.services.SdnServices;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configuration;
-
-import java.rmi.Naming;
 
 /**
  * Created by Nico on 02.01.2015.
@@ -28,17 +25,6 @@ public class Utils {
     }
 
     private Utils() {
-    }
-
-    public void startRMIServer() {
-        try {
-            java.rmi.registry.LocateRegistry.createRegistry(1099);
-            logger.debug("RMI registry ready.");
-            Naming.rebind("SdnCoupler", new SdnServices());
-            logger.debug("RMI server ready.");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public OdlSettings readSettings(String[] args) {
