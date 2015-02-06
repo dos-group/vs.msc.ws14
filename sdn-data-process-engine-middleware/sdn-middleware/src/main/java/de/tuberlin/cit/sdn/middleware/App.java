@@ -1,4 +1,4 @@
-package de.tuberlin.cit;
+package de.tuberlin.cit.sdn.middleware;
 
 import de.tuberlin.cit.sdn.opendaylight.client.*;
 import de.tuberlin.cit.sdn.opendaylight.model.OdlSettings;

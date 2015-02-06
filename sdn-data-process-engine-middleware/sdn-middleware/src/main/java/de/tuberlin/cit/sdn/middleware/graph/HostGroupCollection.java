@@ -1,6 +1,6 @@
-package de.tuberlin.cit.graph;
+package de.tuberlin.cit.sdn.middleware.graph;
 
-import de.tuberlin.cit.graph.model.*;
+import de.tuberlin.cit.sdn.middleware.graph.model.*;
 import edu.uci.ics.jung.graph.DirectedSparseMultigraph;
 
 import java.util.*;

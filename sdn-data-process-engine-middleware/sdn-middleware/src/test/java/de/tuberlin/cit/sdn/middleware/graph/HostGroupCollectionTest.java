@@ -1,9 +1,9 @@
-package de.tuberlin.cit.graph;
+package de.tuberlin.cit.sdn.middleware.graph;
 
-import de.tuberlin.cit.graph.model.Host;
-import de.tuberlin.cit.graph.model.NetworkDevice;
-import de.tuberlin.cit.graph.model.NetworkEdge;
-import de.tuberlin.cit.graph.model.NetworkVertex;
+import de.tuberlin.cit.sdn.middleware.graph.model.Host;
+import de.tuberlin.cit.sdn.middleware.graph.model.NetworkDevice;
+import de.tuberlin.cit.sdn.middleware.graph.model.NetworkEdge;
+import de.tuberlin.cit.sdn.middleware.graph.model.NetworkVertex;
 import edu.uci.ics.jung.graph.DirectedSparseMultigraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import org.apache.commons.lang.ArrayUtils;

@@ -1,4 +1,4 @@
-package de.tuberlin.cit.graph.model;
+package de.tuberlin.cit.sdn.middleware.graph.model;
 
 import java.util.HashSet;
 import java.util.Set;

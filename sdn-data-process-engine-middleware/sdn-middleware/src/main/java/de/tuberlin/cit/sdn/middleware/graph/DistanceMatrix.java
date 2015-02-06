@@ -1,4 +1,4 @@
-package de.tuberlin.cit.graph;
+package de.tuberlin.cit.sdn.middleware.graph;
 
 import java.util.HashMap;
 import java.util.Map;
