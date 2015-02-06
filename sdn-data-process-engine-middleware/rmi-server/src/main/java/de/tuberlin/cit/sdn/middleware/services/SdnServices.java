@@ -1,10 +1,10 @@
-package de.tuberlin.cit.sdn.services;
+package de.tuberlin.cit.sdn.middleware.services;
 
 /**
  * Created by Nico on 07.01.2015.
  */
 
-import de.tuberlin.cit.sdn.services.interfaces.SdnCoupler;
+import de.tuberlin.cit.sdn.middleware.services.interfaces.SdnCoupler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

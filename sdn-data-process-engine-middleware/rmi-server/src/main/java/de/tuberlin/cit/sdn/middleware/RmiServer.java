@@ -1,15 +1,15 @@
-package de.tuberlin.cit.sdn;
+package de.tuberlin.cit.sdn.middleware;
 
-import de.tuberlin.cit.sdn.services.SdnServices;
+import de.tuberlin.cit.sdn.middleware.services.SdnServices;
 import org.apache.log4j.Logger;
 
 import java.rmi.Naming;
 
-public class Main {
+public class RmiServer {
     private Logger logger = Logger.getLogger(this.getClass());
 
     public static void main(String args[]) {
-        new Main().execute(args);
+        new RmiServer().execute(args);
     }
 
     private void execute(String args[]) {

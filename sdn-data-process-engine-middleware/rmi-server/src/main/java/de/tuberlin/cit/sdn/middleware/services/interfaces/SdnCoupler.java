@@ -1,4 +1,4 @@
-package de.tuberlin.cit.sdn.services.interfaces;
+package de.tuberlin.cit.sdn.middleware.services.interfaces;
 
 /**
  * Created by Nico on 07.01.2015.

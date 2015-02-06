@@ -30,7 +30,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>de.tuberlin.cit.sdn.Main</mainClass>
+                            <mainClass>de.tuberlin.cit.sdn.middleware.RmiServer</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
