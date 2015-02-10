@@ -506,21 +506,29 @@ public class Scheduler implements InstanceListener, SlotAvailablilityListener {
 		//                             (2) scheduler (to check whether to take a new task item
 		// 
 		// that leads with a high probability to deadlocks, when scheduling fast
-		
-		this.newlyAvailableInstances.add(instance);
-		
-		if (this.executor != null) {
-			this.executor.execute(new Runnable() {
-				@Override
-				public void run() {
-					handleNewSlot();
-				}
-			});
-		}
-		else {
-			// for tests, we use the synchronous variant
-			handleNewSlot();
-		}
+
+		/*
+		try {
+			SdnCoupler sc = (SdnCoupler) Naming.lookup("//localhost/SdnCoupler");
+			sc.markInstanceAsUnused(instance.getInstanceConnectionInfo().getFQDNHostname());
+		*/
+			this.newlyAvailableInstances.add(instance);
+
+			if (this.executor != null) {
+				this.executor.execute(new Runnable() {
+					@Override
+					public void run() {
+						handleNewSlot();
+					}
+				});
+			} else {
+				// for tests, we use the synchronous variant
+				handleNewSlot();
+			}
+		/*
+		} catch (Exception e) {
+			System.out.println("RMI HostService exception: " + e);
+		}*/
 	}
 	
 	private void handleNewSlot() {
