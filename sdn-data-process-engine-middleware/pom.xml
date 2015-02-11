@@ -8,9 +8,9 @@
     <name>sdn-data-process-engine-middleware</name>
 
     <modules>
-        <module>odl-rest-client</module>
         <module>sdn-middleware</module>
         <module>rmi-server</module>
+        <module>opendaylight</module>
     </modules>
 
     <dependencies>
