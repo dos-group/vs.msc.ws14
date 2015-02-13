@@ -43,15 +43,7 @@
             <url>http://nexus.opendaylight.org/content/repositories/opendaylight.snapshot/</url>
         </pluginRepository>
     </pluginRepositories>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.opendaylight.yangtools</groupId>
-            <artifactId>yang</artifactId>
-            <version>${yangtools.version}</version>
-        </dependency>
-    </dependencies>
-
+    <!--
     <build>
         <plugins>
             <plugin>
@@ -69,7 +61,7 @@
                                     <codeGeneratorClass>
                                         org.opendaylight.yangtools.maven.sal.api.gen.plugin.CodeGeneratorImpl
                                     </codeGeneratorClass>
-                                    <outputBaseDir>${salGeneratorPath}</outputBaseDir>
+                                    <outputBaseDir>${project.build.directory}/generated-sources/config</outputBaseDir>
                                 </generator>
                             </codeGenerators>
                             <inspectDependencies>true</inspectDependencies>
@@ -87,5 +79,6 @@
             </plugin>
         </plugins>
     </build>
+    -->
 
 </project>
