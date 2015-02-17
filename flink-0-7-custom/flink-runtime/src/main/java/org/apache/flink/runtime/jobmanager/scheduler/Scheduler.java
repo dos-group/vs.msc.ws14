@@ -507,11 +507,6 @@ public class Scheduler implements InstanceListener, SlotAvailablilityListener {
 		// 
 		// that leads with a high probability to deadlocks, when scheduling fast
 
-		/*
-		try {
-			SdnCoupler sc = (SdnCoupler) Naming.lookup("//localhost/SdnCoupler");
-			sc.markInstanceAsUnused(instance.getInstanceConnectionInfo().getFQDNHostname());
-		*/
 			this.newlyAvailableInstances.add(instance);
 
 			if (this.executor != null) {
@@ -525,10 +520,6 @@ public class Scheduler implements InstanceListener, SlotAvailablilityListener {
 				// for tests, we use the synchronous variant
 				handleNewSlot();
 			}
-		/*
-		} catch (Exception e) {
-			System.out.println("RMI HostService exception: " + e);
-		}*/
 	}
 	
 	private void handleNewSlot() {
