@@ -1,18 +1,15 @@
-package de.tuberlin.cit.sdn.middleware;
+package de.tuberlin.cit.sdn.middleware.flinkinterface;
 
-import de.tuberlin.cit.sdn.middleware.services.SdnServices;
-import org.apache.log4j.Logger;
+import de.tuberlin.cit.sdn.middleware.flinkinterface.services.SdnServices;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.rmi.Naming;
 
 public class RmiServer {
-    private Logger logger = Logger.getLogger(this.getClass());
+    Logger logger = LogManager.getLogger("flinkinterface-logger");
 
-    public static void main(String args[]) {
-        new RmiServer().execute(args);
-    }
-
-    private void execute(String args[]) {
+    public void startServer() {
         try {
             java.rmi.registry.LocateRegistry.createRegistry(1099);
             logger.debug("RMI registry ready.");

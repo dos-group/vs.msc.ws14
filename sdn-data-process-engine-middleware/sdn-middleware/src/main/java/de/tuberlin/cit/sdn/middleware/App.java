@@ -8,6 +8,7 @@ import de.tuberlin.cit.sdn.opendaylight.model.node.Nodes;
 import de.tuberlin.cit.sdn.opendaylight.model.statistic.FlowStatistics;
 import de.tuberlin.cit.sdn.opendaylight.model.statistic.PortStatistics;
 import de.tuberlin.cit.sdn.opendaylight.model.topology.Topology;
+import de.tuberlin.cit.sdn.middleware.flinkinterface.*;
 
 public class App {
 
@@ -31,5 +32,8 @@ public class App {
         StatisticsClient statClient = new StatisticsClient(odlSettings);
         PortStatistics portStatistics = statClient.getPortStatistics();
         FlowStatistics flowStatistics = statClient.getFlowStatistics();
+
+        RmiServer rs = new RmiServer();
+        rs.startServer();
     }
 }
