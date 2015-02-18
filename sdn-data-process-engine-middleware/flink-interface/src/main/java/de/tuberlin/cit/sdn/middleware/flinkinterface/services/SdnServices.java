@@ -11,8 +11,9 @@ import java.rmi.RemoteException;
 
 public class SdnServices {
 
-   Logger logger = LogManager.getLogger("SDNMiddlewareLogger");
+    Logger logger = LogManager.getLogger("SDNMiddlewareLogger");
 
+    int i = 1;
     public SdnServices() {
 
     }
@@ -23,7 +24,8 @@ public class SdnServices {
         // retrieve host from hostgroup coll
 
         // Dummy data
-        return "10.0.0.2";
+        i++;
+        return "10.0.0." + i;
     }
 
     /**
