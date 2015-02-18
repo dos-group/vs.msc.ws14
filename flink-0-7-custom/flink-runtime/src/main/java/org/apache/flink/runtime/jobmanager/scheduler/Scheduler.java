@@ -18,7 +18,6 @@
 
 package org.apache.flink.runtime.jobmanager.scheduler;
 
-import java.rmi.Naming;
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.HashSet;
@@ -29,6 +28,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.apache.flink.runtime.util.MiddlewareRestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.flink.runtime.executiongraph.ExecutionVertex;
@@ -37,7 +37,6 @@ import org.apache.flink.runtime.instance.Instance;
 import org.apache.flink.runtime.instance.InstanceDiedException;
 import org.apache.flink.runtime.instance.InstanceListener;
 import org.apache.flink.util.ExceptionUtils;
-import de.tuberlin.cit.sdn.middleware.services.interfaces.SdnCoupler;
 
 /**
  * The scheduler is responsible for distributing the ready-to-run tasks and assigning them to instances and
@@ -70,7 +69,9 @@ public class Scheduler implements InstanceListener, SlotAvailablilityListener {
 	private int localizedAssignments;
 	
 	private int nonLocalizedAssignments;
-	
+
+	private MiddlewareRestHandler resthandler;
+
 	
 	public Scheduler() {
 		this(null);
@@ -79,6 +80,7 @@ public class Scheduler implements InstanceListener, SlotAvailablilityListener {
 	public Scheduler(ExecutorService executorService) {
 		this.executor = executorService;
 		this.newlyAvailableInstances = new LinkedBlockingQueue<Instance>();
+		this.resthandler = new MiddlewareRestHandler("http://192.168.1.5:4567/");
 	}
 	
 	
@@ -130,14 +132,15 @@ public class Scheduler implements InstanceListener, SlotAvailablilityListener {
 	}
 
 	private Instance getInstanceByIP(String ip, Iterable<Instance> locations) throws Exception {
-		LOG.debug("Matching given ip " + ip + " to flink instance");
+		LOG.error("Matching given ip '" + ip + "' to flink instance");
 
 		for(Instance i : locations) {
-			if(i.getInstanceConnectionInfo().address().getHostAddress() == ip) {
+			LOG.error("Iteration: '" + i.getInstanceConnectionInfo().address().getHostAddress()+"'");
+			if(i.getInstanceConnectionInfo().address().getHostAddress().equals(ip)) {
 				return i;
 			}
 		}
-		throw new Exception("No flink node connected with given ip");
+		throw new Exception("No flink node connected/available with given ip");
 	}
 	
 	// --------------------------------------------------------------------------------------------
@@ -420,13 +423,11 @@ public class Scheduler implements InstanceListener, SlotAvailablilityListener {
 			Locality locality = Locality.UNCONSTRAINED;
 
 			try {
+				LOG.error("Calling getExecutionHost");
+				String hostIP = resthandler.sendGet("getExecutionHost");
+				LOG.error("getExecutionHost result: " + hostIP);
 
-				SdnCoupler sc = (SdnCoupler) Naming.lookup("//localhost/SdnCoupler");
-				boolean cc = sc.canConnect();
-				LOG.error("can connect: " + cc);
-				String hostIP = sc.getExecutionHost();
-
-				instanceToUse = getInstanceByIP(hostIP, requestedLocations);
+				instanceToUse = getInstanceByIP(hostIP, instancesWithAvailableResources);
 
 				/*
 				if (locations != null && locations.hasNext()) {
@@ -465,10 +466,11 @@ public class Scheduler implements InstanceListener, SlotAvailablilityListener {
 				}*/
 			}
 			catch (Exception e) {
-				System.out.println("RMI HostService exception: " + e);
+				LOG.error("Middleware REST call exception: " + e);
+				e.printStackTrace();
 			}
 
-			LOG.debug("Using instance " + instanceToUse.getInstanceConnectionInfo().getInetAdress());
+			LOG.error("Using instance " + instanceToUse.getInstanceConnectionInfo().getInetAdress());
 
 			try {
 				AllocatedSlot slot = instanceToUse.allocateSlot(vertex.getJobId());
