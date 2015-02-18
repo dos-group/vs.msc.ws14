@@ -13,7 +13,7 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class SdnServices extends UnicastRemoteObject implements SdnCoupler {
 
-    Logger logger = LogManager.getLogger("SDNMiddlewareLogger");
+   Logger logger = LogManager.getLogger("SDNMiddlewareLogger");
 
     public SdnServices() throws RemoteException {
 
@@ -57,6 +57,6 @@ public class SdnServices extends UnicastRemoteObject implements SdnCoupler {
      */
     @Override
     public void markInstanceAsUnused(String host) throws RemoteException {
-        logger.debug("markInstanceAsUnused() called");
+       logger.debug("markInstanceAsUnused() called");
     }
 }

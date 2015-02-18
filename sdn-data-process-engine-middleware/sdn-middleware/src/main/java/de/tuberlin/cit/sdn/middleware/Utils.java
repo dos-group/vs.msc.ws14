@@ -94,6 +94,7 @@ public class Utils {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
         LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
         Configuration conf = ctx.getConfiguration();
         conf.getLoggerConfig("SDNMiddlewareLogger").setLevel(logLevel);

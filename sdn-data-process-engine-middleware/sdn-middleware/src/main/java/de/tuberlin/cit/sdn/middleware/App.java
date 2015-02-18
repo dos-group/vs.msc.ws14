@@ -33,7 +33,7 @@ public class App {
         PortStatistics portStatistics = statClient.getPortStatistics();
         FlowStatistics flowStatistics = statClient.getFlowStatistics();
 
-        RmiServer rs = new RmiServer();
+        RestServer rs = new RestServer();
         rs.startServer();
     }
 }
