@@ -1,9 +1,9 @@
 package de.tuberlin.cit.sdn.middleware;
 
 import de.tuberlin.cit.sdn.middleware.graph.NetworkFactory;
-import de.tuberlin.cit.sdn.middleware.graph.PhysicalNetwork;
 import de.tuberlin.cit.sdn.middleware.graph.model.NetworkEdge;
 import de.tuberlin.cit.sdn.middleware.graph.model.NetworkVertex;
+import de.tuberlin.cit.sdn.middleware.graph.PhysicalNetwork;
 import de.tuberlin.cit.sdn.opendaylight.client.HostTrackerClient;
 import de.tuberlin.cit.sdn.opendaylight.client.SwitchManagerClient;
 import de.tuberlin.cit.sdn.opendaylight.client.TopologyClient;

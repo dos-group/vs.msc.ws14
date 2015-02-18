@@ -9,7 +9,7 @@
 
     <modules>
         <module>sdn-middleware</module>
-        <module>rmi-server</module>
+        <module>flink-interface</module>
         <module>opendaylight</module>
     </modules>
 
