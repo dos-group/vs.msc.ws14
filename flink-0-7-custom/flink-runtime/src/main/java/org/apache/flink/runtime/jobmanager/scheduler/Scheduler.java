@@ -27,6 +27,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.apache.flink.configuration.GlobalConfiguration;
 import org.apache.flink.runtime.util.MiddlewareRestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,7 +80,9 @@ public class Scheduler implements InstanceListener, SlotAvailablilityListener {
 	public Scheduler(ExecutorService executorService) {
 		this.executor = executorService;
 		this.newlyAvailableInstances = new LinkedBlockingQueue<Instance>();
-		this.resthandler = new MiddlewareRestHandler("http://192.168.1.5:4567/");
+
+		String middlewareUrl = GlobalConfiguration.getString("sdn.middlewareUrl", "http://127.0.0.1:4567/");
+		this.resthandler = new MiddlewareRestHandler(middlewareUrl);
 	}
 	
 	

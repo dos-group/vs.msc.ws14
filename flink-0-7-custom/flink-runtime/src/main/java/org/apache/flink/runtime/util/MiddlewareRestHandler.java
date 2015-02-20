@@ -20,6 +20,8 @@ public class MiddlewareRestHandler {
 	 * @param servicehost format: http://127.0.0.1:4567/
 	 */
 	public MiddlewareRestHandler(String servicehost) {
+
+		LOG.info("Using middleware at " + servicehost);
 		svcHost = servicehost;
 	}
 
