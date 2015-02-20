@@ -33,8 +33,8 @@ public class MiddlewareRestHandler {
 		con.setRequestProperty("User-Agent", "Mozilla/5.0");
 
 		int responseCode = con.getResponseCode();
-		LOG.error("\nSending 'GET' request to URL : " + svcHost + url);
-		LOG.error("Response Code : " + responseCode);
+		LOG.info("\nSending 'GET' request to URL : " + svcHost + url);
+		LOG.info("Response Code : " + responseCode);
 
 		BufferedReader in = new BufferedReader(
 				new InputStreamReader(con.getInputStream()));
@@ -65,9 +65,9 @@ public class MiddlewareRestHandler {
 		wr.close();
 
 		int responseCode = con.getResponseCode();
-		LOG.error("\nSending 'POST' request to URL : " + svcHost + url);
-		LOG.error("Post parameters : " + data);
-		LOG.error("Response Code : " + responseCode);
+		LOG.info("\nSending 'POST' request to URL : " + svcHost + url);
+		LOG.info("Post parameters : " + data);
+		LOG.info("Response Code : " + responseCode);
 
 		BufferedReader in = new BufferedReader(
 				new InputStreamReader(con.getInputStream()));

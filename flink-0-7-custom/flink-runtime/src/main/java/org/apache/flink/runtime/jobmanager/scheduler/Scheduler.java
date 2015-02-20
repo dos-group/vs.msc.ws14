@@ -132,10 +132,10 @@ public class Scheduler implements InstanceListener, SlotAvailablilityListener {
 	}
 
 	private Instance getInstanceByIP(String ip, Iterable<Instance> locations) throws Exception {
-		LOG.error("Matching given ip '" + ip + "' to flink instance");
+		LOG.info("Matching given ip '" + ip + "' to flink instance");
 
 		for(Instance i : locations) {
-			LOG.error("Iteration: '" + i.getInstanceConnectionInfo().address().getHostAddress()+"'");
+			LOG.info("Iteration: '" + i.getInstanceConnectionInfo().address().getHostAddress() + "'");
 			if(i.getInstanceConnectionInfo().address().getHostAddress().equals(ip)) {
 				return i;
 			}
@@ -321,89 +321,9 @@ public class Scheduler implements InstanceListener, SlotAvailablilityListener {
 	 * @return The instance to run the vertex on, it {@code null}, if no instance is available.
 	 */
 	protected AllocatedSlot getFreeSlotForTask(ExecutionVertex vertex, Iterable<Instance> requestedLocations) {
-		LOG.error("----------- Requesting new Slot");
-		LOG.error("JobID: " + vertex.getJobId().toString());
-/*
-		// we need potentially to loop multiple times, because there may be false positives
-		// in the set-with-available-instances
-		while (true) {
-			if (this.instancesWithAvailableResources.isEmpty()) {
-				// check if the asynchronous calls did not yet return the queues
-				Instance queuedInstance = this.newlyAvailableInstances.poll();
-				if (queuedInstance == null) {
-					return null;
-				} else {
-					this.instancesWithAvailableResources.add(queuedInstance);
-				}
-			}
+		LOG.info("----------- Requesting new Slot");
+		LOG.info("JobID: " + vertex.getJobId().toString());
 
-			Iterator<Instance> locations = requestedLocations == null ? null : requestedLocations.iterator();
-
-			Instance instanceToUse = null;
-
-			Locality locality = Locality.UNCONSTRAINED;
-
-			if (locations != null && locations.hasNext()) {
-				// we have a locality preference
-
-				while (locations.hasNext()) {
-					Instance location = locations.next();
-
-					if (location != null && this.instancesWithAvailableResources.remove(location)) {
-						instanceToUse = location;
-						locality = Locality.LOCAL;
-						LOG.error("local locality");
-						LOG.error("Vertex simple name: " + vertex.getSimpleName());
-
-						if (LOG.isDebugEnabled()) {
-							LOG.debug("Local assignment: " + vertex.getSimpleName() + " --> " + location);
-						}
-
-						break;
-					}
-				}
-
-				if (instanceToUse == null) {
-					instanceToUse = this.instancesWithAvailableResources.poll();
-					locality = Locality.NON_LOCAL;
-					LOG.error("Non-local assignment: " + vertex.getSimpleName() + " --> " + instanceToUse);
-					if (LOG.isDebugEnabled()) {
-						LOG.debug("Non-local assignment: " + vertex.getSimpleName() + " --> " + instanceToUse);
-					}
-				}
-			}
-			else {
-				instanceToUse = this.instancesWithAvailableResources.poll();
-				LOG.error("Unconstrained assignment: " + vertex.getSimpleName() + " --> " + instanceToUse);
-				if (LOG.isDebugEnabled()) {
-					LOG.debug("Unconstrained assignment: " + vertex.getSimpleName() + " --> " + instanceToUse);
-				}
-			}
-
-			try {
-				AllocatedSlot slot = instanceToUse.allocateSlot(vertex.getJobId());
-
-				// if the instance has further available slots, re-add it to the set of available resources.
-				if (instanceToUse.hasResourcesAvailable()) {
-					this.instancesWithAvailableResources.add(instanceToUse);
-				}
-
-				if (slot != null) {
-					slot.setLocality(locality);
-					return slot;
-				}
-			}
-			catch (InstanceDiedException e) {
-				// the instance died it has not yet been propagated to this scheduler
-				// remove the instance from the set of available instances
-				this.allInstances.remove(instanceToUse);
-				this.instancesWithAvailableResources.remove(instanceToUse);
-			}
-
-			// if we failed to get a slot, fall through the loop
-		}
-	}
-	*/
 		// we need potentially to loop multiple times, because there may be false positives
 		// in the set-with-available-instances
 		while (true) {
@@ -417,60 +337,23 @@ public class Scheduler implements InstanceListener, SlotAvailablilityListener {
 				}
 			}
 			
-			Iterator<Instance> locations = requestedLocations == null ? null : requestedLocations.iterator();
-			
 			Instance instanceToUse = null;
 			Locality locality = Locality.UNCONSTRAINED;
 
 			try {
-				LOG.error("Calling getExecutionHost");
+				LOG.info("Calling getExecutionHost");
 				String hostIP = resthandler.sendGet("getExecutionHost");
-				LOG.error("getExecutionHost result: " + hostIP);
+				LOG.info("getExecutionHost result: " + hostIP);
 
 				instanceToUse = getInstanceByIP(hostIP, instancesWithAvailableResources);
 
-				/*
-				if (locations != null && locations.hasNext()) {
-					// we have a locality preference
-
-					while (locations.hasNext()) {
-						Instance location = locations.next();
-
-						if (location != null && this.instancesWithAvailableResources.remove(location)) {
-							instanceToUse = location;
-							locality = Locality.LOCAL;
-
-							if (LOG.isDebugEnabled()) {
-								LOG.debug("Local assignment: " + vertex.getSimpleName() + " --> " + location);
-							}
-
-							break;
-						}
-					}
-
-					if (instanceToUse == null) {
-						//instanceToUse = this.instancesWithAvailableResources.poll();
-						instanceToUse = sc.getExecutionHost();
-						locality = Locality.NON_LOCAL;
-						if (LOG.isDebugEnabled()) {
-							LOG.debug("Non-local assignment: " + vertex.getSimpleName() + " --> " + instanceToUse);
-						}
-					}
-				}
-				else {
-					//instanceToUse = this.instancesWithAvailableResources.poll();
-					instanceToUse = sc.getExecutionHost();
-					if (LOG.isDebugEnabled()) {
-						LOG.debug("Unconstrained assignment: " + vertex.getSimpleName() + " --> " + instanceToUse);
-					}
-				}*/
 			}
 			catch (Exception e) {
 				LOG.error("Middleware REST call exception: " + e);
 				e.printStackTrace();
 			}
 
-			LOG.error("Using instance " + instanceToUse.getInstanceConnectionInfo().getInetAdress());
+			LOG.info("Using instance " + instanceToUse.getInstanceConnectionInfo().getInetAdress());
 
 			try {
 				AllocatedSlot slot = instanceToUse.allocateSlot(vertex.getJobId());
