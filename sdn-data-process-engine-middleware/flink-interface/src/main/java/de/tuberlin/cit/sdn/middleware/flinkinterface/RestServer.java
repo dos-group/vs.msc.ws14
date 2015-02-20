@@ -19,11 +19,6 @@ public class RestServer {
 
         get("/getExecutionHost", (req, res) -> services.getExecutionHost());
 
-        post("/markInstanceAsInUse", (req, res) -> {
-            services.markInstanceAsInUse(req.body());
-            return "ok";
-        });
-
         post("/markInstanceAsUnused", (req, res) -> {
             services.markInstanceAsUnused(req.body());
             return "ok";

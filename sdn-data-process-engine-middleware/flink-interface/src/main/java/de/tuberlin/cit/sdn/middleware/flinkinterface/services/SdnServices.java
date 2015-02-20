@@ -13,7 +13,7 @@ public class SdnServices {
 
     Logger logger = LogManager.getLogger("SDNMiddlewareLogger");
 
-    int i = 1;
+    int i = 1; // dummy iterator
     public SdnServices() {
 
     }
@@ -33,16 +33,8 @@ public class SdnServices {
      * @param host hosts ip address
      * @throws RemoteException
      */
-    public void markInstanceAsInUse(String host) {
-        logger.debug("markInstanceAsInUse() called. Host: " + host);
-    }
-
-    /**
-     *
-     * @param host hosts ip address
-     * @throws RemoteException
-     */
     public void markInstanceAsUnused(String host) {
-       logger.debug("markInstanceAsUnused() called. Host: " + host);
+        // call actual handling method
+        logger.debug("markInstanceAsUnused() called. Host: " + host);
     }
 }
