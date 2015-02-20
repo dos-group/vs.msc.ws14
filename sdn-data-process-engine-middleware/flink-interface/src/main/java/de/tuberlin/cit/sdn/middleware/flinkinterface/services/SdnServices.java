@@ -19,13 +19,13 @@ public class SdnServices {
     }
 
     public String getExecutionHost() {
-        logger.debug("getExecutionHost() called");
-
-        // retrieve host from hostgroup coll
-
+        // retrieve actual host from hostgroup coll
         // Dummy data
         i++;
-        return "10.0.0." + i;
+        String host = "10.0.0." + i;
+        logger.debug("getExecutionHost() called; returning  " + host);
+
+        return host;
     }
 
     /**

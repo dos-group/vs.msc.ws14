@@ -21,7 +21,6 @@ package org.apache.flink.runtime.jobmanager.scheduler;
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
@@ -321,7 +320,7 @@ public class Scheduler implements InstanceListener, SlotAvailablilityListener {
 	 * @return The instance to run the vertex on, it {@code null}, if no instance is available.
 	 */
 	protected AllocatedSlot getFreeSlotForTask(ExecutionVertex vertex, Iterable<Instance> requestedLocations) {
-		LOG.info("----------- Requesting new Slot");
+		LOG.info("Requesting new Slot");
 		LOG.info("JobID: " + vertex.getJobId().toString());
 
 		// we need potentially to loop multiple times, because there may be false positives
@@ -408,6 +407,7 @@ public class Scheduler implements InstanceListener, SlotAvailablilityListener {
 	}
 	
 	private void handleNewSlot() {
+		LOG.info("handleNewSlot called");
 		
 		synchronized (globalLock) {
 			Instance instance = this.newlyAvailableInstances.poll();
@@ -450,6 +450,16 @@ public class Scheduler implements InstanceListener, SlotAvailablilityListener {
 			}
 			else {
 				this.instancesWithAvailableResources.add(instance);
+				try {
+					LOG.info("Calling markInstanceAsUnused");
+					String serviceResponse = resthandler.sendPost("markInstanceAsUnused",
+							instance.getInstanceConnectionInfo().address().getHostAddress());
+					LOG.info("markInstanceAsUnused response: " + serviceResponse);
+				}
+				catch (Exception e) {
+					LOG.error("Middleware REST call exception: " + e);
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -476,6 +486,7 @@ public class Scheduler implements InstanceListener, SlotAvailablilityListener {
 	
 	@Override
 	public void newInstanceAvailable(Instance instance) {
+		// called whenever a new instance connects
 		if (instance == null) {
 			throw new IllegalArgumentException();
 		}

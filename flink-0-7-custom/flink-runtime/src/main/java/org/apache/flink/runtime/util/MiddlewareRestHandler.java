@@ -49,7 +49,7 @@ public class MiddlewareRestHandler {
 		return response.toString();
 	}
 
-	public void sendPost(String url, String data) throws Exception {
+	public String sendPost(String url, String data) throws Exception {
 
 		URL obj = new URL(svcHost + url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -78,5 +78,6 @@ public class MiddlewareRestHandler {
 			response.append(inputLine);
 		}
 		in.close();
+		return response.toString();
 	}
 }
