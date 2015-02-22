@@ -1,6 +1,6 @@
 package de.tuberlin.cit.sdn.middleware;
 
-import de.tuberlin.cit.sdn.opendaylight.model.OdlSettings;
+import de.tuberlin.cit.sdn.opendaylight.commons.OdlSettings;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;

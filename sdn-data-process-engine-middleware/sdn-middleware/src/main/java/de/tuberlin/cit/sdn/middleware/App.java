@@ -1,7 +1,7 @@
 package de.tuberlin.cit.sdn.middleware;
 
 import de.tuberlin.cit.sdn.opendaylight.client.*;
-import de.tuberlin.cit.sdn.opendaylight.model.OdlSettings;
+import de.tuberlin.cit.sdn.opendaylight.commons.OdlSettings;
 import de.tuberlin.cit.sdn.opendaylight.model.flow.Flows;
 import de.tuberlin.cit.sdn.opendaylight.model.host.Hosts;
 import de.tuberlin.cit.sdn.opendaylight.model.node.Nodes;

@@ -1,4 +1,4 @@
-package de.tuberlin.cit.sdn.opendaylight.model;
+package de.tuberlin.cit.sdn.opendaylight.commons;
 
 /**
  * Created by Nico on 02.01.2015.

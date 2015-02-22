@@ -1,4 +1,4 @@
-package de.tuberlin.cit.sdn.opendaylight.client;
+package de.tuberlin.cit.sdn.opendaylight.commons;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import com.sun.jersey.api.client.Client;
@@ -6,11 +6,10 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
-import de.tuberlin.cit.sdn.opendaylight.model.OdlSettings;
 
 import javax.ws.rs.core.MediaType;
 
-abstract class AbstractClient {
+public abstract class AbstractClient {
     protected OdlSettings settings;
     protected Client client;
 

@@ -1,6 +1,6 @@
 package de.tuberlin.cit.sdn.opendaylight.client;
 
-import de.tuberlin.cit.sdn.opendaylight.model.OdlSettings;
+import de.tuberlin.cit.sdn.opendaylight.commons.OdlSettings;
 
 import java.io.IOException;
 import java.util.Properties;

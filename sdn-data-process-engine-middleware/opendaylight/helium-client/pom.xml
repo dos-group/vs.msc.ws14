@@ -50,6 +50,12 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>de.tuberlin.cit</groupId>
+            <artifactId>odl-client-commons</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
         <!-- yang models -->
         <dependency>
             <groupId>org.opendaylight.yangtools.model</groupId>

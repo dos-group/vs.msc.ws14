@@ -1,6 +1,7 @@
 package de.tuberlin.cit.sdn.opendaylight.client;
 
-import de.tuberlin.cit.sdn.opendaylight.model.OdlSettings;
+import de.tuberlin.cit.sdn.opendaylight.commons.AbstractClient;
+import de.tuberlin.cit.sdn.opendaylight.commons.OdlSettings;
 import de.tuberlin.cit.sdn.opendaylight.model.host.Hosts;
 
 public class HostTrackerClient extends AbstractClient {

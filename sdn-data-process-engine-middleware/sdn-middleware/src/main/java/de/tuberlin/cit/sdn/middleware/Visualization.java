@@ -7,7 +7,7 @@ import de.tuberlin.cit.sdn.middleware.graph.PhysicalNetwork;
 import de.tuberlin.cit.sdn.opendaylight.client.HostTrackerClient;
 import de.tuberlin.cit.sdn.opendaylight.client.SwitchManagerClient;
 import de.tuberlin.cit.sdn.opendaylight.client.TopologyClient;
-import de.tuberlin.cit.sdn.opendaylight.model.OdlSettings;
+import de.tuberlin.cit.sdn.opendaylight.commons.OdlSettings;
 import de.tuberlin.cit.sdn.opendaylight.model.host.HostConfig;
 import de.tuberlin.cit.sdn.opendaylight.model.topology.EdgeProperty;
 import edu.uci.ics.jung.algorithms.layout.ISOMLayout;
