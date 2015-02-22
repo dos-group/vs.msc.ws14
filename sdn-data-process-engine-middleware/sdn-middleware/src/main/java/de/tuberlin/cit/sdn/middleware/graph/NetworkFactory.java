@@ -3,8 +3,8 @@ package de.tuberlin.cit.sdn.middleware.graph;
 import de.tuberlin.cit.sdn.middleware.graph.model.NetworkEdge;
 import de.tuberlin.cit.sdn.middleware.graph.model.Host;
 import de.tuberlin.cit.sdn.middleware.graph.model.NetworkDevice;
-import de.tuberlin.cit.sdn.opendaylight.model.host.HostConfig;
-import de.tuberlin.cit.sdn.opendaylight.model.topology.EdgeProperty;
+import de.tuberlin.cit.sdn.opendaylight.hydrogen.model.host.HostConfig;
+import de.tuberlin.cit.sdn.opendaylight.hydrogen.model.topology.EdgeProperty;
 
 import java.util.ArrayList;
 import java.util.List;
