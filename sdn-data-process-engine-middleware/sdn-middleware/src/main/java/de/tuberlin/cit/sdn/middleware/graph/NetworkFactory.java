@@ -1,55 +1,52 @@
 package de.tuberlin.cit.sdn.middleware.graph;
 
-import de.tuberlin.cit.sdn.middleware.graph.model.NetworkEdge;
 import de.tuberlin.cit.sdn.middleware.graph.model.Host;
 import de.tuberlin.cit.sdn.middleware.graph.model.NetworkDevice;
-import de.tuberlin.cit.sdn.opendaylight.hydrogen.model.host.HostConfig;
-import de.tuberlin.cit.sdn.opendaylight.hydrogen.model.topology.EdgeProperty;
+import de.tuberlin.cit.sdn.middleware.graph.model.NetworkEdge;
+import de.tuberlin.cit.sdn.middleware.graph.model.NetworkVertex;
+import de.tuberlin.cit.sdn.opendaylight.helium.model.topology.Link;
+import de.tuberlin.cit.sdn.opendaylight.helium.model.topology.Node;
+import de.tuberlin.cit.sdn.opendaylight.helium.model.topology.Topology;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class NetworkFactory {
 
-    public NetworkEdge createNetworkEdge(EdgeProperty e) {
-        NetworkEdge networkEdge = new NetworkEdge();
-        networkEdge.setTail(new NetworkDevice(e.edge.tailNodeConnector.node.id), e.edge.tailNodeConnector.id);
-        networkEdge.setHead(new NetworkDevice(e.edge.headNodeConnector.node.id), e.edge.headNodeConnector.id);
-        networkEdge.setBandwidth(e.getBandwidth());
-        return networkEdge;
-    }
+    public List<NetworkEdge> createNetworkEdges(Topology topology) {
+        Map<String, NetworkVertex> nodeMap = new HashMap<>();
+        List<NetworkEdge> networkEdges = new ArrayList<>();
 
-    public NetworkEdge createNetworkEdge(HostConfig hostConfig, boolean isHostHead) {
-        NetworkEdge networkEdge = new NetworkEdge();
-        if (isHostHead) {
-            networkEdge.setTail(new NetworkDevice(hostConfig.nodeId), hostConfig.nodeConnectorId);
+        List<Node> nodes = topology.nodes;
+        List<Link> links = topology.links;
 
-            Host host = new Host(hostConfig.networkAddress);
-            host.setMacAddress(hostConfig.dataLayerAddress);
-            networkEdge.setHead(host, 0);
-        } else {
-            Host host = new Host(hostConfig.networkAddress);
-            host.setMacAddress(hostConfig.dataLayerAddress);
-            networkEdge.setTail(host, 0);
-
-            networkEdge.setHead(new NetworkDevice(hostConfig.nodeId), hostConfig.nodeConnectorId);
+        if (nodes == null || links == null) {
+            return networkEdges;
         }
-        return networkEdge;
-    }
 
-    public List<NetworkEdge> createNetworkEdges(List<EdgeProperty> edgeProperties, List<HostConfig> hostConfigs) {
-        List<NetworkEdge> list = new ArrayList<>();
-        if (edgeProperties != null) {
-            for (EdgeProperty e : edgeProperties) {
-                list.add(createNetworkEdge(e));
+        // fetch nodes (hosts and switches)
+        for (Node n : nodes) {
+            if (n.isHost()) {
+                Node.Address address = n.getAddress();
+                Host host = new Host(address.ip);
+                host.setMacAddress(address.mac);
+                nodeMap.put(n.id, host);
+            } else {
+                NetworkDevice device = new NetworkDevice(n.id);
+                nodeMap.put(n.id, device);
             }
         }
-        if (hostConfigs != null) {
-            for (HostConfig h : hostConfigs) {
-                list.add(createNetworkEdge(h, true));
-                list.add(createNetworkEdge(h, false));
-            }
+
+        // fetch edges
+        for (Link l : links) {
+            NetworkEdge edge = new NetworkEdge();
+            edge.setHead(nodeMap.get(l.dest.node), l.dest.parsePort());
+            edge.setTail(nodeMap.get(l.src.node), l.src.parsePort());
+            networkEdges.add(edge);
         }
-        return list;
+
+        return networkEdges;
     }
 }

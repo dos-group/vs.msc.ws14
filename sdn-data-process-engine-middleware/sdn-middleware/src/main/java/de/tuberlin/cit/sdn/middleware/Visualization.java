@@ -1,15 +1,12 @@
 package de.tuberlin.cit.sdn.middleware;
 
 import de.tuberlin.cit.sdn.middleware.graph.NetworkFactory;
+import de.tuberlin.cit.sdn.middleware.graph.PhysicalNetwork;
 import de.tuberlin.cit.sdn.middleware.graph.model.NetworkEdge;
 import de.tuberlin.cit.sdn.middleware.graph.model.NetworkVertex;
-import de.tuberlin.cit.sdn.middleware.graph.PhysicalNetwork;
-import de.tuberlin.cit.sdn.opendaylight.hydrogen.client.HostTrackerClient;
-import de.tuberlin.cit.sdn.opendaylight.hydrogen.client.SwitchManagerClient;
-import de.tuberlin.cit.sdn.opendaylight.hydrogen.client.TopologyClient;
 import de.tuberlin.cit.sdn.opendaylight.commons.OdlSettings;
-import de.tuberlin.cit.sdn.opendaylight.hydrogen.model.host.HostConfig;
-import de.tuberlin.cit.sdn.opendaylight.hydrogen.model.topology.EdgeProperty;
+import de.tuberlin.cit.sdn.opendaylight.helium.client.TopologyClient;
+import de.tuberlin.cit.sdn.opendaylight.helium.model.topology.Topology;
 import edu.uci.ics.jung.algorithms.layout.ISOMLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.Graph;
@@ -19,38 +16,31 @@ import org.apache.commons.collections15.Transformer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.util.List;
 
 public class Visualization {
 
-    private SwitchManagerClient switchClient;
-    private TopologyClient topologyClient;
-    private HostTrackerClient hostClient;
-
     private NetworkFactory networkFactory = new NetworkFactory();
     private PhysicalNetwork network = PhysicalNetwork.getInstance();
 
-    public Visualization(OdlSettings odlSettings) {
-        switchClient = new SwitchManagerClient(odlSettings);
-        topologyClient = new TopologyClient(odlSettings);
-        hostClient = new HostTrackerClient(odlSettings);
+    private TopologyClient topologyClient;
+
+    public Visualization(OdlSettings settings) {
+        topologyClient = new TopologyClient(settings);
     }
 
-    public Visualization() {
-        switchClient = new SwitchManagerClient();
-        topologyClient = new TopologyClient();
-        hostClient = new HostTrackerClient();
-    }
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Visualization visualization = new Visualization(Utils.getInstance().readSettings(args)); //We create our graph in here
         visualization.run();
     }
 
-    private void run() {
-        List<EdgeProperty> edgeProperties = topologyClient.getTopology().edgeProperties;
-        List<HostConfig> hostConfigs = hostClient.getActiveHosts().hostConfig;
-        network.createOrUpdateGraph(networkFactory.createNetworkEdges(edgeProperties, hostConfigs));
+    private void run() throws IOException {
+        List<Topology> topologies = topologyClient.getTopologies();
+        if (topologies == null || topologies.isEmpty()) {
+            return;
+        }
+        network.createOrUpdateGraph(networkFactory.createNetworkEdges(topologies.get(0)));
 
         Graph<NetworkVertex, NetworkEdge> graph = network.getGraph();
 

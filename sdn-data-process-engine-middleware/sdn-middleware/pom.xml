@@ -17,7 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>de.tuberlin.cit</groupId>
-            <artifactId>hydrogen-client</artifactId>
+            <artifactId>helium-client</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>

@@ -1,37 +1,19 @@
 package de.tuberlin.cit.sdn.middleware;
 
-import de.tuberlin.cit.sdn.opendaylight.hydrogen.client.*;
+import de.tuberlin.cit.sdn.middleware.flinkinterface.RestServer;
 import de.tuberlin.cit.sdn.opendaylight.commons.OdlSettings;
-import de.tuberlin.cit.sdn.opendaylight.hydrogen.model.flow.Flows;
-import de.tuberlin.cit.sdn.opendaylight.hydrogen.model.host.Hosts;
-import de.tuberlin.cit.sdn.opendaylight.hydrogen.model.node.Nodes;
-import de.tuberlin.cit.sdn.opendaylight.hydrogen.model.statistic.FlowStatistics;
-import de.tuberlin.cit.sdn.opendaylight.hydrogen.model.statistic.PortStatistics;
-import de.tuberlin.cit.sdn.opendaylight.hydrogen.model.topology.Topology;
-import de.tuberlin.cit.sdn.middleware.flinkinterface.*;
+import de.tuberlin.cit.sdn.opendaylight.helium.client.TopologyClient;
+
+import java.io.IOException;
 
 public class App {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        OdlSettings odlSettings = Utils.getInstance().readSettings(args);
+        OdlSettings settings = Utils.getInstance().readSettings(args);
 
-        SwitchManagerClient switchClient = new SwitchManagerClient(odlSettings);
-        Nodes nodes = switchClient.getNodes();
-
-        TopologyClient topoClient = new TopologyClient(odlSettings);
-        Topology topology = topoClient.getTopology();
-
-        HostTrackerClient hostClient = new HostTrackerClient(odlSettings);
-        Hosts activeHosts = hostClient.getActiveHosts();
-        Hosts inactiveHosts = hostClient.getInactiveHosts();
-
-        FlowProgrammerClient flowClient = new FlowProgrammerClient(odlSettings);
-        Flows flows = flowClient.getFlows();
-
-        StatisticsClient statClient = new StatisticsClient(odlSettings);
-        PortStatistics portStatistics = statClient.getPortStatistics();
-        FlowStatistics flowStatistics = statClient.getFlowStatistics();
+        TopologyClient topoClient = new TopologyClient(settings);
+        topoClient.getTopologies();
 
         RestServer rs = new RestServer();
         rs.startServer();
