@@ -9,10 +9,13 @@ import static spark.Spark.post;
 
 public class RestServer {
     Logger logger = LogManager.getLogger("flinkinterface-logger");
+    SdnServices services;
+
+    public RestServer(SdnServices services) {
+        this.services = services;
+    }
 
     public void startServer() {
-        SdnServices services = new SdnServices();
-
         logger.debug("Starting REST interfaces");
 
         get("/hello", (req, res) -> "It works");
