@@ -290,15 +290,6 @@ public class Execution {
 					}
 				}
 			};
-			
-			/*
-			try {
-				SdnCoupler sc = (SdnCoupler) Naming.lookup("//localhost/SdnCoupler");
-				sc.markInstanceAsUsed(TODO);
-			} catch (Exception e) {
-				System.out.println("RMI HostService exception: " + e);
-			}
-			*/
 			vertex.execute(deployaction);
 		}
 		catch (Throwable t) {
