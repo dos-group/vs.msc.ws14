@@ -41,7 +41,9 @@ public class LoadBalancer {
         LinkedList<TaskFlowBundle> bundles = new LinkedList<TaskFlowBundle>();
         for (Switch fromSwitch : hostSwitches) {
             for (Switch toSwitch : hostSwitches) {
-                bundles.add(new TaskFlowBundle(fromSwitch, toSwitch));
+                if (!fromSwitch.getId().equals(toSwitch.getId())) {
+                    bundles.add(new TaskFlowBundle(fromSwitch, toSwitch));
+                }
             }
         }
         return bundles;
