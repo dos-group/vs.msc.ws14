@@ -2,7 +2,7 @@ package de.tuberlin.cit.sdn.middleware.flowSwitching;
 
 import de.tuberlin.cit.sdn.middleware.flowSwitching.model.Link;
 import de.tuberlin.cit.sdn.middleware.flowSwitching.model.Switch;
-import de.tuberlin.cit.sdn.middleware.flowSwitching.model.TaskFlowBundle;
+import de.tuberlin.cit.sdn.middleware.flowSwitching.model.DataFlowBundle;
 
 import java.util.LinkedList;
 
@@ -15,14 +15,14 @@ public class LoadBalancer {
         LinkedList<Switch> hostSwitches = filterHostSwitches(switches);
 
         // then create all n(n-1) taskFlowBundles of the n hostSwitches
-        LinkedList<TaskFlowBundle> allBundles = createTaskFlowBundles(hostSwitches);
+        LinkedList<DataFlowBundle> allBundles = createDataFlowBundles(hostSwitches);
 
         // do the following per bundle
-        for (TaskFlowBundle bundle : allBundles) {
+        for (DataFlowBundle bundle : allBundles) {
             // compute up to "amount of taskFlows" distinct paths
-            bundle.computeDistinctPaths(switches, links, bundle.getTaskFlows().size());
+            bundle.computePaths(switches, links);
             // assign the taskFlows to the paths
-            bundle.assignTaskFlows();
+            bundle.assignDataFlows();
         }
     }
 
@@ -37,12 +37,12 @@ public class LoadBalancer {
         return hostSwitches;
     }
 
-    private static LinkedList<TaskFlowBundle> createTaskFlowBundles(LinkedList<Switch> hostSwitches) {
-        LinkedList<TaskFlowBundle> bundles = new LinkedList<TaskFlowBundle>();
-        for (Switch fromSwitch : hostSwitches) {
-            for (Switch toSwitch : hostSwitches) {
-                if (!fromSwitch.getId().equals(toSwitch.getId())) {
-                    bundles.add(new TaskFlowBundle(fromSwitch, toSwitch));
+    private static LinkedList<DataFlowBundle> createDataFlowBundles(LinkedList<Switch> hostSwitches) {
+        LinkedList<DataFlowBundle> bundles = new LinkedList<DataFlowBundle>();
+        for (Switch sourceSwitch : hostSwitches) {
+            for (Switch sinkSwitch : hostSwitches) {
+                if (!sourceSwitch.getId().equals(sinkSwitch.getId())) {
+                    bundles.add(new DataFlowBundle(sourceSwitch, sinkSwitch));
                 }
             }
         }

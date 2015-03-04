@@ -8,7 +8,7 @@ public class Link {
 
     public Link(String switch1Id, String switch2Id){
         this.switch1Id = switch1Id;
-        this.switch2Id = switch1Id;
+        this.switch2Id = switch2Id;
     }
 
     public boolean links(String switchId){
