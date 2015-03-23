@@ -9,199 +9,28 @@
 %
 \begin{document}
 %
-\frontmatter          % for the preliminaries
-%
-\pagestyle{headings}  % switches on printing of running heads
-\addtocmark{Hamiltonian Mechanics} % additional mark in the TOC
-%
-\chapter*{Preface}
-%
-This textbook is intended for use by students of physics, physical
-chemistry, and theoretical chemistry. The reader is presumed to have a
-basic knowledge of atomic and quantum physics at the level provided, for
-example, by the first few chapters in our book {\it The Physics of Atoms
-and Quanta}. The student of physics will find here material which should
-be included in the basic education of every physicist. This book should
-furthermore allow students to acquire an appreciation of the breadth and
-variety within the field of molecular physics and its future as a
-fascinating area of research.
-
-For the student of chemistry, the concepts introduced in this book will
-provide a theoretical framework for that entire field of study. With the
-help of these concepts, it is at least in principle possible to reduce
-the enormous body of empirical chemical knowledge to a few basic
-principles: those of quantum mechanics. In addition, modern physical
-methods whose fundamentals are introduced here are becoming increasingly
-important in chemistry and now represent indispensable tools for the
-chemist. As examples, we might mention the structural analysis of
-complex organic compounds, spectroscopic investigation of very rapid
-reaction processes or, as a practical application, the remote detection
-of pollutants in the air.
-
-\vspace{1cm}
-\begin{flushright}\noindent
-April 1995\hfill Walter Olthoff\\
-Program Chair\\
-ECOOP'95
-\end{flushright}
-%
-\chapter*{Organization}
-ECOOP'95 is organized by the department of Computer Science, Univeristy
-of \AA rhus and AITO (association Internationa pour les Technologie
-Object) in cooperation with ACM/SIGPLAN.
-%
-\section*{Executive Commitee}
-\begin{tabular}{@{}p{5cm}@{}p{7.2cm}@{}}
-Conference Chair:&Ole Lehrmann Madsen (\AA rhus University, DK)\\
-Program Chair:   &Walter Olthoff (DFKI GmbH, Germany)\\
-Organizing Chair:&J\o rgen Lindskov Knudsen (\AA rhus University, DK)\\
-Tutorials:&Birger M\o ller-Pedersen\hfil\break
-(Norwegian Computing Center, Norway)\\
-Workshops:&Eric Jul (University of Kopenhagen, Denmark)\\
-Panels:&Boris Magnusson (Lund University, Sweden)\\
-Exhibition:&Elmer Sandvad (\AA rhus University, DK)\\
-Demonstrations:&Kurt N\o rdmark (\AA rhus University, DK)
-\end{tabular}
-%
-\section*{Program Commitee}
-\begin{tabular}{@{}p{5cm}@{}p{7.2cm}@{}}
-Conference Chair:&Ole Lehrmann Madsen (\AA rhus University, DK)\\
-Program Chair:   &Walter Olthoff (DFKI GmbH, Germany)\\
-Organizing Chair:&J\o rgen Lindskov Knudsen (\AA rhus University, DK)\\
-Tutorials:&Birger M\o ller-Pedersen\hfil\break
-(Norwegian Computing Center, Norway)\\
-Workshops:&Eric Jul (University of Kopenhagen, Denmark)\\
-Panels:&Boris Magnusson (Lund University, Sweden)\\
-Exhibition:&Elmer Sandvad (\AA rhus University, DK)\\
-Demonstrations:&Kurt N\o rdmark (\AA rhus University, DK)
-\end{tabular}
-%
-\begin{multicols}{3}[\section*{Referees}]
-V.~Andreev\\
-B\"arwolff\\
-E.~Barrelet\\
-H.P.~Beck\\
-G.~Bernardi\\
-E.~Binder\\
-P.C.~Bosetti\\
-Braunschweig\\
-F.W.~B\"usser\\
-T.~Carli\\
-A.B.~Clegg\\
-G.~Cozzika\\
-S.~Dagoret\\
-Del~Buono\\
-P.~Dingus\\
-H.~Duhm\\
-J.~Ebert\\
-S.~Eichenberger\\
-R.J.~Ellison\\
-Feltesse\\
-W.~Flauger\\
-A.~Fomenko\\
-G.~Franke\\
-J.~Garvey\\
-M.~Gennis\\
-L.~Goerlich\\
-P.~Goritchev\\
-H.~Greif\\
-E.M.~Hanlon\\
-R.~Haydar\\
-R.C.W.~Henderso\\
-P.~Hill\\
-H.~Hufnagel\\
-A.~Jacholkowska\\
-Johannsen\\
-S.~Kasarian\\
-I.R.~Kenyon\\
-C.~Kleinwort\\
-T.~K\"ohler\\
-S.D.~Kolya\\
-P.~Kostka\\
-U.~Kr\"uger\\
-J.~Kurzh\"ofer\\
-M.P.J.~Landon\\
-A.~Lebedev\\
-Ch.~Ley\\
-F.~Linsel\\
-H.~Lohmand\\
-Martin\\
-S.~Masson\\
-K.~Meier\\
-C.A.~Meyer\\
-S.~Mikocki\\
-J.V.~Morris\\
-B.~Naroska\\
-Nguyen\\
-U.~Obrock\\
-G.D.~Patel\\
-Ch.~Pichler\\
-S.~Prell\\
-F.~Raupach\\
-V.~Riech\\
-P.~Robmann\\
-N.~Sahlmann\\
-P.~Schleper\\
-Sch\"oning\\
-B.~Schwab\\
-A.~Semenov\\
-G.~Siegmon\\
-J.R.~Smith\\
-M.~Steenbock\\
-U.~Straumann\\
-C.~Thiebaux\\
-P.~Van~Esch\\
-from Yerevan Ph\\
-L.R.~West\\
-G.-G.~Winter\\
-T.P.~Yiou\\
-M.~Zimmer\end{multicols}
-%
-\section*{Sponsoring Institutions}
-%
-Bernauer-Budiman Inc., Reading, Mass.\\
-The Hofmann-International Company, San Louis Obispo, Cal.\\
-Kramer Industries, Heidelberg, Germany
-%
-\tableofcontents
-%
 \mainmatter              % start of the contributions
 %
-\title{Hamiltonian Mechanics unter besonderer Ber\"ucksichtigung der
-h\"ohreren Lehranstalten}
+\title{Optimizing Parallel Dataflows in Software-Defined Networks}
 %
-\titlerunning{Hamiltonian Mechanics}  % abbreviated title (for running head)
-%                                     also used for the TOC unless
-%                                     \toctitle is used
+\author{David Grigorjan \and Mohammad Hammad \and Robert Oberbeck \and
+Nico Scherer \and Maxim Tschumak}
 %
-\author{Ivar Ekeland\inst{1} \and Roger Temam\inst{2}
-Jeffrey Dean \and David Grove \and Craig Chambers \and Kim~B.~Bruce \and
-Elsa Bertino}
-%
-\authorrunning{Ivar Ekeland et al.} % abbreviated author list (for running head)
-%
-%%%% list of authors for the TOC (use if author list has to be modified)
-\tocauthor{Ivar Ekeland, Roger Temam, Jeffrey Dean, David Grove,
-Craig Chambers, Kim B. Bruce, and Elisa Bertino}
-%
-\institute{Princeton University, Princeton NJ 08544, USA,\\
-\email{I.Ekeland@princeton.edu},\\ WWW home page:
-\texttt{http://users/\homedir iekeland/web/welcome.html}
-\and
-Universit\'{e} de Paris-Sud,
-Laboratoire d'Analyse Num\'{e}rique, B\^{a}timent 425,\\
-F-91405 Orsay Cedex, France}
-
+\institute{Technical University of Berlin\\
+Electrical Engineering and Computer Science\\
+Complex and Distributed IT-Systems\\
+10623 Berlin, Germany
+}
 \maketitle              % typeset the title of the contribution
 
-\begin{abstract}
-The abstract should summarize the contents of the paper
-using at least 70 and at most 150 words. It will be set in 9-point
-font size and be inset 1.0 cm from the right and left margins.
-There will be two blank lines before and after the Abstract. \dots
-\keywords{computational geometry, graph theory, Hamilton cycles}
-\end{abstract}
-%
+% abstract
+\input{sections/abstract}
+\keywords{Software Defined Network, Distributed Data Processing,  Apache Flink}
+% content
+\input{sections/introduction}
+
+
+% Example
 \section{Fixed-Period Problems: The Sublinear Case}
 %
 With this chapter, the preliminaries are over, and we begin the search
