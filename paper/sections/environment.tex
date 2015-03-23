@@ -1,0 +1,12 @@
+\section{Environment}
+\subsection{Apache Flink}
+For this paper, we used Apache Flink as data processing engine. Flink is a Fast and Reliable
+Large-Scale Data Processing engine. A Flink cluster can be made up from a number of physical
+computation nodes or even a single host. Processing programs, written in Java or Scala, are
+automatically adapted by the optimizer and runtime to execute efficient on a given setup.
+\footnote{(2015) Apache Flink home. Retrieved March 20, 2015, from https://flink.apache.org/.}
+The result of this adaption is the so-called Execution Graph, which is deployed. A master-node, the
+Job Manager is responsible for doing so and keeping track of the the overall job execution. The job
+is split up into several tasks that can be handled independant by Task Managers - the actual
+computation nodes.  Depending on the physical hardware, a task manager can offer multiple processing
+slots. A sketch of the processing is depicted below.
