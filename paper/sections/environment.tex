@@ -1,5 +1,4 @@
-\section{Environment}
-\subsection{Apache Flink}
+\section{Data Processing Environment}
 For this paper, we used Apache Flink as data processing engine. Flink is a Fast and Reliable
 Large-Scale Data Processing engine. A Flink cluster can be made up from a number of physical
 computation nodes or even a single host. Processing programs, written in Java or Scala, are
@@ -12,19 +11,19 @@ computation nodes.  Depending on the physical hardware, a task manager can offer
 slots. A sketch of the processing is depicted below.
 
 \begin{figure}
-\centering
-\begin{minipage}{0.5\textwidth}
-  \centering
-  \includegraphics[width=1.0\linewidth]{graphics/ClientJmTm.pdf}
-    \captionof{figure}{Sketch of Job Execution\protect\footnotemark}
-  \label{fig:jobexecution}
-\end{minipage}%
-\begin{minipage}{0.5\textwidth}
-  \centering
-  \includegraphics[width=1.0\linewidth]{graphics/slots.pdf}
-    \captionof{figure}{Execution-Graph embedding to Task Managers\protect\footnotemark}
-  \label{fig:embedding}
-\end{minipage}
+    \centering
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=1.0\linewidth]{graphics/ClientJmTm.pdf}
+        \captionof{figure}{Sketch of Job Execution\protect\footnotemark}
+        \label{fig:job_execution}
+    \end{minipage}%
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=1.0\linewidth]{graphics/slots.pdf}
+        \captionof{figure}{Execution-Graph embedding to Task Managers\protect\footnotemark}
+        \label{fig:embedding}
+    \end{minipage}
 \end{figure}
 
 \footnotetext{(2015) ClientJmTm.svg Github/Apache/Flink-master from
