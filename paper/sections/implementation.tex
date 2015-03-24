@@ -62,3 +62,110 @@ benefits of a structured project powered by a feature rich build system: flexibi
 customizability, dependency management, task automation and more. All the algorithms are covered
 with tests and the source code is published under Apache License on the public repository hosting
 service.
+
+\subsection{Middleware Slot Assignment}
+The I/O operations are the bottleneck of distributed data processing setups \cite{cheating}. Besides
+reading and writing to disk, there is the communication layer over the network. The Bottom Up
+approach should help to organize the execution slots in a way that they are able communicate in an
+efficient manner over the network. In this section, the algorithm for  slot distribution over the
+network is described.
+
+\begin{figure}
+    \centering
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=0.6\linewidth]{graphics/executiongraph.png}
+        \captionof{figure}{Execution graph}
+        \label{fig:execution_graph}
+    \end{minipage}%
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=0.6\linewidth]{graphics/topology.png}
+        \captionof{figure}{Network Topology}
+        \label{fig:network_topology}
+    \end{minipage}
+\end{figure}
+
+As a starting point, there is the execution graph (Figure \ref{fig:execution_graph}) and the network
+topology (Figure \ref{fig:network_topology}).  This information derives from data processing engine
+and SDN controller respectively. Besides that, it is possible to collect data about the current
+utilization of the network over the SDN controller.  The execution graph represents the steps of the
+job execution and the network topology is a formation of hosts, network devices and links between
+them in the network. Both of them are directed graphs. The question is how to map (apply) one graph
+into another to achieve the best links between the executors.
+
+The general approach is to find an isomorphism between the two graphs. But first, the execution
+graph has to be normalized since Flink (and other data processing engines) will more likely execute
+some of the nodes of execution graph on the same physical host (or even on the same slot). Because
+of this, the normalization function of the graph depends strongly on the engine being used, so this
+solution would be not generally applicable. Furthermore, there are no efficient algorithms available
+resolving this problem (graph isomorphism problem) and even the complexity of it is
+unknown.\cite{graph}
+
+Another reasonable approach is the solution to the general heaviest k-subgraph problem. Using the
+algorithms to calculate the heaviest subgraph it is possible to get k nodes of the graph which
+connections have the biggest weight. Data processing engine’s deployments of the tasks are not
+static and can be made during runtime. Because of this, there is no information about the total
+number of hosts (slots) needed for the complete run and the solution to the heaviest k-­subgraph
+problem cannot be applied to the process engines with dynamic deployments. Besides this, the
+algorithm is NP­-hard by reduction from the clique problem and does only work for undirected graphs.
+\cite{ksubgraph}
+
+It was not possible to find an optimal solution based on known theoretical approaches. Therefore, a
+custom approach has been developed and implemented. Intuition for the approach was the idea, that
+all hosts which are directly connected to the same switch (general: network device) may have better
+links than hosts connected through more than one switch. The number of hubs and link “quality” also
+affect the transference of the data.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{graphics/hostgroup.png}
+    \caption{HostGroup in network topology}
+    \label{fig:hostgroup}
+\end{figure}
+
+First, we define a Host Group. A network device (circle in Figure \ref{fig:hostgroup}) and all
+directly connected hosts (rectangles on the Figure \ref{fig:hostgroup}) constitute a Host Group.
+Thus, network topology consists of a set of Host Groups and each of them consists of one switch and
+a set of hosts. Furthermore, we define the quality of the link between the hosts by affiliation of
+the hosts to the same Host Group.
+
+\begin{equation}
+    weight\_full = data\_size / (bandwidth - bandwidth\_used) + latency
+\end{equation}
+\begin{equation}
+    weight'_simple = data\_size / bandwidth
+\end{equation}
+
+If two hosts are not in the same Host Group, the quality of the connection between them is the
+transmission time for the data needed to be sent between the switches of the two Host Groups where
+the hosts belong to. This value weight of the edge in the topology graph is used to calculate the
+shortest paths by the Dijkstra algorithm. In case there are no statistics about current utilization
+of the network, a default size can be applied.\\
+
+\begin{lstlisting}[caption=Algorithm of finding free hosts based on Host Group concept]
+IP: findNextBestHost()
+    if no_free_hosts()
+        return NULL
+    if all_hosts_are_free()
+        return get_biggest_host_group().getFreeHost()
+    if working_host_group_has_free_hosts()
+        return free_host_group.getFreeHost()
+    else
+        return next_best_host_group().getFreeHost()
+end
+\end{lstlisting}
+
+The algorithm in pseudocode is shown in the Listing 1. Basically, there are only four options. If
+there are no free hosts available, the data process engine will not get any host for its
+calculations. In case that all hosts are free, the biggest Host Group will be selected and the data
+processing engine receives one of the host for executions. If there is a Host Group with some
+occupied and idle hosts, one idle host will be returned to the data processing engine. In the last
+case, there are some Host Groups which are fully occupied. In order to find the next best Host
+Group, the algorithm searches for the Host Group with the best link to the Host Groups that is
+currently occupied using shortest paths calculated by Dijkstras’ algorithm.
+
+The implementation of this concept and algorithms is thread safe and optimized to be efficient
+(caching). Furthermore, the algorithms can be easily adapted to execute different parallel jobs on
+the same topology at the same time.
+
