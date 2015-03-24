@@ -11,18 +11,20 @@ is split up into several tasks that can be handled independant by Task Managers 
 computation nodes.  Depending on the physical hardware, a task manager can offer multiple processing
 slots. A sketch of the processing is depicted below.
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.4\textwidth]{graphics/ClientJmTm.pdf}
-    \caption{Sketch of Job Execution\protect\footnotemark}
-    \label{fig:jobexecution}
-\end{figure}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.4\textwidth]{graphics/slots.pdf}
-    \caption{Execution-Graph embedding to Task Managers\protect\footnotemark}
-    \label{fig:embedding}
+\begin{figure}
+\centering
+\begin{minipage}{0.5\textwidth}
+  \centering
+  \includegraphics[width=1.0\linewidth]{graphics/ClientJmTm.pdf}
+    \captionof{figure}{Sketch of Job Execution\protect\footnotemark}
+  \label{fig:jobexecution}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+  \centering
+  \includegraphics[width=1.0\linewidth]{graphics/slots.pdf}
+    \captionof{figure}{Execution-Graph embedding to Task Managers\protect\footnotemark}
+  \label{fig:embedding}
+\end{minipage}
 \end{figure}
 
 \footnotetext{(2015) ClientJmTm.svg Github/Apache/Flink-master from
@@ -30,3 +32,4 @@ https://raw.githubusercontent.com/apache/flink/master/docs/img/ClientJmTm.svg.}
 
 \footnotetext{(2015) Slots.svg Github/Apache/Flink-master from
 https://raw.githubusercontent.com/apache/flink/master/docs/img/slots.svg.}
+
