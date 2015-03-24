@@ -1,0 +1,16 @@
+\section{Related Work}
+There are several researches of using OpenFlow to increase performance of big data analyses.
+Application awareness plays a significant role to estimate traffic demand and dependencies. As in
+the example of Hadoop, the Hadoop job tracker offers information about placement of map and reduce
+tasks, it monitors the progress of all tasks to predict traffic demand for the network-bound shuffle
+phase. \cite{programmingatruntime} \cite {pythia} provide ways to program the network at runtime and
+avoid hotspots by using these information in combination of network topology and link-level
+utilization.
+
+In \cite{query}, OpenFlow is used to optimize distributed analysis queries by prioritizing network
+traffics and reserving bandwidths. In addition, they match the query plans against the network
+topology.  Topology aware task scheduling is also proposed in \cite{programmingatruntime}.
+
+Our work is focused on the placement of Flink tasks by taking network topology into account. The
+algorithm developed could also be used for other frameworks.
+
