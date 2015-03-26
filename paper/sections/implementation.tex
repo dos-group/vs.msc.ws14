@@ -107,7 +107,7 @@ graph has to be normalized since Flink (and other data processing engines) will 
 some of the nodes of execution graph on the same physical host (or even on the same slot). Because
 of this, the normalization function of the graph depends strongly on the engine being used, so this
 solution would be not generally applicable. Furthermore, there are no efficient algorithms available
-resolving this problem (graph isomorphism problem) and the complexity of it is even unknown \cite{graph}.
+resolving this problem (graph isomorphism problem) and the complexity of it is even unknown. \cite{graph}
 
 Another reasonable approach is the solution to the general heaviest k-subgraph problem. Using the
 algorithms to calculate the heaviest subgraph it is possible to get k nodes of the graph which
@@ -115,8 +115,7 @@ connections have the biggest weight. Data processing engine’s deployments of t
 static and can be made during runtime. Because of this, there is no information about the total
 number of hosts (slots) needed for the complete run and the solution to the heaviest k-­subgraph
 problem cannot be applied to the process engines with dynamic deployments. Besides this, the
-algorithm is NP­-hard by reduction from the clique problem and does only work for undirected graphs
-\cite{ksubgraph}.
+algorithm is NP­-hard by reduction from the clique problem and does only work for undirected graphs. \cite{ksubgraph}
 
 It was not possible to find an optimal solution based on known theoretical approaches. Therefore, a
 custom approach has been developed and implemented. Intuition for the algorithm is that
