@@ -23,6 +23,22 @@ to the outer world, e.g. the Internet. To establish a connection, a Network Addr
 Router (NAT) has to be connected. This is required to be able to communicate between cluster nodes
 and the middleware.
 
+\begin{figure}
+    \centering
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=1.0\linewidth]{graphics/typicalfattree.pdf}
+        \captionof{figure}{Typical Fat-Tree setup \cite{datacenter}}
+        \label{fig:typical_fattree}
+    \end{minipage}%
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=1.0\linewidth]{graphics/mininetfattree.png}
+        \captionof{figure}{Created Mininet topology}
+        \label{fig:embedding}
+    \end{minipage}
+\end{figure}
+
 \subsubsection{Typical Network Topology}
 To evaluate the performance gain using the approach described in this paper, we need to create a
 topology that resembles currently deployed network infrastructures at data centers as close as
