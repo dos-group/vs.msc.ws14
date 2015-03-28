@@ -9,6 +9,7 @@
 \usepackage{graphicx}
 \usepackage{caption}
 \usepackage{listings}
+\usepackage{chngcntr}
 
 \lstset{
   captionpos=b,                    % sets the caption-position to bottom
@@ -16,6 +17,7 @@
 }
 %
 \begin{document}
+\counterwithout{lstlisting}{chapter}
 \frontmatter          % for the preliminaries
 %
 \pagestyle{headings}  % switches on printing of running heads
