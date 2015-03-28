@@ -48,28 +48,34 @@ debugging of the middleware and the current job execution.
     \label{fig:architecture}
 \end{figure}
 
-The architecture of the implemented middleware software is shown in Figure 3.\\
+The architecture of the implemented middleware software is shown in Figure 3.
+
 The highest level in the architecture is the data processing engine Flink. After the creation of the
-execution graph and before deployment on the hosts, a communication client has been added to the Flink's
-scheduler internals to communicate with the middleware. This client sends the execution graph and
-requests new hosts for the job as soon as they are needed. The hosts, which finished execution are
-released through a call of this client as well. The corresponding server side is a part of the
-middleware. \\
+execution graph and before deployment on the hosts, a communication client has been added to the
+Flink's scheduler internals to communicate with the middleware. This client sends the execution
+graph and requests new hosts for the job as soon as they are needed. The hosts, which finished
+execution are released through a call of this client as well. The corresponding server side is a
+part of the middleware.
+
 The topology module collects all the data about the network: topology (network devices, hosts and
 connections between them) and the current utilization of the network. The slot management part is
-responsible for slot allocation for the distributed data engine. Algorithms behind it and the generic
-API belong to this module as well. \\
+responsible for slot allocation for the distributed data engine. Algorithms behind it and the
+generic API belong to this module as well.
+
 The flow switching module takes care about the optimization of the network flows based on the
 current execution graph and network status. In order to access the Northbound API of the SDN
 controller, generic interfaces were defined so that the middleware does not depend on one particular
 implementation of a SDN controller. The concrete realization of northbound clients was done
-separately for the required APIs, such as Flow Programmer and Topology API.\\
-The network visualization module was implemented as well as part of the middleware.\\
-Technically, the middleware is implemented as a Maven multi module project. This decision was made to
-take advantage of the benefits of a structured project powered by a feature rich build system: flexibility,
-customizability, dependency management, task automation and more. All the algorithms are covered
-with tests and the source code is published under Apache License\footnote{(2015). Distributed
-Systems Master Project WS14/15 ∙ GitHub. Retrieved March 12, 2015, from https://github.com/citlab/vs.msc.ws14}.
+separately for the required APIs, such as Flow Programmer and Topology API.
+
+The network visualization module was implemented as well as part of the middleware.
+
+Technically, the middleware is implemented as a Maven multi module project. This decision was made
+to take advantage of the benefits of a structured project powered by a feature rich build system:
+flexibility, customizability, dependency management, task automation and more. All the algorithms
+are covered with tests and the source code is published under Apache License\footnote{(2015).
+Distributed Systems Master Project WS14/15 ∙ GitHub. Retrieved March 12, 2015, from
+https://github.com/citlab/vs.msc.ws14}.
 
 \subsection{Middleware Slot Assignment}
 The I/O operations are often the bottleneck of distributed data processing setups\cite{cheating}. Besides
@@ -176,6 +182,10 @@ The implementation of this concept and algorithms is thread safe and optimized t
 the same topology at the same time.
 
 \subsection{Future Work}
+The implementation discussed in this paper focused on scheduling and placement of Flink jobs with
+knowledge about the physical network. Other issues and enhancements remain open to take complete
+advantage of network aware job scheduling.
+
 \subsubsection{Traffic Properties}
 Monitoring would enable better scheduling and flow programming by taking latency and network
 utilization into account. The OpenFlow specification \cite{openflow} offers port and flow based
