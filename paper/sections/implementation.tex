@@ -178,37 +178,29 @@ the same topology at the same time.
 \subsection{Future Work}
 \subsubsection{Traffic Properties}
 Monitoring would enable better scheduling and flow programming by taking latency and network
-utilization into account.
+utilization into account. The OpenFlow specification \cite{openflow} offers port and flow based
+packet and byte counters, but neither measures latency, nor bandwidth. Therefore monitoring has to
+be somehow implemented.
 
-The OpenFlow specification \cite{openflow} offers port and flow based packet and byte counters, but
-neither measures latency, nor bandwidth. Therefore monitoring has to be somehow implemented.  One
-approach to determine latency between two switches is to insert additional packets and measure the
-duration. The \texttt{PACKET OUT} and \texttt{PACKET IN} functions of OpenFlow would be used.
-\texttt{PACKET OUT} messages forward additional packages to one or more ports. The payload of this
-message is the timestamp of its creation. The OpenFlow controller receives a \texttt{PACKET IN}
-message when a switch could not assign a packet to a flow of its flow table. The latency can then be
-easily calculated by subtracting the time of packet creation and roundtrip times from the time the
-packet was received via \texttt{PACKET IN}. The roundtrip times can be measured by sending a packet
-to a switch, which is returned immediately.
-\cite{monitoringlatency} \cite{opennetmon}
+One approach to determine latency between two switches is to insert additional OpenFlow packets and
+measure the duration.  \texttt{PACKET OUT} messages forward additional packages to one or more
+ports.  The OpenFlow controller receives a \texttt{PACKET IN} message when a switch could not assign
+a packet to a flow of its flow table. The latency can then be easily calculated by subtracting the
+time of packet creation and roundtrip times from the time the packet was received via \texttt{PACKET
+IN}. \cite{monitoringlatency} \cite{opennetmon}
 
 OpenFlow also supports a \texttt{FLOW REMOVED} message that is received by the controller when a
-flow entry of a switch is expired since every flow entry exists only for a certain period of time.
-This message contains information about the duration an entry was active in the flow table, the
-amount of traffic matched against an entry and the input port to determine the source of traffic.
-These information enable the computation of utilization between inter-switch links. This approach
-does not produce any instrumentation overhead since the \texttt{FLOW REMOVED} messages are send
-anyhow. A drawback might be that the information are only available for the point of time when the
-flow was removed.
-\cite{flowsense}
+flow entry of a switch is expired. This message contains information about the duration an entry
+was active in the flow table, the amount of traffic matched against an entry and the input port to
+determine the source of traffic.  These information enable the computation of utilization between
+inter-switch links. This approach does not produce any instrumentation overhead since the
+\texttt{FLOW REMOVED} messages are send anyhow. \cite{flowsense}
 
-Another way to measure network utilization is to poll the OpenFlow statistics. Fetching the
-statistics of a switch causes some overhead, therefore the problem is to find an intelligent polling
-algorithm to reduce the load on switches. Using the routing information of a flow is helpful to find
-an appropriate querying strategy. The switch closest to the destination offers the most accurate
-statistics but there would be a huge load on this switch. While querying a switch randomly has
-better load balancing but is less accurate. A good compromise is to query two switches randomly and
-select the one closer to the destination. \cite{opentm} \cite{opennetmon}
+Another way to measure network utilization is to poll the OpenFlow statistics. The problem is to
+find an intelligent polling algorithm to reduce the load on switches. Using the routing information
+of a flow is helpful to find an appropriate querying strategy.  A good compromise between accuracy
+and load balancing is to query two switches randomly and select the one closer to the destination.
+\cite{opentm} \cite{opennetmon}
 
 There are implementations for the OpenFlow Controller POX \cite{opennetmon}, NOX \cite{opentm} and
 Floodlight \cite {flowsense}.
