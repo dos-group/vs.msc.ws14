@@ -73,9 +73,9 @@ The network visualization module was implemented as well as part of the middlewa
 Technically, the middleware is implemented as a Maven multi module project. This decision was made
 to take advantage of the benefits of a structured project powered by a feature rich build system:
 flexibility, customizability, dependency management, task automation and more. All the algorithms
-are covered with tests and the source code is published under Apache License\footnote{(2015).
-Distributed Systems Master Project WS14/15 ∙ GitHub. Retrieved March 12, 2015, from
-https://github.com/citlab/vs.msc.ws14}.
+are covered with tests and the source code is published under Apache License.\footnote{(2015).
+Distributed Systems Master Project WS14/15 $\cdot$ GitHub. Retrieved March 12, 2015, from
+https://github.com/citlab/vs.msc.ws14}
 
 \subsection{Middleware Slot Assignment}
 \label{sec:middleware_slot_assignment}
@@ -114,15 +114,17 @@ graph has to be normalized since Flink (and other data processing engines) will 
 some of the nodes of execution graph on the same physical host (or even on the same slot). Because
 of this, the normalization function of the graph depends strongly on the engine being used, so this
 solution would be not generally applicable. Furthermore, there are no efficient algorithms available
-resolving this problem (graph isomorphism problem) and the complexity of it is even unknown. \cite{graph}
+resolving this problem (graph isomorphism problem) and the complexity of it is even unknown.
+\cite{graph}
 
 Another reasonable approach is the solution to the general heaviest k-subgraph problem. Using the
 algorithms to calculate the heaviest subgraph it is possible to get k nodes of the graph which
-connections have the biggest weight. Data processing engine’s deployments of the tasks are not
+connections have the biggest weight. Data processing engine's deployments of the tasks are not
 static and can be made during runtime. Because of this, there is no information about the total
-number of hosts (slots) needed for the complete run and the solution to the heaviest k-­subgraph
+number of hosts (slots) needed for the complete run and the solution to the heaviest k-subgraph
 problem cannot be applied to the process engines with dynamic deployments. Besides this, the
-algorithm is NP­-hard by reduction from the clique problem and does only work for undirected graphs. \cite{ksubgraph}
+algorithm is NP­-hard by reduction from the clique problem and does only work for undirected graphs.
+\cite{ksubgraph}
 
 It was not possible to find an optimal solution based on known theoretical approaches. Therefore, a
 custom approach has been developed and implemented. Intuition for the algorithm is that
@@ -176,7 +178,7 @@ processing engine receives one of the host for executions. If there is a Host Gr
 occupied and idle hosts, one idle host will be returned to the data processing engine. In the last
 case, there are some Host Groups which are fully occupied. In order to find the next best Host
 Group, the algorithm searches for the Host Group with the best link to the Host Groups that is
-currently occupied using shortest paths calculated by Dijkstras’ algorithm.
+currently occupied using shortest paths calculated by Dijkstras' algorithm.
 
 The implementation of this concept and algorithms is thread safe and optimized to be efficient
 (caching). Furthermore, the algorithms can be easily adapted to execute different parallel jobs on
