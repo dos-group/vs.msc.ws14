@@ -1,0 +1,14 @@
+Ausführung Flink-SDN-Kopplung
+
+1. SDN-Middleware und Flink-Custom Sources kompilieren
+3. OpenDaylight installieren
+2. Mininet installieren
+4. OpenDaylight starten und folgende Features installieren (Version Helium):
+odl-base-all odl-aaa-authn odl-restconf odl-nsf-all odl-adsal-northbound odl-mdsal-apidocs odl-l2switch-switch odl-dlux-core odl-openflowplugin-flow-services-ui odl-ovsdb-all odl-snmp4sdn-all
+5. Mininet-Topologie (CustomFatTree.py) starten - SDN Controller IP vorher im Skript anpassen, sofern er nicht auf localhost ausgeführt wird
+6. Flink-Custom installieren
+7. SDN Middleware mit folgenden Argumenten starten:
+ -ip <IP Adresse des SDN Controllers>
+8. Einen Mininet xterm auf dem gewollten Master-Node starten
+9. Flink-Cluster auf dem Masternode konfigurieren und starten, wie hier beschrieben (HDFS kann vernachlässigt werden): http://ci.apache.org/projects/flink/flink-docs-release-0.8.1/cluster_setup.html
+10. Berechnungen können nun gestartet werden
