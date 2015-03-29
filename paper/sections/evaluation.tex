@@ -1,22 +1,12 @@
-\section{Test Setup}
+\section{Evaluation}
 The Flink Cluster was built on a single physical host using virtualization and the SDN simulator
 Mininet.
 
 \subsection{Mininet}
 Mininet is a software to simulate SDN environments on local machines. It  emulates physical hosts,
-switches, links and routers on a Linux Kernel. \footnote{(2012). Introduction to Mininet ∙
-mininet/mininet Wiki ∙ GitHub. Retrieved March 12, 2015, from
-https://github.com/mininet/mininet/wiki/Introduction­to­Mininet} For topologies, either built-in or
-shipped-with ones can be used or one can create custom topologies. Connected hosts are isolated from
-each other and behave like real ones. For emulating switches, Mininet uses
-Open-vSwitch\footnote{(2009). Open vSwitch. Retrieved March 12, 2015, from
-httop://openvswitch.org/}, a virtual switch emulation software, controlled by OpenFlow.
-
-With Mininet modeling all physical properties of a real SDN environment, ordinary network
-diagnostics and manipulation software can be used. Also, Mininet is able to use a variety of SDN
-controllers. The built-in one is based on POX but external ones can be connected by providing the
-corresponding IP address and port number. For this work, we used the external controller option and
-connected Mininet to an OpenDaylight controller.
+switches, links and routers on a Linux Kernel.\footnote{(2012). Introduction to Mininet $\cdot$
+mininet/mininet Wiki $\cdot$ GitHub. Retrieved March 12, 2015, from
+https://github.com/mininet/mininet/wiki/Introduction­to­Mininet}
 
 Since the Mininet-network is emulated in an isolated environment, connected hosts do not have access
 to the outer world, e.g. the Internet. To establish a connection, a Network Address Translation
@@ -39,17 +29,21 @@ and the middleware.
     \end{minipage}
 \end{figure}
 
-\subsubsection{Typical Network Topology}
 To evaluate the performance gain using the approach described in this paper, we need to create a
-topology that resembles currently deployed network infrastructures at data centers as close as
-possible. A common network structure is the so-called Fat Tree. \cite{datacenter} This topology
-connects hosts and switches in a tree-like manner, with hosts on the lowest layer and switches in
-the layers above.  Since link bandwidth increases with higher layers, the tree is called fat. A
-sketch of this setup is depicted in the image below.
+custom topology that resembles currently deployed network infrastructures at data centers as close
+as possible. A common network structure is the so-called \textit{Fat Tree}. \cite{datacenter} This
+topology connects hosts and switches in a tree-like manner, with hosts on the lowest layer and
+switches in the layers above. Since link bandwidth increases with higher layers, the tree is called
+\textit{fat}. A sketch of this setup is depicted in Figure \ref{fig:typical_fattree} and
+\ref{fig:mininet_fattree}.
+
+Figure \ref{fig:typical_fattree} shows a typical Fat Tree setup, Figure \ref{fig:mininet_fattree}
+the Mininet topology created by us. \textit{sX} represent switches, \textit{hX} hosts with their
+name (\textit{hX}) and IP-Address (\textit{10.0.0.X}). Link bandwidth is depicted as line width.
 
 \subsection{System properties}
-The test setup was built on a single physical host. Its physical properties are listed in the table
-below.
+The test setup was built on a single physical host. Its physical properties are listed in table
+\ref{table:host_properties}.
 
 \begin{table}[h]
     \centering
@@ -64,7 +58,8 @@ below.
     \label{table:host_properties}
 \end{table}
 
-On top of the physical host, we implemented a virtualized testbed with the following properties.
+On top of the physical host, we implemented a virtualized testbed with the properties listed in
+table \ref{table:guest_properties}.
 
 \begin{table}[h]
     \centering
@@ -86,14 +81,16 @@ On top of the physical host, we implemented a virtualized testbed with the follo
 
 Within the virtual guest, a mininet environment was built up with the topology described in the
 mininet section of this paper. A Flink cluster was configured to handle every node as worker and use
-128MB of heap per taskmanager. Further, a DoP of 5 was set. For all links, packet loss was set to 0\%
-and delay to 2ms. Bandwidth was set to 5, 10 or 20MBit/s, depending on the link layer.
+128MB of heap per taskmanager.
 
-\subsection{Evaluation}
+Further, a DoP of 5 was set. For all links, packet loss was set to 0\% and delay to 2ms. Bandwidth
+was set to 5, 10 or 20MBit/s, depending on the link layer.
+
+\subsection{Evaluation Results}
 To evaluate the performance gain of our modified Flink setup, we compared job execution times of the
 unmodified, native Flink application versus our SDN implementation. For KMeans, we used 5000
-datapoints and a variable number of clusters and iterations. The results are shown in the following
-table.
+datapoints and a variable number of clusters and iterations. The results are shown in table
+\ref{table:results}.
 
 \begin{table}[h]
     \centering
@@ -111,7 +108,7 @@ table.
         500 &100 &50.547 &24.378 &51.77 \\ \hline
     \end{tabular}
     \caption{Results of evaluation}
-    \label{table:guest_properties}
+    \label{table:results}
 \end{table}
 
 As one can see, the implemented approach results in an overall speedup of the computation, merely
