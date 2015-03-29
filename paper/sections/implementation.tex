@@ -145,12 +145,12 @@ Thus, network topology consists of a set of Host Groups and each of them consist
 a set of hosts. Furthermore, we define the quality of the link between the hosts by affiliation of
 the hosts to the same Host Group.
 
-\begin{equation}
-    weight\_full = data\_size / (bandwidth - bandwidth\_used) + latency
-\end{equation}
-\begin{equation}
-    weight\_simple = data\_size / bandwidth
-\end{equation}
+\begin{equation*}
+\begin{split}
+    weight\_full& = data\_size / (bandwidth - bandwidth\_used) + latency \\
+    weight\_simple& = data\_size / bandwidth
+\end{split}
+\end{equation*}
 
 If two hosts are not in the same Host Group, the quality of the connection between them is the
 transmission time for the data needed to be sent between the switches of the two Host Groups where
