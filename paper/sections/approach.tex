@@ -1,5 +1,5 @@
 \section{Approach}
-To schedule processing tasks on software defined networks, we identified two approaches, which we
+To schedule processing tasks on software-defined networks, we identified two approaches, which we
 named \textit{Top-Down} and \textit{Bottom-Up}. A sketch of these concepts and their relation to the
 setup is depicted in Figure \ref{fig:schedulingapproaches} and described in the following section.
 
@@ -28,7 +28,7 @@ These constraints limit real-world applications but can easily hold true for our
 determine performance gains with the concepts introduced.
 
 \subsection{Top-Down/Flow Switching}
-The \textit{Top-Down} approach imposes that the data processing engine schedules tasks as usual and
+The Top-Down approach imposes that the data processing engine schedules tasks as usual and
 does not take network properties into account. The middleware is aware of these scheduling decisions
 and influences the network properly. This influence could be either providing additional bandwidth
 between communicating hosts through flow switching or limiting bandwidth on the specific
@@ -39,7 +39,7 @@ Parts of a job could be scheduled in a data center and another part far away lik
 region.
 
 \subsection{Bottom-Up/Scheduling}
-The \textit{Bottom-Up} approach required the data processing engines' scheduler actively asks the
+The Bottom-Up approach required the data processing engines' scheduler actively asks the
 middleware for a node to place the task on. The middleware is aware of the network topology and can
 determine optimal task placement through proper algorithms. The disadvantage of this approach is
 that the data processing engines' scheduler needs to be modified to interact with the middleware.

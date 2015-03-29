@@ -3,6 +3,7 @@ The Flink Cluster was built on a single physical host using virtualization and t
 Mininet.
 
 \subsection{Mininet}
+\label{sec:mininet}
 Mininet is a software to simulate SDN environments on local machines. It  emulates physical hosts,
 switches, links and routers on a Linux Kernel.\footnote{(2012). Introduction to Mininet $\cdot$
 mininet/mininet Wiki $\cdot$ GitHub. Retrieved March 12, 2015, from
@@ -79,8 +80,8 @@ table \ref{table:guest_properties}.
     \label{table:guest_properties}
 \end{table}
 
-Within the virtual guest, a mininet environment was built up with the topology described in the
-mininet section of this paper. A Flink cluster was configured to handle every node as worker and use
+Within the virtual guest, a mininet environment was built up with the topology described in
+section \ref{sec:mininet}. A Flink cluster was configured to handle every node as worker and use
 128MB of heap per taskmanager.
 
 Further, a DoP of 5 was set. For all links, packet loss was set to 0\% and delay to 2ms. Bandwidth

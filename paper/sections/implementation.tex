@@ -26,11 +26,11 @@ These are the summarized requirements:
 First, the middleware has to obtain information about the network topology and its current status.
 To get information about the underlying network, a REST client is required to communicate with the
 Northbound Topology API of OpenDaylight controller. Another requirement to the specification of the
-middleware is realization of the scheduling approach. More specifically, it is the implementation of an
+middleware is the realization of the scheduling approach. More specifically, it is the implementation of an
 algorithm of how the physical hosts (slots) are assigned to the tasks of the data processing engine.
 This should be achieved in a way that the network communication between hosts is efficient and the
 network resources are utilized as much as possible. The host assignment should be based on the
-information about the network topology and the current status. The Top Down approach tries to
+information about the network topology and the current status. The Top-Down approach tries to
 optimize the network utilization during runtime. The middleware needs to have information about the
 currently executing job and its deployment (and distribution) in the network. This information is
 provided by the data processing engine and should be transferred to the middleware. The middleware
@@ -48,7 +48,7 @@ debugging of the middleware and the current job execution.
     \label{fig:architecture}
 \end{figure}
 
-The architecture of the implemented middleware software is shown in Figure 3.
+The architecture of the implemented middleware software is shown in Figure \ref{fig:architecture}.
 
 The highest level in the architecture is the data processing engine Flink. After the creation of the
 execution graph and before deployment on the hosts, a communication client has been added to the
@@ -79,11 +79,11 @@ https://github.com/citlab/vs.msc.ws14}
 
 \subsection{Middleware Slot Assignment}
 \label{sec:middleware_slot_assignment}
-The I/O operations are often the bottleneck of distributed data processing setups\cite{cheating}. Besides
-reading and writing to disk, there is the communication layer over the network. The Bottom Up
-approach should help to organize the execution slots in a way that they are able to communicate in an
-efficient manner over the network. In this section, the algorithm for  slot distribution over the
-network is described.
+The I/O operations are often the bottleneck of distributed data processing setups. \cite{cheating}
+Besides reading and writing to disk, there is the communication layer over the network. The Bottom
+Up approach should help to organize the execution slots in a way that they are able to communicate
+in an efficient manner over the network. In this section, the algorithm for  slot distribution over
+the network is described.
 
 \begin{figure}[h]
     \centering
@@ -111,10 +111,10 @@ into another to achieve the best links between the executors.
 
 The general approach is to find an isomorphism between the two graphs. But first, the execution
 graph has to be normalized since Flink (and other data processing engines) will more likely execute
-some of the nodes of execution graph on the same physical host (or even on the same slot). Because
+some of the nodes of an execution graph on the same physical host (or even on the same slot). Because
 of this, the normalization function of the graph depends strongly on the engine being used, so this
 solution would be not generally applicable. Furthermore, there are no efficient algorithms available
-resolving this problem (graph isomorphism problem) and the complexity of it is even unknown.
+resolving the graph isomorphism problem and the complexity of it is even unknown.
 \cite{graph}
 
 Another reasonable approach is the solution to the general heaviest k-subgraph problem. Using the
@@ -217,7 +217,7 @@ There are implementations for the OpenFlow Controller POX \cite{opennetmon}, NOX
 Floodlight \cite {flowsense}.
 
 \subsubsection{Load Balancing}
-Even using the Bottom Up approach, the possibility to control data flows in the network still
+Even using the Bottom-Up approach, the possibility to control data flows in the network still
 remains. The notion of balancing data flows of alike source and sink around multiple paths comes to
 mind. OpenDaylights' default flow configuration behavior is handled by an interchangeable part
 application titled \textit{Simple Forwarding}. Upon activation by a switch clueless how to reach a
